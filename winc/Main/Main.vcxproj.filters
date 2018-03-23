@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files\io">
+      <UniqueIdentifier>{954ac2aa-6a37-46db-9372-a83ff4fbc335}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\seh">
+      <UniqueIdentifier>{1761a8ca-5d17-4d1c-9f4d-5b9f0404272f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files\io">
+      <UniqueIdentifier>{9e50989e-baa8-4221-9edf-89d32c45e4dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\seh">
+      <UniqueIdentifier>{dd4c0db1-46b2-44f2-8576-c44709652245}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="Header Files\threads">
+      <UniqueIdentifier>{30e5cd75-695d-4e81-9420-7c401ef5ec83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\threads">
+      <UniqueIdentifier>{6ad4acb3-7943-4a0c-8719-ae31a11ce37a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="data">
+      <UniqueIdentifier>{9a0755a4-0ad0-4836-b7c6-bcaee77a1a29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="networking">
+      <UniqueIdentifier>{c43a14a2-22ee-4a55-85f0-4e5cb9a539f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Leetcode">
+      <UniqueIdentifier>{4c025218-7644-4442-b61b-a7dc2c34282b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="source\io\blockedqueue.cpp">
+      <Filter>Source Files\io</Filter>
+    </ClCompile>
+    <ClCompile Include="source\io\writethread.cpp">
+      <Filter>Source Files\io</Filter>
+    </ClCompile>
+    <ClCompile Include="source\seh\seh_test.cpp">
+      <Filter>Source Files\seh</Filter>
+    </ClCompile>
+    <ClCompile Include="source\io\stdiotest.cpp">
+      <Filter>Source Files\io</Filter>
+    </ClCompile>
+    <ClCompile Include="source\threads\sync.cpp">
+      <Filter>Source Files\threads</Filter>
+    </ClCompile>
+    <ClCompile Include="data\crc_test.cpp">
+      <Filter>data</Filter>
+    </ClCompile>
+    <ClCompile Include="networking\tcp_test.cpp">
+      <Filter>networking</Filter>
+    </ClCompile>
+    <ClCompile Include="leetcode\leetcodetest.cpp">
+      <Filter>Leetcode</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="include\io\blockedqueue.h">
+      <Filter>Header Files\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\io\writethread.h">
+      <Filter>Header Files\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\seh\seh_test.h">
+      <Filter>Header Files\seh</Filter>
+    </ClInclude>
+    <ClInclude Include="include\io\stdiotest.h">
+      <Filter>Header Files\io</Filter>
+    </ClInclude>
+    <ClInclude Include="include\threads\sync.h">
+      <Filter>Header Files\threads</Filter>
+    </ClInclude>
+    <ClInclude Include="data\crc_test.h">
+      <Filter>data</Filter>
+    </ClInclude>
+    <ClInclude Include="networking\tcp_test.h">
+      <Filter>networking</Filter>
+    </ClInclude>
+    <ClInclude Include="leetcode\leetcodetest.h">
+      <Filter>Leetcode</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+</Project>

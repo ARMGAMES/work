@@ -1,6 +1,7 @@
 
 *.exe
 *.pdb
+*.sdf
 Analysis/Racing/obj/
 Analysis/Racing/bin/
 Analysis/Analysis/bin/
@@ -9,3 +10,7 @@ AnalysisTool/x64/
 AnalysisTool/ipch/
 AnalysisTool/AnalysisTool/x64/
 AnalysisTool/AnalysisTool.sdf
+winc/sharedlib/Debug/
+winc/ipch/
+winc/Main/ipch
+winc/debug
