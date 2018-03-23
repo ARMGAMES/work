@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Analysis", "Analysis\Analysis.csproj", "{F10E9604-C22C-4FB2-ADC0-42163402D79B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Racing", "Racing\Racing.csproj", "{07109138-91C8-484E-866E-707E8F04E852}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F10E9604-C22C-4FB2-ADC0-42163402D79B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F10E9604-C22C-4FB2-ADC0-42163402D79B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F10E9604-C22C-4FB2-ADC0-42163402D79B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F10E9604-C22C-4FB2-ADC0-42163402D79B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07109138-91C8-484E-866E-707E8F04E852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07109138-91C8-484E-866E-707E8F04E852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07109138-91C8-484E-866E-707E8F04E852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07109138-91C8-484E-866E-707E8F04E852}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

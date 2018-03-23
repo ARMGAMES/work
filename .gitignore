@@ -1,0 +1,7 @@
+
+*.exe
+*.pdb
+Analysis/Racing/obj/
+Analysis/Racing/bin/
+Analysis/Analysis/bin/
+Analysis/Analysis/obj/
