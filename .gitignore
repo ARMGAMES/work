@@ -5,3 +5,7 @@ Analysis/Racing/obj/
 Analysis/Racing/bin/
 Analysis/Analysis/bin/
 Analysis/Analysis/obj/
+AnalysisTool/x64/
+AnalysisTool/ipch/
+AnalysisTool/AnalysisTool/x64/
+AnalysisTool/AnalysisTool.sdf
