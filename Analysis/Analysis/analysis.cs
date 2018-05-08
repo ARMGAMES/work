@@ -173,7 +173,6 @@ namespace Analysis
                 double todayLow = marketDataList[i].low;
                 double todayHigh = marketDataList[i].high;
 
-                /*
                 // open high
                 if (todayOpen / prevClose > (1 + enterPert))
                 {
@@ -211,9 +210,9 @@ namespace Analysis
                         }
                     }
                 }
-                 */
+  
 
-                if (todayHigh / prevClose > (1 + enterPert))
+             /*   if (todayHigh / prevClose > (1 + enterPert))
                 {
                     currMonthResult.longCount++;
 
@@ -245,7 +244,7 @@ namespace Analysis
                         }
                     }
                 }
-
+                */
             }
         }
 
