@@ -28,7 +28,8 @@ public:
 
   int scan(istream& is = cin)
   {
-    return (is >> keyval >> info) != 0;
+    //return (is >> keyval >> info) != 0;
+	  return 1;
   }
 
   void show()

@@ -1,11 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Main", "Main\Main.vcxproj", "{42C7B408-A2DE-4154-BB92-69F4C8793781}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sharedlib", "sharedlib\sharedlib.vcxproj", "{08C43F5C-A8E3-4D5B-B0A6-88128FCB2A65}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Algorithm", "Algorithm\Algorithm.vcxproj", "{579FB45D-0721-400C-9659-9BDB820E7EC1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AlgorithmApp", "AlgorithmApp\AlgorithmApp.vcxproj", "{4AA89F0B-BC1A-4564-948F-3BD8A3CD500A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,8 +43,19 @@ Global
 		{579FB45D-0721-400C-9659-9BDB820E7EC1}.Release|Win32.Build.0 = Release|Win32
 		{579FB45D-0721-400C-9659-9BDB820E7EC1}.Release|x64.ActiveCfg = Release|x64
 		{579FB45D-0721-400C-9659-9BDB820E7EC1}.Release|x64.Build.0 = Release|x64
+		{4AA89F0B-BC1A-4564-948F-3BD8A3CD500A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4AA89F0B-BC1A-4564-948F-3BD8A3CD500A}.Debug|Win32.Build.0 = Debug|Win32
+		{4AA89F0B-BC1A-4564-948F-3BD8A3CD500A}.Debug|x64.ActiveCfg = Debug|x64
+		{4AA89F0B-BC1A-4564-948F-3BD8A3CD500A}.Debug|x64.Build.0 = Debug|x64
+		{4AA89F0B-BC1A-4564-948F-3BD8A3CD500A}.Release|Win32.ActiveCfg = Release|Win32
+		{4AA89F0B-BC1A-4564-948F-3BD8A3CD500A}.Release|Win32.Build.0 = Release|Win32
+		{4AA89F0B-BC1A-4564-948F-3BD8A3CD500A}.Release|x64.ActiveCfg = Release|x64
+		{4AA89F0B-BC1A-4564-948F-3BD8A3CD500A}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7394085E-6E36-49EC-9B87-2EDB1F62CCAF}
 	EndGlobalSection
 EndGlobal

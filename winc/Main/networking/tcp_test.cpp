@@ -1,8 +1,5 @@
 
-#include "stdafx.h"
 #include "tcp_test.h"
-
-
 
 #pragma comment(lib, "ws2_32.lib")
 

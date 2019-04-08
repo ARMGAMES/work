@@ -14,3 +14,8 @@ winc/sharedlib/Debug/
 winc/ipch/
 winc/Main/ipch
 winc/debug
+winc/.vs
+winc/AlgorithmApp/debug
+algorithms/.vs
+algorithms/ipch
+algorithms/debug
