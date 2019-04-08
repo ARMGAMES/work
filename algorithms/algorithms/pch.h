@@ -11,4 +11,9 @@
 
 // TODO: add headers that you want to pre-compile here
 
+#include <iostream>
+#include <vector>
+#include <map>
+#include <set>
+
 #endif //PCH_H

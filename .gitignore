@@ -17,5 +17,5 @@ winc/debug
 winc/.vs
 winc/AlgorithmApp/debug
 algorithms/.vs
-algorithms/ipch
-algorithms/debug
+algorithms/algorithms/ipch
+algorithms/algorithms/debug
