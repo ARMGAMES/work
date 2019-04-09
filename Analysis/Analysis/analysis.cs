@@ -791,9 +791,9 @@ namespace Analysis
 
             try
             {
-                lastDays = Convert.ToInt32(sellHighLastDays.Text);
-                enterPertLow = Convert.ToDouble(sellHigh_enterPert.Text);
-                enterPertHigh = Convert.ToDouble(sellHigh_sellPert.Text);
+                lastDays = Convert.ToInt32(buyStopLastDays.Text);
+                enterPertLow = Convert.ToDouble(buyStop_enterPert.Text);
+                enterPertHigh = Convert.ToDouble(buyStop_stopPert.Text);
 
             }
             catch (Exception)
@@ -1315,14 +1315,14 @@ namespace Analysis
             analysisResult.Clear();
 
             Int32 lastDays = 0;
-            double sellHighEnterPert = 0;
-            double sellHighSellPert = 0;
+            double buyStopEnter = 0;
+            double buyStopStopPert = 0;
 
             try
             {
-                lastDays = Convert.ToInt32(sellHighLastDays.Text);
-                sellHighEnterPert = Convert.ToDouble(sellHigh_enterPert.Text);
-                sellHighSellPert = Convert.ToDouble(sellHigh_sellPert.Text);
+                lastDays = Convert.ToInt32(buyStopLastDays.Text);
+                buyStopEnter = Convert.ToDouble(buyStop_enterPert.Text);
+                buyStopStopPert = Convert.ToDouble(buyStop_stopPert.Text);
 
             }
             catch (Exception)
@@ -1333,13 +1333,13 @@ namespace Analysis
 
             Dictionary<ResultKey, ResultData> result = new Dictionary<ResultKey, ResultData>();
 
-            CalculateSellHigh(marketDataList, lastDays, sellHighEnterPert, sellHighSellPert, false, ref result);
+            CalculateBuyStop(marketDataList, lastDays, buyStopEnter, buyStopStopPert, false, ref result);
 
             DisplayResult(result, 0, 0, true);
 
         }
 
-        private void CalculateSellHigh(List<MarketData> marketDataList, Int32 lastDays, double enterPert, double sellPert,
+        private void CalculateBuyStop(List<MarketData> marketDataList, Int32 lastDays, double enterPert, double sellPert,
                                           bool fullLog, ref Dictionary<ResultKey, ResultData> result)
         {
             int startIndex = 0;

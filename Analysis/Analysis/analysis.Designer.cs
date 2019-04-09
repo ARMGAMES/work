@@ -54,7 +54,7 @@
             this.ld_lastDays = new System.Windows.Forms.TextBox();
             this.LastDayChangeStart = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
-            this.sellHigh_enterPert = new System.Windows.Forms.TextBox();
+            this.buyStop_enterPert = new System.Windows.Forms.TextBox();
             this.sellHighStar = new System.Windows.Forms.Button();
             this.hiLowAnalysis = new System.Windows.Forms.Button();
             this.HighLowOpen_EnterPert2 = new System.Windows.Forms.TextBox();
@@ -65,7 +65,7 @@
             this.LastDayLongShort = new System.Windows.Forms.TextBox();
             this.lastDayAnalysis = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
-            this.sellHighLastDays = new System.Windows.Forms.TextBox();
+            this.buyStopLastDays = new System.Windows.Forms.TextBox();
             this.pertCrossOverAnalysis = new System.Windows.Forms.Button();
             this.OpenHighSellLimitAnalysis = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
@@ -75,7 +75,7 @@
             this.label17 = new System.Windows.Forms.Label();
             this.buyHigh_StopPert = new System.Windows.Forms.TextBox();
             this.OpenHighSellLimit_Start = new System.Windows.Forms.Button();
-            this.sellHigh_sellPert = new System.Windows.Forms.TextBox();
+            this.buyStop_stopPert = new System.Windows.Forms.TextBox();
             this.highLow_Display = new System.Windows.Forms.Button();
             this.label10 = new System.Windows.Forms.Label();
             this.buyHigh_OpenPert = new System.Windows.Forms.TextBox();
@@ -324,20 +324,20 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(284, 197);
+            this.label11.Location = new System.Drawing.Point(284, 199);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(68, 17);
             this.label11.TabIndex = 16;
             this.label11.Text = "EnterPert";
             // 
-            // sellHigh_enterPert
+            // buyStop_enterPert
             // 
-            this.sellHigh_enterPert.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.sellHigh_enterPert.Location = new System.Drawing.Point(371, 194);
-            this.sellHigh_enterPert.Name = "sellHigh_enterPert";
-            this.sellHigh_enterPert.Size = new System.Drawing.Size(49, 23);
-            this.sellHigh_enterPert.TabIndex = 19;
-            this.sellHigh_enterPert.Text = "0.01";
+            this.buyStop_enterPert.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buyStop_enterPert.Location = new System.Drawing.Point(371, 197);
+            this.buyStop_enterPert.Name = "buyStop_enterPert";
+            this.buyStop_enterPert.Size = new System.Drawing.Size(49, 23);
+            this.buyStop_enterPert.TabIndex = 19;
+            this.buyStop_enterPert.Text = "0.01";
             // 
             // sellHighStar
             // 
@@ -429,20 +429,20 @@
             // 
             this.label12.AutoSize = true;
             this.label12.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label12.Location = new System.Drawing.Point(132, 197);
+            this.label12.Location = new System.Drawing.Point(127, 200);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(62, 17);
             this.label12.TabIndex = 31;
             this.label12.Text = "lastDays";
             // 
-            // sellHighLastDays
+            // buyStopLastDays
             // 
-            this.sellHighLastDays.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.sellHighLastDays.Location = new System.Drawing.Point(192, 194);
-            this.sellHighLastDays.Name = "sellHighLastDays";
-            this.sellHighLastDays.Size = new System.Drawing.Size(78, 23);
-            this.sellHighLastDays.TabIndex = 32;
-            this.sellHighLastDays.Text = "0";
+            this.buyStopLastDays.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buyStopLastDays.Location = new System.Drawing.Point(195, 197);
+            this.buyStopLastDays.Name = "buyStopLastDays";
+            this.buyStopLastDays.Size = new System.Drawing.Size(78, 23);
+            this.buyStopLastDays.TabIndex = 32;
+            this.buyStopLastDays.Text = "0";
             // 
             // pertCrossOverAnalysis
             // 
@@ -531,14 +531,14 @@
             this.OpenHighSellLimit_Start.UseVisualStyleBackColor = true;
             this.OpenHighSellLimit_Start.Click += new System.EventHandler(this.OpenHighSellLimit_Start_Click);
             // 
-            // sellHigh_sellPert
+            // buyStop_stopPert
             // 
-            this.sellHigh_sellPert.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.sellHigh_sellPert.Location = new System.Drawing.Point(510, 194);
-            this.sellHigh_sellPert.Name = "sellHigh_sellPert";
-            this.sellHigh_sellPert.Size = new System.Drawing.Size(58, 23);
-            this.sellHigh_sellPert.TabIndex = 20;
-            this.sellHigh_sellPert.Text = "0.01";
+            this.buyStop_stopPert.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.buyStop_stopPert.Location = new System.Drawing.Point(510, 197);
+            this.buyStop_stopPert.Name = "buyStop_stopPert";
+            this.buyStop_stopPert.Size = new System.Drawing.Size(58, 23);
+            this.buyStop_stopPert.TabIndex = 20;
+            this.buyStop_stopPert.Text = "0.01";
             // 
             // highLow_Display
             // 
@@ -667,21 +667,21 @@
             // 
             this.label9.AutoSize = true;
             this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label9.Location = new System.Drawing.Point(55, 199);
+            this.label9.Location = new System.Drawing.Point(54, 200);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(66, 17);
+            this.label9.Size = new System.Drawing.Size(67, 17);
             this.label9.TabIndex = 54;
-            this.label9.Text = "Sell high:";
+            this.label9.Text = "Buy stop:";
             // 
             // label23
             // 
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label23.Location = new System.Drawing.Point(436, 196);
+            this.label23.Location = new System.Drawing.Point(436, 199);
             this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(60, 17);
+            this.label23.Size = new System.Drawing.Size(63, 17);
             this.label23.TabIndex = 55;
-            this.label23.Text = "Sell pert";
+            this.label23.Text = "StopPert";
             // 
             // analysis
             // 
@@ -703,7 +703,7 @@
             this.Controls.Add(this.buyHigh_OpenPert);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.highLow_Display);
-            this.Controls.Add(this.sellHigh_sellPert);
+            this.Controls.Add(this.buyStop_stopPert);
             this.Controls.Add(this.OpenHighSellLimit_Start);
             this.Controls.Add(this.buyHigh_StopPert);
             this.Controls.Add(this.label17);
@@ -713,7 +713,7 @@
             this.Controls.Add(this.label15);
             this.Controls.Add(this.OpenHighSellLimitAnalysis);
             this.Controls.Add(this.pertCrossOverAnalysis);
-            this.Controls.Add(this.sellHighLastDays);
+            this.Controls.Add(this.buyStopLastDays);
             this.Controls.Add(this.label12);
             this.Controls.Add(this.lastDayAnalysis);
             this.Controls.Add(this.LastDayLongShort);
@@ -724,7 +724,7 @@
             this.Controls.Add(this.HighLowOpen_EnterPert2);
             this.Controls.Add(this.hiLowAnalysis);
             this.Controls.Add(this.sellHighStar);
-            this.Controls.Add(this.sellHigh_enterPert);
+            this.Controls.Add(this.buyStop_enterPert);
             this.Controls.Add(this.label11);
             this.Controls.Add(this.LastDayChangeStart);
             this.Controls.Add(this.ld_lastDays);
@@ -778,7 +778,7 @@
         private System.Windows.Forms.TextBox ld_lastDays;
         private System.Windows.Forms.Button LastDayChangeStart;
         private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox sellHigh_enterPert;
+        private System.Windows.Forms.TextBox buyStop_enterPert;
         private System.Windows.Forms.Button sellHighStar;
         private System.Windows.Forms.Button hiLowAnalysis;
         private System.Windows.Forms.ToolStripMenuItem load2ToolStripMenuItem;
@@ -791,7 +791,7 @@
         private System.Windows.Forms.TextBox LastDayLongShort;
         private System.Windows.Forms.Button lastDayAnalysis;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.TextBox sellHighLastDays;
+        private System.Windows.Forms.TextBox buyStopLastDays;
         private System.Windows.Forms.Button pertCrossOverAnalysis;
         private System.Windows.Forms.Button OpenHighSellLimitAnalysis;
         private System.Windows.Forms.Label label15;
@@ -801,7 +801,7 @@
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.TextBox buyHigh_StopPert;
         private System.Windows.Forms.Button OpenHighSellLimit_Start;
-        private System.Windows.Forms.TextBox sellHigh_sellPert;
+        private System.Windows.Forms.TextBox buyStop_stopPert;
         private System.Windows.Forms.ToolStripMenuItem refToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadRef1;
         private System.Windows.Forms.ToolStripMenuItem loadRef2;
