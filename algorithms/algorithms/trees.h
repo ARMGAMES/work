@@ -20,11 +20,19 @@ class BST
 private:
 	typedef node* link;
 
-	link head;
+	
+	void rotL(link& h);
+	void rotR(link& h);
+	void insert(link& h, int v);
+	void insertRoot_(link& h, int v);
 
 public:
-	void insert(link h, int v);
+	link head;
+
+	BST();
+	void insertR(int v) { insert(head, v); }
 	void insertBSTNonRecursive(int v);
+	void insertRoot(int v) { insertRoot_(head, v); }
 
 
 };
