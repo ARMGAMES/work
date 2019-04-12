@@ -15,5 +15,7 @@
 #include <vector>
 #include <map>
 #include <set>
+#include <list>
+#include <stack>
 
 #endif //PCH_H

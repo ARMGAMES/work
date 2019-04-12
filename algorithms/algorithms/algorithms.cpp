@@ -2,11 +2,12 @@
 //
 
 #include "pch.h"
-#include <iostream>
 #include "trees.h"
+#include "sorting.h"
 
 int main()
 {
-	testTrees();
+	//testTrees();
+	testSorting();
 }
 
