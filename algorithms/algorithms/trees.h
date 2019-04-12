@@ -2,32 +2,16 @@
 
 void testTrees();
 
-struct node
-{
-	int value;
-	node *l, *r;
-	node(int v)
-	{
-		value = v;
-		l = 0;
-		r = 0;
-	}
-
-};
-
 class BST
 {
 private:
-	typedef node* link;
-
-	
-	void rotL(link& h);
-	void rotR(link& h);
-	void insert(link& h, int v);
-	void insertRoot_(link& h, int v);
+	void rotL(tlink& h);
+	void rotR(tlink& h);
+	void insert(tlink& h, int v);
+	void insertRoot_(tlink& h, int v);
 
 public:
-	link head;
+	tlink head;
 
 	BST();
 	void insertR(int v) { insert(head, v); }

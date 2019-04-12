@@ -18,4 +18,5 @@
 #include <list>
 #include <stack>
 
+#include "sharedstructs.h"
 #endif //PCH_H

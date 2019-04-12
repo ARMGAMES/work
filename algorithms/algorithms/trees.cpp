@@ -23,11 +23,11 @@ BST::BST()
 	head = 0;
 }
 
-void BST::insert(link& h, int v)
+void BST::insert(tlink& h, int v)
 {
 	if (h == 0)
 	{
-		h = new node(v);
+		h = new tnode(v);
 		return;
 	}
 	if (v < h->value)
@@ -38,9 +38,9 @@ void BST::insert(link& h, int v)
 
 void BST::insertBSTNonRecursive(int v)
 {
-	link p = head;
+	tlink p = head;
 	
-	for (link q = p; q != 0; p = (q ? q : p))
+	for (tlink q = p; q != 0; p = (q ? q : p))
 	{
 		if (q->value > v)
 			q = q->l;
@@ -49,32 +49,32 @@ void BST::insertBSTNonRecursive(int v)
 	}
 
 	if (p->value > v)
-		p->l = new node(v);
+		p->l = new tnode(v);
 	else
-		p->r = new node(v);
+		p->r = new tnode(v);
 }
 
-void BST::rotL(link& h)
+void BST::rotL(tlink& h)
 {
-	link x = h->r;
+	tlink x = h->r;
 	h->r = x->l;
 	x->l = h;
 	h = x;
 }
 
-void BST::rotR(link& h)
+void BST::rotR(tlink& h)
 {
-	link x = h->l;
+	tlink x = h->l;
 	h->l = x->r;
 	x->r = h;
 	h = x;
 }
 
-void BST::insertRoot_(link& h, int v)
+void BST::insertRoot_(tlink& h, int v)
 {
 	if (h == 0) 
 	{
-		h = new node(v); 
+		h = new tnode(v); 
 		return;
 	}
 
