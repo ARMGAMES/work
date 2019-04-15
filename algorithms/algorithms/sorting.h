@@ -1,13 +1,8 @@
 #pragma once
 
-
-const static int maxN = 100;
+#include "sharedstructs.h"
 
 void testSorting();
-int min(int a, int b);
-
-// 
-void exch(int& a, int& b);
 
 // Quicksort
 //time: 2N*lgN comparison, NlgN average

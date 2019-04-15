@@ -1,19 +1,7 @@
 
-#include "sorting.h"
 #include "pch.h"
+#include "sorting.h"
 
-
-void exch(int& a, int& b)
-{
-	int temp = b;
-	b = a;
-	a = temp;
-}
-
-int min(int a, int b)
-{
-	return (a < b) ? a : b;
-}
 //////////////////////////////////////////////////////////////
 // Quicksort
 

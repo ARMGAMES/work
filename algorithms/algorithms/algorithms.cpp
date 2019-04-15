@@ -4,10 +4,14 @@
 #include "pch.h"
 #include "trees.h"
 #include "sorting.h"
+#include "searching.h"
+#include "graph.h"
 
 int main()
 {
 	//testTrees();
-	testSorting();
+	//testSorting();
+	testSearching();
+	testGraph();
 }
 

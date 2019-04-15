@@ -30,6 +30,7 @@ void BST::insert(tlink& h, int v)
 		h = new tnode(v);
 		return;
 	}
+	++h->N;
 	if (v < h->value)
 		insert(h->l, v);
 	else
@@ -86,4 +87,37 @@ void BST::insertRoot_(tlink& h, int v)
 	{
 		insertRoot_(h->r, v); rotL(h);
 	}
+}
+
+int BST::selectR(tlink h, int k)
+{
+	if (h == 0) return -1;
+	int t = (h->l==0) ? 0 : h->l->N; 
+	if (t < k) return selectR(h->l, k);
+	if (t > k) return selectR(h->r, k - t - 1);
+	return h->value;
+}
+
+void BST::partR(tlink&h, int k)
+{
+	int t = (h->l == 0) ? 0 : h->l->N;
+	if (t > k)
+	{
+		partR(h->l, k); rotR(h);
+	}
+	if (t < k)
+	{
+		partR(h->r, k - t - 1); rotL(h);
+	}
+}
+
+BST::tlink BST::joinR(tlink a, tlink b)
+{
+	if (a == 0) return b;
+	if (b == 0) return a;
+	insertRoot_(b, a->value);
+	b->l = joinR(a->l, b->l);
+	b->r = joinR(a->r, b->r);
+	delete a; 
+	return b;
 }

@@ -151,18 +151,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="graph.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="searching.h" />
+    <ClInclude Include="sharedstructs.h" />
     <ClInclude Include="sorting.h" />
     <ClInclude Include="trees.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="algorithms.cpp" />
+    <ClCompile Include="graph.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="searching.cpp" />
+    <ClCompile Include="sharedstructs.cpp" />
     <ClCompile Include="sorting.cpp" />
     <ClCompile Include="trees.cpp" />
   </ItemGroup>
