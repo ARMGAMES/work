@@ -17,5 +17,7 @@
 #include <set>
 #include <list>
 #include <stack>
+#include <unordered_set>
+#include <unordered_map>
 
 #endif //PCH_H

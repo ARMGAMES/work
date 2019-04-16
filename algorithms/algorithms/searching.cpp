@@ -111,8 +111,8 @@ void computeLPSArray(const char* pat, int M, int* lps)
 
 void KMPSearch(const char* pat, const char* txt)
 {
-	int M = strlen(pat);
-	int N = strlen(txt);
+	int M = (int)strlen(pat);
+	int N = (int)strlen(txt);
 
 	int *lps = new int[M];
 	memset(lps, 0, sizeof(int)*M);
@@ -170,8 +170,8 @@ void badCharHeuristic(const char* pat, int size, int badChar[NO_OF_CHARS])
 
 void badCharacterSearch(const char* pat, const char* txt)
 {
-	int m = strlen(pat);
-	int n = strlen(txt);
+	int m = (int)strlen(pat);
+	int n = (int)strlen(txt);
 
 	int badchar[NO_OF_CHARS];
 

@@ -185,7 +185,7 @@ private:
 		if (!*word)
 			return h->isEndOfWord;
 		int index = *word - 'a';
-		searchR(h->children[index], word + 1);
+		return searchR(h->children[index], word + 1);
 	}
 	
 public:

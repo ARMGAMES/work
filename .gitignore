@@ -19,3 +19,6 @@ winc/AlgorithmApp/debug
 algorithms/.vs
 algorithms/algorithms/ipch
 algorithms/algorithms/debug
+algorithms/algorithms/x64
+algorithms/x64/Debug
+algorithms/Debug
