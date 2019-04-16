@@ -40,13 +40,47 @@ public:
 
 	// Returns a mother vertex if exists. Otherwise returns -1 
 	int findMother();
-
+	// Count the number of nodes at given level in a tree using BFS.
 	int findNodeNumByLevel(int v, int l);
 
 	bool isCyclic();
 };
 
 void testBFS();
+
+///////////////////////////////////////////////////////////////////////////////
+// undirected graph
+class EdgeGraph
+{
+public:
+	struct Edge
+	{
+		int src, dest;
+		Edge(int src_, int dest_): src(src_), dest(dest_){}
+	};
+
+	struct subset
+	{
+		int parent,rank;
+		subset():parent(-1), rank(0){}
+	};
+private:
+	int V;
+	list<Edge> edge;
+
+	// A utility function to find the subset of an element i 
+	int find(vector<int> parent, int i);
+	int find(vector<subset> parent, int i);
+
+public:
+	EdgeGraph(int V_);
+
+	void addEdge(const Edge& e);
+	bool isCycleBasic();
+	bool isCycleRank();
+};
+
+void testEdgeGraph();
 
 ///////////////////////////////////////////////////////////////////////////////
 void testGraph();

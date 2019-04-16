@@ -45,12 +45,12 @@ void AdjListGraph::BFS(int s)
 
 		cout << "vertice: " << vertex << endl;
 
-		for (auto it = adj[vertex].begin(); it != adj[vertex].end(); ++it)
+		for (auto it : adj[vertex])
 		{
-			if (!visited[*it])
+			if (!visited[it])
 			{
-				visited[*it] = true;
-				queue.push_back(*it);
+				visited[it] = true;
+				queue.push_back(it);
 			}
 		}
 	}
@@ -62,10 +62,10 @@ void AdjListGraph::DFSUtil(int v, vector<bool>& visited)
 	visited[v] = true;
 	cout << "vertice: " << v << endl;
 
-	for (auto it = adj[v].begin(); it != adj[v].end(); ++it)
+	for (auto it : adj[v])
 	{
-		if (!visited[*it])
-			DFSUtil(*it, visited);
+		if (!visited[it])
+			DFSUtil(it, visited);
 	}
 }
 
@@ -78,12 +78,11 @@ bool AdjListGraph::isCyclicUtil(int v, vector<bool>& visited, vector<bool>& recS
 		recStack[v] = true;
 
 		// Recur for all the vertices adjacent to this vertex 
-		list<int>::iterator i;
-		for (i = adj[v].begin(); i != adj[v].end(); ++i)
+		for (auto it : adj[v])
 		{
-			if (!visited[*i] && isCyclicUtil(*i, visited, recStack))
+			if (!visited[it] && isCyclicUtil(it, visited, recStack))
 				return true;
-			else if (recStack[*i])
+			else if (recStack[it])
 				return true;
 		}
 
@@ -256,20 +255,121 @@ void testBFS()
 	g3.addEdge(6, 0);
 	_ASSERT(g3.findNodeNumByLevel(0, 2) == 3);
 
-	AdjListGraph g4(5);
-	g4.addEdge(0, 4);
+	AdjListGraph g4(3);
 	g4.addEdge(0, 1);
+	//g4.addEdge(0, 1);
 	g4.addEdge(1, 2);
-	g4.addEdge(2, 3);
-	g4.addEdge(3, 1);
+	g4.addEdge(2, 1);
+	//g4.addEdge(3, 1);
 
 	_ASSERT(g4.isCyclic());
+}
+
+/////////////////////////////////////////////////////////////////////////////////
+// Edge graph
+EdgeGraph::EdgeGraph(int V_)
+{
+	V = V_;
+}
+
+void EdgeGraph::addEdge(const Edge & e)
+{
+	edge.push_back(e);
+}
+
+bool EdgeGraph::isCycleBasic()
+{
+	vector<int> parent(V);
+	for (int i = 0; i < V; ++i)
+	{
+		parent[i] = i;
+	}
+
+	for (auto curr : edge)
+	{
+		int x = find(parent, curr.src);
+		int y = find(parent, curr.dest);
+
+		if (x == y)
+			return true;
+		else
+			parent[x] = y;
+	}
+
+	return false;
+}
+
+bool EdgeGraph::isCycleRank()
+{
+	vector<subset> subsets(V);
+	for (int i = 0; i < V; ++i)
+	{
+		subsets[i].parent = i;
+	}
+
+	for (auto curr : edge)
+	{
+		int x = find(subsets, curr.src);
+		int y = find(subsets, curr.dest);
+
+		if (x == y)
+			return true;
+
+		// Attach smaller rank tree under root of high rank tree  (Union by Rank) 
+		if (subsets[x].rank < subsets[y].rank)
+			subsets[x].parent = y;
+		else if (subsets[x].rank > subsets[y].rank)
+			subsets[y].parent = x;
+
+		// If ranks are same, then make one as root and increment its rank by one 
+		else
+		{
+			subsets[y].parent = x;
+			subsets[x].rank++;
+		}
+
+	}
+
+	return false;
+}
+
+int EdgeGraph::find(vector<int> parent, int i)
+{
+	if (parent[i] != i)
+		return find(parent, parent[i]);
+	return i;
+}
+
+int EdgeGraph::find(vector<subset> subsets, int i)
+{
+	// find root and make root as parent of i (path compression) 
+	if (subsets[i].parent != i)
+		subsets[i].parent = find(subsets, subsets[i].parent);
+
+	return subsets[i].parent;
+}
+
+void testEdgeGraph()
+{
+	cout << "testEdgeGraph" << endl;
+	EdgeGraph g1(6);
+	g1.addEdge(EdgeGraph::Edge(0, 1));
+	g1.addEdge(EdgeGraph::Edge(1, 2));
+	g1.addEdge(EdgeGraph::Edge(2, 3));
+	g1.addEdge(EdgeGraph::Edge(3, 4));
+	g1.addEdge(EdgeGraph::Edge(4, 5));
+	g1.addEdge(EdgeGraph::Edge(5, 0));
+
+	_ASSERT(g1.isCycleBasic());
+
+	_ASSERT(g1.isCycleRank());
+
 }
 
 /////////////////////////////////////////////////////////////////////////////////
 void testGraph()
 {
 	testBFS();
+	testEdgeGraph();
 }
-
 
