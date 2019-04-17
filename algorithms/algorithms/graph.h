@@ -6,9 +6,23 @@ using namespace std;
 // int adj[V][V]
 // pros: checking and removing an edge takes O(1) time
 // cons: comesumes more space O(V*V), adding a vertex takes O(V*V)
+class AdjMatrixGraph
+{
+private:
+	int V;
+	vector<vector<int>> graph;
+	int minKey(vector<int>& key, vector<bool>& mstSet);
 
+public:
+	AdjMatrixGraph(int maxV);
+	void addEdgeUndir(int src, int dest, int weight);
 
+	void primMST();
+};
 
+void testAdjMatrixGraph();
+
+//////////////////////////////////////////////////////////////////////////////////////
 // Adjacency list
 // vector<int> adj[V]
 // pros: save space, adding vertex is easy
