@@ -58,7 +58,10 @@ public:
 	struct Edge
 	{
 		int src, dest;
-		Edge(int src_, int dest_): src(src_), dest(dest_){}
+		int weight;
+		Edge() { src = 0; dest = 0; weight = 0; }
+		Edge(int src_, int dest_) : src(src_), dest(dest_) { weight = 0; }
+		Edge(int src_, int dest_, int weight_) : src(src_), dest(dest_), weight(weight_) {  }
 	};
 
 	struct subset
@@ -68,7 +71,7 @@ public:
 	};
 private:
 	int V;
-	list<Edge> edge;
+	vector<Edge> edge;
 
 	// A utility function to find the subset of an element i 
 	int find(vector<int> parent, int i);
@@ -80,9 +83,19 @@ public:
 	void addEdge(const Edge& e);
 	bool isCycleBasic();
 	bool isCycleRank();
+
+	void KruskalMST();
 };
+
+bool cmpEdge(const EdgeGraph::Edge& a, const EdgeGraph::Edge& b);
+
 
 void testEdgeGraph();
 
 ///////////////////////////////////////////////////////////////////////////////
+// Minimum Spanning Tree
+// MST has V-1 edges
+
+///////////////////////////////////////////////////////////////////////////////
+
 void testGraph();

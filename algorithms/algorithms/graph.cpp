@@ -317,6 +317,23 @@ void EdgeGraph::addEdge(const Edge & e)
 	edge.push_back(e);
 }
 
+int EdgeGraph::find(vector<int> parent, int i)
+{
+	// while(parent[i] != i) 
+	if (parent[i] != i)
+		return find(parent, parent[i]);
+	return i;
+}
+
+int EdgeGraph::find(vector<subset> subsets, int i)
+{
+	// find root and make root as parent of i (path compression) 
+	if (subsets[i].parent != i)
+		subsets[i].parent = find(subsets, subsets[i].parent);
+
+	return subsets[i].parent;
+
+}
 bool EdgeGraph::isCycleBasic()
 {
 	vector<int> parent(V);
@@ -373,20 +390,55 @@ bool EdgeGraph::isCycleRank()
 	return false;
 }
 
-int EdgeGraph::find(vector<int> parent, int i)
+void EdgeGraph::KruskalMST()
 {
-	if (parent[i] != i)
-		return find(parent, parent[i]);
-	return i;
+	vector<Edge> result(V - 1);
+	int e = 0;  // An index variable, used for result[] 
+	int i = 0;  // An index variable, used for sorted edges 
+
+	sort(edge.begin(), edge.end(), cmpEdge);
+
+	vector<subset> subsets(V);
+	for (int i = 0; i < V; ++i)
+	{
+		subsets[i].parent = i;
+	}
+
+	while (e < V - 1)
+	{
+		struct Edge nextEdge = edge[i++];
+
+		int x = find(subsets, nextEdge.src);
+		int y = find(subsets, nextEdge.dest);
+
+		if (x != y)
+		{
+			result[e++] = nextEdge;
+
+			// Attach smaller rank tree under root of high rank tree  (Union by Rank) 
+			if (subsets[x].rank < subsets[y].rank)
+				subsets[x].parent = y;
+			else if (subsets[x].rank > subsets[y].rank)
+				subsets[y].parent = x;
+
+			// If ranks are same, then make one as root and increment its rank by one 
+			else
+			{
+				subsets[y].parent = x;
+				subsets[x].rank++;
+			}
+		}
+	}
+
+	printf("Following are the edges in the constructed MST\n");
+	for (i = 0; i < e; ++i)
+		printf("%d -- %d == %d\n", result[i].src, result[i].dest,
+			result[i].weight);
 }
 
-int EdgeGraph::find(vector<subset> subsets, int i)
+bool cmpEdge(const EdgeGraph::Edge& a, const EdgeGraph::Edge& b)
 {
-	// find root and make root as parent of i (path compression) 
-	if (subsets[i].parent != i)
-		subsets[i].parent = find(subsets, subsets[i].parent);
-
-	return subsets[i].parent;
+	return a.weight < b.weight;
 }
 
 void testEdgeGraph()
@@ -403,6 +455,15 @@ void testEdgeGraph()
 	_ASSERT(g1.isCycleBasic());
 
 	_ASSERT(g1.isCycleRank());
+
+	EdgeGraph g2(4);
+	g2.addEdge(EdgeGraph::Edge(0, 1, 10));
+	g2.addEdge(EdgeGraph::Edge(0, 2, 6));
+	g2.addEdge(EdgeGraph::Edge(0, 3, 5));
+	g2.addEdge(EdgeGraph::Edge(1, 3, 15));
+	g2.addEdge(EdgeGraph::Edge(2, 3, 4));
+
+	g2.KruskalMST();
 
 }
 
