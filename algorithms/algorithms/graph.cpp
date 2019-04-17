@@ -91,6 +91,24 @@ bool AdjListGraph::isCyclicUtil(int v, vector<bool>& visited, vector<bool>& recS
 	return false;
 }
 
+bool AdjListGraph::isCyclicUtilUndir(int v, vector<bool>& visited, int parent)
+{
+	visited[v] = true;
+
+	for (auto currV : adj[v])
+	{
+		if (!visited[currV])
+		{
+			if (isCyclicUtilUndir(currV, visited, v))
+				return true;
+		}
+		// If an adjacent is visited and not parent of current vertex,  then there is a cycle. 
+		else if (currV != parent)
+			return true;
+	}
+	return false;
+}
+
 void AdjListGraph::DFS(int v)
 {
 	// mark all the vertices as not visited
@@ -199,8 +217,7 @@ bool AdjListGraph::isCyclic()
 	vector<bool> visited(V, false);
 	vector<bool> recStack(V, false);
 
-	// Call the recursive helper function to detect cycle in different 
-	// DFS trees 
+	// Call the recursive helper function to detect cycle in different DFS trees 
 	for (int i = 0; i < V; i++)
 		if (isCyclicUtil(i, visited, recStack))
 			return true;
@@ -208,9 +225,21 @@ bool AdjListGraph::isCyclic()
 	return false;
 }
 
-void testBFS()
+bool AdjListGraph::isCyclicUndir()
 {
-	cout << "testBFS" << endl;
+	vector<bool> visited(V, false);
+
+	// Call the recursive helper function to detect cycle in different DFS trees 
+	for (int u = 0; u < V; u++)
+		if (!visited[u]) // Don't recur for u if it is already visited 
+			if (isCyclicUtilUndir(u, visited, -1))
+				return true;
+	return false;
+}
+
+void testAdjGraph()
+{
+	cout << "testAdjGraph" << endl;
 
 	AdjListGraph g1(5);
 	g1.addEdge(0, 1);
@@ -263,6 +292,17 @@ void testBFS()
 	//g4.addEdge(3, 1);
 
 	_ASSERT(g4.isCyclic());
+
+	AdjListGraph g5(5);
+	g5.addEdgeUnDir(1, 0);
+	g5.addEdgeUnDir(0, 2);
+	g5.addEdgeUnDir(0, 3);
+	g5.addEdgeUnDir(3, 4);
+	//g5.addEdgeUnDir(1, 0);
+	_ASSERT(!g5.isCyclicUndir());
+
+	g5.addEdgeUnDir(1, 2);
+	_ASSERT(g5.isCyclicUndir());
 }
 
 /////////////////////////////////////////////////////////////////////////////////
@@ -369,7 +409,7 @@ void testEdgeGraph()
 /////////////////////////////////////////////////////////////////////////////////
 void testGraph()
 {
-	testBFS();
+	testAdjGraph();
 	testEdgeGraph();
 }
 

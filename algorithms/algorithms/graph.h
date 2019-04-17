@@ -26,6 +26,7 @@ private:
 
 	void DFSUtil(int v, vector<bool>& visited);
 	bool isCyclicUtil(int v, vector<bool>& visited, vector<bool>& recStack);
+	bool isCyclicUtilUndir(int v, vector<bool>& visited, int parent);
 
 public:
 	AdjListGraph(int V_);
@@ -44,9 +45,10 @@ public:
 	int findNodeNumByLevel(int v, int l);
 
 	bool isCyclic();
+	bool isCyclicUndir();
 };
 
-void testBFS();
+void testAdjGraph();
 
 ///////////////////////////////////////////////////////////////////////////////
 // undirected graph
