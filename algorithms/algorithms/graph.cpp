@@ -143,6 +143,7 @@ AdjListGraph::AdjListGraph(int V_)
 {
 	V = V_;
 	adj = new list<int>[V];
+	adjVect.resize(V);
 	adjSet = new set<int>[V];
 	adjHash = new unordered_set<int>[V];
 }
@@ -171,22 +172,22 @@ void AdjListGraph::BFS(int s)
 	vector<bool> visited(V, false);
 
 	list<int> queue;
-	visited[s] = true;
 	queue.push_back(s);
+	visited[s] = true;
 
 	while (!queue.empty())
 	{
 		int vertex = queue.front();
 		queue.pop_front();
 
-		cout << "vertice: " << vertex << endl;
+		cout << "vertex: " << vertex << endl;
 
 		for (auto it : adj[vertex])
 		{
 			if (!visited[it])
 			{
-				visited[it] = true;
 				queue.push_back(it);
+				visited[it] = true;
 			}
 		}
 	}
@@ -270,7 +271,7 @@ void AdjListGraph::DFSNonRecursive(int s)
 
 		if (!visited[vertex])
 		{
-			cout << vertex << " ";
+			cout << "vertex: " << vertex << endl;
 			visited[vertex] = true;
 		}
 
@@ -377,6 +378,14 @@ void testAdjGraph()
 {
 	cout << "testAdjGraph" << endl;
 
+	AdjListGraph g0(4);
+	g0.addEdge(0, 1);
+	g0.addEdge(0, 2);
+	g0.addEdge(1, 3);
+	g0.addEdge(2, 3);
+	g0.BFS(0);
+	g0.DFSNonRecursive(0);
+
 	AdjListGraph g1(5);
 	g1.addEdge(0, 1);
 	g1.addEdge(0, 2);
@@ -420,14 +429,14 @@ void testAdjGraph()
 	g3.addEdge(6, 0);
 	_ASSERT(g3.findNodeNumByLevel(0, 2) == 3);
 
-	AdjListGraph g4(3);
+	AdjListGraph g4(4);
 	g4.addEdge(0, 1);
-	//g4.addEdge(0, 1);
 	g4.addEdge(1, 2);
-	g4.addEdge(2, 1);
+	g4.addEdge(2, 3);
+	//g4.addEdge(2, 1);
 	//g4.addEdge(3, 1);
 
-	_ASSERT(g4.isCyclic());
+	_ASSERT(!g4.isCyclic());
 
 	AdjListGraph g5(5);
 	g5.addEdgeUnDir(1, 0);
