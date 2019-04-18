@@ -12,12 +12,13 @@ private:
 	int V;
 	vector<vector<int>> graph;
 	int minKey(vector<int>& key, vector<bool>& mstSet);
-
+	int minDistance(vector<int>& dist, vector<bool>& sptSet);
 public:
 	AdjMatrixGraph(int maxV);
 	void addEdgeUndir(int src, int dest, int weight);
 
 	void primMST();
+	void shortestpath(int src);
 };
 
 void testAdjMatrixGraph();
@@ -99,6 +100,7 @@ public:
 	bool isCycleRank();
 
 	void KruskalMST();
+	void BellmanFordSP(int src);
 };
 
 bool cmpEdge(const EdgeGraph::Edge& a, const EdgeGraph::Edge& b);

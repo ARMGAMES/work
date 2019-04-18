@@ -25,6 +25,19 @@ int AdjMatrixGraph::minKey(vector<int>& key, vector<bool>& mstSet)
 	return min_index;
 }
 
+int AdjMatrixGraph::minDistance(vector<int>& dist, vector<bool>& sptSet)
+{
+	// Initialize min value 
+	int min = INT_MAX, min_index;
+
+	for (int v = 0; v < V; v++)
+		if (sptSet[v] == false && dist[v] <= min)
+			min = dist[v], min_index = v;
+
+	return min_index;
+
+}
+
 void AdjMatrixGraph::addEdgeUndir(int src, int dest, int weight)
 {
 	graph[src][dest] = weight;
@@ -73,6 +86,41 @@ void AdjMatrixGraph::primMST()
 
 	// print the constructed MST
 	// printMST(parent, V, graph);
+}
+
+void AdjMatrixGraph::shortestpath(int src)
+{
+	// The output array.  dist[i] will hold the shortest distance from src to i 
+	vector<int> dist;
+	dist.resize(V, INT_MAX);
+
+	// sptSet[i] will be true if vertex i is included in shortest path tree or shortest distance from src to i is finalized
+	vector<bool> sptSet;
+	sptSet.resize(V, false);
+
+	// Distance of source vertex from itself is always 0 
+	dist[src] = 0;
+
+	// Find shortest path for all vertices 
+	for (int count = 0; count < V - 1; count++)
+	{
+		// Pick the minimum distance vertex from the set of vertices not 
+		// yet processed. u is always equal to src in the first iteration. 
+		int u = minDistance(dist, sptSet);
+
+		// Mark the picked vertex as processed 
+		sptSet[u] = true;
+
+		// Update dist value of the adjacent vertices of the picked vertex. 
+		for (int v = 0; v < V; v++)
+
+			// Update dist[v] only if is not in sptSet, there is an edge from  
+			// u to v, and total weight of path from src to  v through u is  
+			// smaller than current value of dist[v] 
+			if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX
+				&& dist[u] + graph[u][v] < dist[v])
+				dist[v] = dist[u] + graph[u][v];
+	}
 }
 
 void testAdjMatrixGraph()
@@ -522,6 +570,39 @@ void EdgeGraph::KruskalMST()
 	for (i = 0; i < e; ++i)
 		printf("%d -- %d == %d\n", result[i].src, result[i].dest,
 			result[i].weight);
+}
+
+void EdgeGraph::BellmanFordSP(int src)
+{
+	int E = edge.size();
+
+	vector<int> dist;
+	dist.resize(V, INT_MAX);
+	dist[src] = 0;
+
+	// Relax all edges |V| - 1 times. A simple shortest path from src to any other vertex can have at-most |V| - 1  edges 
+	for (int i = 1; i <= V - 1; i++)
+	{
+		for (int j = 0; j < E; j++)
+		{
+			int u = edge[j].src;
+			int v = edge[j].dest;
+			int weight = edge[j].weight;
+			if (dist[u] != INT_MAX && dist[u] + weight < dist[v])
+				dist[v] = dist[u] + weight;
+		}
+	}
+
+	// check for negative-weight cycles.  The above step guarantees shortest distances if graph doesn't contain  
+	// negative weight cycle.  If we get a shorter path, then there is a cycle. 
+	for (int i = 0; i < E; i++)
+	{
+		int u = edge[i].src;
+		int v = edge[i].dest;
+		int weight = edge[i].weight;
+		if (dist[u] != INT_MAX && dist[u] + weight < dist[v])
+			printf("Graph contains negative weight cycle");
+	}
 }
 
 bool cmpEdge(const EdgeGraph::Edge& a, const EdgeGraph::Edge& b)
