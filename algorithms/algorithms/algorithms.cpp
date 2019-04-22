@@ -6,9 +6,11 @@
 #include "sorting.h"
 #include "searching.h"
 #include "graph.h"
+#include "array.h"
 
 int main()
 {
+	testArray();
 	testTree();
 	//testSorting();
 	testSearching();

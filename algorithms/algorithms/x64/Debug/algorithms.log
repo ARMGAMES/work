@@ -1,4 +1,2 @@
-﻿  graph.cpp
-c:\ericl\github\work\algorithms\algorithms\graph.cpp(326): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-c:\ericl\github\work\algorithms\algorithms\graph.cpp(586): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+﻿  array.cpp
   algorithms.vcxproj -> C:\ericl\github\work\algorithms\x64\Debug\algorithms.exe

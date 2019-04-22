@@ -220,23 +220,7 @@ private:
 	link head;
 
 	void insertR(link& h, const char* word);
-
-	bool searchR(link h, const char* word)
-	{
-		if (!h)
-			return false;
-		if (*word < h->c)
-			return searchR(h->l, word);
-		else if (*word > h->c)
-			return searchR(h->r, word);
-		else
-		{
-			if (*(word + 1))
-				return searchR(h->m, word + 1);
-			else
-				return h->isEndOfString;
-		}
-	}
+	bool searchR(link h, const char* word);
 public:
 	TST() {}
 

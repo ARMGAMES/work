@@ -53,7 +53,7 @@ public:
 ///////////////////////////////////////////////////////////////////////////////////
 // KMP Algorithm for Pattern Searching
 // 
-// Fills lps[] for given patttern pat[0..M-1] 
+// Fills lps[] for given pattern pat[0..M-1] 
 void computeLPSArray(const char* pat, int M, int* lps);
 void KMPSearch(const char* pat, const char* txt);
 void testKMPAlgorithm();

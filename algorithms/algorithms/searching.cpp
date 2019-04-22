@@ -37,14 +37,12 @@ void computeLPSArray(const char* pat, int M, int* lps)
 		}
 		else // (pat[i] != pat[len]) 
 		{
-			// This is tricky. Consider the example. 
-			// AAACAAAA and i = 7. The idea is similar 
-			// to search step. 
+			// This is tricky. Consider the example. AAACAAAA and i = 7. 
+			// The idea is similar to search step. 
 			if (len != 0) {
 				len = lps[len - 1];
 
-				// Also, note that we do not increment 
-				// i here 
+				// Also, note that we do not increment i here 
 			}
 			else // if (len == 0) 
 			{
@@ -126,7 +124,7 @@ void badCharacterSearch(const char* pat, const char* txt)
 
 	// s is shift of the pattern with respect to text 
 	int s = 0;
-	while (s < n - m)
+	while (s <= n - m)
 	{
 		int j =  m -1;
 		/* Keep reducing index j of pattern while characters of pattern and text are matching at this shift s */
@@ -157,10 +155,14 @@ void badCharacterSearch(const char* pat, const char* txt)
 void testBadCharacterMatching()
 {
 	std::cout << "testBadCharacterMatching\n";
-	const char* pat = "ABCAB";
-	const char* txt = "ABABDABACDABABCABAB";
+	const char* pat1 = "ABCAB";
+	const char* txt1 = "ABABDABACDABABCABAB";
 
-	badCharacterSearch(pat, txt);
+	badCharacterSearch(pat1, txt1);
+
+	const char* pat2 = "EDG";
+	const char* txt2 = "EDGABDH";
+	badCharacterSearch(pat2, txt2);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
