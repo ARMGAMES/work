@@ -18,60 +18,6 @@ int STHashing::searchSCR(link h, int key)
 	return -1;
 }
 
-
-void testStringTrie()
-{
-	std::cout << "TestStringTrie\n";
-	StringTrie stringTrie1;
-
-	stringTrie1.insertNonRecursive("a");
-	stringTrie1.insertNonRecursive("this");
-	stringTrie1.insertNonRecursive("little");
-	stringTrie1.insertNonRecursive("longgest");
-	stringTrie1.insertNonRecursive("the");
-	stringTrie1.insertNonRecursive("there");
-
-	_ASSERT(stringTrie1.searchNonRecursive("the"));
-	_ASSERT(!stringTrie1.searchNonRecursive("thee"));
-	_ASSERT(!stringTrie1.searchNonRecursive(""));
-	_ASSERT(!stringTrie1.searchNonRecursive("t"));
-
-	StringTrie stringTrie2;
-	stringTrie2.insert("a");
-	stringTrie2.insert("this");
-	stringTrie2.insert("little");
-	stringTrie2.insert("longgest");
-	stringTrie2.insert("the");
-	stringTrie2.insert("there");
-
-	_ASSERT(stringTrie2.search("the"));
-	_ASSERT(!stringTrie2.search("thee"));
-	_ASSERT(!stringTrie2.search(""));
-	_ASSERT(!stringTrie2.search("t"));
-
-}
-
-void testStringTST()
-{
-	std::cout << "testStringTST\n";
-	StringTST stringTST1;
-	
-	stringTST1.insert("a");
-	stringTST1.insert("aa");
-	stringTST1.insert("ab");
-	stringTST1.insert("this");
-	stringTST1.insert("little");
-	stringTST1.insert("longgest");
-	stringTST1.insert("the");
-	stringTST1.insert("there");
-
-	_ASSERT(stringTST1.search("the"));
-	_ASSERT(stringTST1.search("ab"));
-	_ASSERT(!stringTST1.search("thee"));
-	_ASSERT(!stringTST1.search(""));
-	_ASSERT(!stringTST1.search("t"));
-}
-
 //////////////////////////////////////////////////////////////////////////////
 
 void computeLPSArray(const char* pat, int M, int* lps)
@@ -221,8 +167,6 @@ void testBadCharacterMatching()
 
 void testSearching()
 {
-	testStringTrie();
-	testStringTST();
 	testKMPAlgorithm();
 	testBadCharacterMatching();
 }

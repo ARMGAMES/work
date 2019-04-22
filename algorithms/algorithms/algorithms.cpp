@@ -9,7 +9,7 @@
 
 int main()
 {
-	//testTrees();
+	testTree();
 	//testSorting();
 	testSearching();
 	testGraph();

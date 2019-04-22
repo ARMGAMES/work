@@ -63,7 +63,6 @@ void AdjMatrixGraph::primMST()
 	key[0] = 0;
 	parent[0] = -1; // First node is always root of MST  
 
-
 	// The MST will have V vertices 
 	for (int count = 0; count < V - 1; count++)
 	{
@@ -91,12 +90,12 @@ void AdjMatrixGraph::primMST()
 void AdjMatrixGraph::shortestpath(int src)
 {
 	// The output array.  dist[i] will hold the shortest distance from src to i 
-	vector<int> dist;
-	dist.resize(V, INT_MAX);
+	vector<int> dist(V, INT_MAX);
 
 	// sptSet[i] will be true if vertex i is included in shortest path tree or shortest distance from src to i is finalized
-	vector<bool> sptSet;
-	sptSet.resize(V, false);
+	vector<bool> sptSet(V, false);
+
+	vector<int> parent(V, -1);
 
 	// Distance of source vertex from itself is always 0 
 	dist[src] = 0;
@@ -119,7 +118,10 @@ void AdjMatrixGraph::shortestpath(int src)
 			// smaller than current value of dist[v] 
 			if (!sptSet[v] && graph[u][v] && dist[u] != INT_MAX
 				&& dist[u] + graph[u][v] < dist[v])
+			{
+				parent[v] = u;
 				dist[v] = dist[u] + graph[u][v];
+			}
 	}
 }
 
@@ -136,6 +138,7 @@ void testAdjMatrixGraph()
 	g1.addEdgeUndir(3, 4, 9);
 
 	g1.primMST();
+	g1.shortestpath(0);
 }
 
 
@@ -642,6 +645,17 @@ void testEdgeGraph()
 	g2.addEdge(EdgeGraph::Edge(2, 3, 4));
 
 	g2.KruskalMST();
+
+	EdgeGraph g3(5);
+	g3.addEdge(EdgeGraph::Edge(0, 1, -1));
+	g3.addEdge(EdgeGraph::Edge(0, 2, 4));
+	g3.addEdge(EdgeGraph::Edge(1, 2, 3));
+	g3.addEdge(EdgeGraph::Edge(1, 3, 2));
+	g3.addEdge(EdgeGraph::Edge(1, 4, 2));
+	g3.addEdge(EdgeGraph::Edge(3, 2, 5));
+	g3.addEdge(EdgeGraph::Edge(3, 1, 1));
+	g3.addEdge(EdgeGraph::Edge(4, 3, -3));
+	g3.BellmanFordSP(0);
 
 }
 

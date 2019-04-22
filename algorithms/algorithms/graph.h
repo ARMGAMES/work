@@ -17,6 +17,7 @@ public:
 	AdjMatrixGraph(int maxV);
 	void addEdgeUndir(int src, int dest, int weight);
 
+	// directed
 	void primMST();
 	void shortestpath(int src);
 };
@@ -97,10 +98,14 @@ public:
 	EdgeGraph(int V_);
 
 	void addEdge(const Edge& e);
+
+	// undirected graph
 	bool isCycleBasic();
 	bool isCycleRank();
-
+	// undirected and weighted graph 
 	void KruskalMST();
+
+	// directed and weighted graph 
 	void BellmanFordSP(int src);
 };
 
