@@ -56,6 +56,50 @@ void testSlidingWindow()
 
 ////////////////////////////////////////////////////////////////////
 
+int gcd(int a, int b)
+{
+	if (b == 0)
+		return a;
+
+	else
+		return gcd(b, a % b);
+}
+
+void leftRotate(int arr[], int d, int n)
+{
+	int gcdNum = gcd(d, n);
+	for (int i = 0; i < gcdNum; i++) {
+		/* move i-th values of blocks */
+		int temp = arr[i];
+		int j = i;
+
+		while (1) {
+			int k = j + d;
+			if (k >= n)
+				k = k - n;
+
+			if (k == i)
+				break;
+
+			arr[j] = arr[k];
+			j = k;
+		}
+		arr[j] = temp;
+	}
+}
+
+void testJungleAlgo()
+{
+	cout << "testJungleAlgo\n";
+
+	int arr[] = { 1, 2, 3, 4, 5, 6 };
+	int n = sizeof(arr) / sizeof(arr[0]);
+
+	// Function calling 
+	leftRotate(arr, 2, n);
+}
+
+/////////////////////////////////////////////////////////////////////
 void printMaxSubSquare(int matrix[R][C])
 {
 	int i, j;
@@ -142,8 +186,63 @@ void testMaxSqureMatrix()
 
 ////////////////////////////////////////////////////////////////////
 
+void mergePair(vector<pair<int, int>>& res, const pair<int, int>& toMerge)
+{
+	if (res.empty() || toMerge.first > res.back().second) {
+		res.push_back(toMerge);
+	}
+	else {
+		res.back().first = min(res.back().first, toMerge.first);
+		res.back().second = max(res.back().second, toMerge.second);
+	}
+}
+
+void mergeIntervals(const vector<pair<int, int> > &l1, const vector<pair<int, int> > &l2, vector<pair<int, int>>& result)
+{
+	for (int i = 0, j = 0; i < l1.size() || j < l2.size();) {
+		if (i == l1.size()) {
+			mergePair(result, l2[j++]);
+		}
+		else if (j == l2.size()) {
+			mergePair(result, l1[i++]);
+		}
+		else {
+			if (l1[i].second < l2[j].first) {
+				mergePair(result, l1[i++]);
+			}
+			else if (l2[j].second < l1[i].first) {
+				mergePair(result, l2[j++]);
+			}
+			else {
+				mergePair(result, { min(l1[i].first,l2[j].first),max(l1[i].second,l2[j].second) });
+				i++;
+				j++;
+			}
+		}
+	}
+
+}
+
+void testMergeIntervals()
+{
+	vector<pair<int, int>> l1;
+	l1.push_back(make_pair(1, 2));
+	l1.push_back(make_pair(3, 9));
+
+	vector<pair<int, int>> l2;
+	l2.push_back(make_pair(4, 5));
+	l2.push_back(make_pair(8, 10));
+	l2.push_back(make_pair(11, 12));
+
+	vector<pair<int, int>> result;
+	mergeIntervals(l1, l2, result);
+}
+
+////////////////////////////////////////////////////////////////////
 void testArray()
 {
 	testMaxSqureMatrix();
+	testJungleAlgo();
 	testSlidingWindow();
+	testMergeIntervals();
 }

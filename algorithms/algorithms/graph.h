@@ -63,6 +63,12 @@ public:
 
 	bool isCyclic();
 	bool isCyclicUndir();
+
+	// requires Directed Acyclic Graph(DAG)
+	void topologicalSortUtil(int v, vector<bool>& visited, stack<int>& Stack);
+	void topologicalSort();
+	void alienDictionary(string words[], int n, int alpha);
+
 };
 
 void testAdjGraph();
@@ -115,8 +121,9 @@ bool cmpEdge(const EdgeGraph::Edge& a, const EdgeGraph::Edge& b);
 void testEdgeGraph();
 
 ///////////////////////////////////////////////////////////////////////////////
-// Minimum Spanning Tree
-// MST has V-1 edges
+// Topological sorting
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 
