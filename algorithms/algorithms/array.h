@@ -91,4 +91,18 @@ public:
 };
 
 ////////////////////////////////////////////////////////////////////
+// Find number of island
+// DFS
+#define ROW 5
+#define COL 5
+
+int isSafe(int M[][COL], int row, int col, bool visited[][COL]);
+void DFS(int M[][COL], int row, int col, bool visited[][COL]);
+int countIslands(int M[][COL]);
+
+////////////////////////////////////////////////////////////////////
+// 3 sum
+vector<vector<int> > threeSum(vector<int> &num, int sum);
+////////////////////////////////////////////////////////////////////
+
 void testArray();

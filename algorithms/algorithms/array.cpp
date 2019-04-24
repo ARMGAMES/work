@@ -239,10 +239,135 @@ void testMergeIntervals()
 }
 
 ////////////////////////////////////////////////////////////////////
+
+// A function to check if a given cell (row, col) can be included in DFS 
+int isSafe(int M[][COL], int row, int col, bool visited[][COL])
+{
+	// row number is in range, column number is in range and value is 1  
+	// and not yet visited 
+	return (row >= 0) && (row < ROW) &&
+		(col >= 0) && (col < COL) &&
+		(M[row][col] && !visited[row][col]);
+}
+
+// A utility function to do DFS for a 2D boolean matrix. It only considers 
+// the 8 neighbours as adjacent vertices 
+void DFS(int M[][COL], int row, int col, bool visited[][COL])
+{
+	// These arrays are used to get row and column numbers of 8 neighbours  
+	// of a given cell 
+	static int rowNbr[] = { -1, -1, -1,  0, 0,  1, 1, 1 };
+	static int colNbr[] = { -1,  0,  1, -1, 1, -1, 0, 1 };
+
+	// Mark this cell as visited 
+	visited[row][col] = true;
+
+	// Recur for all connected neighbours 
+	for (int k = 0; k < 8; ++k)
+		if (isSafe(M, row + rowNbr[k], col + colNbr[k], visited))
+			DFS(M, row + rowNbr[k], col + colNbr[k], visited);
+}
+
+int countIslands(int M[][COL])
+{
+	// Make a bool array to mark visited cells. 
+	// Initially all cells are unvisited 
+	bool visited[ROW][COL];
+	memset(visited, 0, sizeof(visited));
+
+	// Initialize count as 0 and travese through the all cells of 
+	// given matrix 
+	int count = 0;
+	for (int i = 0; i < ROW; ++i)
+		for (int j = 0; j < COL; ++j)
+			if (M[i][j] && !visited[i][j]) // If a cell with value 1 is not 
+			{                         // visited yet, then new island found 
+				DFS(M, i, j, visited);     // Visit all cells in this island. 
+				++count;                   // and increment island count 
+			}
+
+	return count;
+}
+
+void testIslands()
+{
+	int M[][COL] = { {1, 1, 0, 0, 0},
+		{0, 1, 0, 0, 1},
+		{1, 0, 0, 1, 1},
+		{0, 0, 0, 0, 0},
+		{1, 0, 1, 0, 1}
+	};
+
+	printf("Number of islands is: %d\n", countIslands(M));
+}
+
+////////////////////////////////////////////////////////////////////
+
+vector<vector<int> > threeSum(vector<int> &num, int sum) {
+
+	vector<vector<int> > res;
+
+	std::sort(num.begin(), num.end());
+
+	for (int i = 0; i < num.size() - 2; i++) {
+
+		int target = sum - num[i];
+		int front = i + 1;
+		int back = num.size() - 1;
+
+		while (front < back) {
+
+			int sum = num[front] + num[back];
+
+			// Finding answer which start from number num[i]
+			if (sum < target)
+				front++;
+
+			else if (sum > target)
+				back--;
+
+			else {
+				vector<int> triplet(3, 0);
+				triplet[0] = num[i];
+				triplet[1] = num[front];
+				triplet[2] = num[back];
+				res.push_back(triplet);
+
+				// Processing duplicates of Number 2
+				// Rolling the front pointer to the next different number forwards
+				while (front < back && num[front] == triplet[1]) front++;
+
+				// Processing duplicates of Number 3
+				// Rolling the back pointer to the next different number backwards
+				while (front < back && num[back] == triplet[2]) back--;
+			}
+
+		}
+
+		// Processing duplicates of Number 1
+		while (i < num.size() && i + 1 < num.size() && num[i + 1] == num[i])
+			i++;
+
+	}
+
+	return res;
+
+}
+
+void test3Sum()
+{
+	vector<int> array = { 4, 5, 2, 8, 6, 11, 7, 4 };
+
+	vector<vector<int> > resul = threeSum(array, 16);
+}
+
+////////////////////////////////////////////////////////////////////
 void testArray()
 {
 	testMaxSqureMatrix();
 	testJungleAlgo();
 	testSlidingWindow();
 	testMergeIntervals();
+	testIslands();
+	test3Sum();
 }
