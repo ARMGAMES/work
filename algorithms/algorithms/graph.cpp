@@ -278,9 +278,9 @@ void AdjListGraph::DFSNonRecursive(int s)
 			visited[vertex] = true;
 		}
 
-		for (auto i = adj[vertex].begin(); i != adj[vertex].end(); ++i)
-			if (!visited[*i])
-				stack.push(*i);
+		for (auto it : adj[vertex])
+			if (!visited[it])
+				stack.push(it);
 	}
 }
 
@@ -560,8 +560,8 @@ int EdgeGraph::find(vector<subset> subsets, int i)
 		subsets[i].parent = find(subsets, subsets[i].parent);
 
 	return subsets[i].parent;
-
 }
+
 bool EdgeGraph::isCycleBasic()
 {
 	vector<int> parent(V);
@@ -612,9 +612,7 @@ bool EdgeGraph::isCycleRank()
 			subsets[y].parent = x;
 			subsets[x].rank++;
 		}
-
 	}
-
 	return false;
 }
 

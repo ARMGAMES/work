@@ -200,7 +200,7 @@ void BST::insertBSTNonRecursive(int v)
 		p->right = new node(v);
 }
 
-BST::link BST::deleteNode(link& root, int key)
+BST::link BST::deleteNode(link root, int key)
 {
 	// base case 
 	if (root == NULL) return root;
@@ -681,6 +681,40 @@ bool TST::searchR(link h, const char * word)
 	}
 }
 
+void TST::partialMartch(link h, const char *word, int i)
+{
+	if (h == 0) return;
+
+	if (*word == '*' || *word == h->c)
+	{
+		matchWord[i] = (h->c);
+
+		if (*(word+1) == 0 && h->isEndOfString)
+		{
+			matchWord[i + 1] = 0;
+			cout << "find " << matchWord << endl;
+		}
+		else
+		{
+			partialMartch(h->m, word + 1, i + 1);
+		}
+	}
+	if (*word == '*' || *word < h->c)
+	{
+		partialMartch(h->l, word, i);
+	}
+	if (*word == '*' || *word > h->c)
+	{
+		partialMartch(h->r, word, i);
+	}
+}
+
+void TST::partialMartch(const char * word)
+{
+	string matchWord;
+	partialMartch(head, word, 0);
+}
+
 void testTST()
 {
 	std::cout << "testTST\n";
@@ -700,6 +734,15 @@ void testTST()
 	_ASSERT(!tst1.search("thee"));
 	_ASSERT(!tst1.search(""));
 	_ASSERT(!tst1.search("t"));
+
+	TST tst2;
+	tst2.insert("abc");
+	tst2.insert("abda");
+	tst2.insert("abdda");
+	tst2.insert("acda");
+	tst2.insert("acbda");
+
+	tst2.partialMartch("a**a");
 }
 //////////////////////////////////////////////////////////////////
 

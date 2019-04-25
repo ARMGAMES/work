@@ -83,7 +83,7 @@ public:
 	void insertR(int v) { insertR(head, v); }
 	void insertBSTNonRecursive(int v);
 	void insertRoot(int v) { insertRoot_(head, v); }
-	link deleteNode(link& root, int key);
+	link deleteNode(link root, int key);
 
 	int select(int k) { return selectR(head, k); }
 
@@ -218,14 +218,16 @@ private:
 	};
 	typedef node* link;
 	link head;
-
+	char matchWord[256];
 	void insertR(link& h, const char* word);
 	bool searchR(link h, const char* word);
+	void partialMartch(link h, const char* word, int i);
 public:
 	TST() {}
 
 	void insert(const char* word) { insertR(head, word); }
 	bool search(const char* word) { return searchR(head, word); }
+	void partialMartch(const char* word);
 };
 
 void testTST();
