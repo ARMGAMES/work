@@ -35,7 +35,7 @@ class AdjListGraph
 private:
 	int V;
 	list<int> *adj;
-	vector<vector<int>> adjVect;
+	vector<list<int>> adjlist;
 	// con: searchEdge takes O(lgV). pros: adding an edge takes O(log V), no duplicates
 	set<int> *adjSet;
 	// con: searchEdge takes O(1), adding an edge takes O(1). pros: no duplicates, edges no order

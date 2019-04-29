@@ -75,7 +75,6 @@ void AdjMatrixGraph::primMST()
 		// Update key value and parent index of the adjacent vertices of the picked vertex.  
 		// Consider only those vertices which are not yet included in MST 
 		for (int v = 0; v < V; v++)
-
 			// graph[u][v] is non zero only for adjacent vertices of m 
 			// mstSet[v] is false for vertices not yet included in MST 
 			// Update the key only if graph[u][v] is smaller than key[v] 
@@ -146,7 +145,7 @@ AdjListGraph::AdjListGraph(int V_)
 {
 	V = V_;
 	adj = new list<int>[V];
-	adjVect.resize(V);
+	adjlist.resize(V);
 	adjSet = new set<int>[V];
 	adjHash = new unordered_set<int>[V];
 }
@@ -161,6 +160,8 @@ AdjListGraph::~AdjListGraph()
 void AdjListGraph::addEdge(int v, int w)
 {
 	adj[v].push_back(w);
+
+	//adjlist[V].push_back(w);
 }
 
 void AdjListGraph::addEdgeUnDir(int v, int w)

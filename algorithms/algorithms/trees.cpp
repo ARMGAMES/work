@@ -44,6 +44,33 @@ bool BT::findPath(link root, vector<int>& path, int k)
 	return false;
 }
 
+void BT::insert(link root, int key)
+{
+	list<link> q;
+	q.push_back(root);
+
+	// Do level order traversal until we find 
+	// an empty place.  
+	while (!q.empty()) {
+		link temp = q.front();
+		q.pop_front();
+
+		if (!temp->left) {
+			temp->left = new node(key);
+			break;
+		}
+		else
+			q.push_back(temp->left);
+
+		if (!temp->right) {
+			temp->right = new node(key);
+			break;
+		}
+		else
+			q.push_back(temp->right);
+	}
+}
+
 int BT::findLCA1(link root, int n1, int n2)
 {
 	// to store paths to n1 and n2 from the root 
@@ -132,6 +159,42 @@ BT::link BT::findLCA3(link root, int n1, int n2)
 
 	// Else return NULL 
 	return NULL;
+}
+
+BT::link BT::buildTree(char inOrder[], char preOrder[], int inStrt, int inEnd)
+{
+	static int preIndex = 0;
+
+	if (inStrt > inEnd)
+		return NULL;
+
+	/* Pick current node from Preorder traversal using preIndex and increment preIndex */
+	node* tNode = new node(preOrder[preIndex++]);
+
+	/* If this node has no children then return */
+	if (inStrt == inEnd)
+		return tNode;
+
+	/* Else find the index of this node in Inorder traversal */
+	int inIndex = search(inOrder, inStrt, inEnd, tNode->key);
+
+	/* Using index in Inorder traversal, construct left and
+	right subtress */
+	tNode->left = buildTree(inOrder, preOrder, inStrt, inIndex - 1);
+	tNode->right = buildTree(inOrder, preOrder, inIndex + 1, inEnd);
+
+	return tNode;
+
+}
+
+int BT::search(char arr[], int strt, int end, char value)
+{
+	int i;
+	for (i = strt; i <= end; i++)
+	{
+		if (arr[i] == value)
+			return i;
+	}
 }
 
 void testBT()

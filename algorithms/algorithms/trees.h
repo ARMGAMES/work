@@ -28,6 +28,8 @@ public:
 
 	bool findPath(link root, vector<int>& path, int k);
 
+	void insert(link root, int key);
+
 	/* Returns LCA if node n1, n2 are present in the given binary tree, otherwise return -1 
 	   By Storing root to n1 and root to n2 paths 
 	   time:O(N), space: O(N)*/
@@ -42,6 +44,10 @@ public:
 	// works if n1 and n2 not present in BT
 	link findLCAUtil(link root, int n1, int n2, bool &v1, bool &v2);
 	link findLCA3(link root, int n1, int n2);
+
+	// build BT from inorder, preorder
+	link buildTree(char in[], char pre[], int inStrt, int inEnd);
+	int search(char arr[], int strt, int end, char value);
 };
 
 void testBT();
