@@ -56,6 +56,61 @@ void testSlidingWindow()
 
 ////////////////////////////////////////////////////////////////////
 
+vector<vector<int> > threeSum(vector<int> &num, int sum) {
+
+	vector<vector<int> > res;
+
+	std::sort(num.begin(), num.end());
+
+	for (int i = 0; i < num.size() - 2; i++) {
+
+		int target = sum - num[i];
+		int front = i + 1;
+		int back = num.size() - 1;
+
+		while (front < back) {
+
+			int sum = num[front] + num[back];
+
+			// Finding answer which start from number num[i]
+			if (sum < target)
+				front++;
+
+			else if (sum > target)
+				back--;
+
+			else {
+				vector<int> triplet(3, 0);
+				triplet[0] = num[i];
+				triplet[1] = num[front];
+				triplet[2] = num[back];
+				res.push_back(triplet);
+
+				// Processing duplicates of Number 2
+				// Rolling the front pointer to the next different number forwards
+				while (front < back && num[front] == triplet[1]) front++;
+
+				// Processing duplicates of Number 3
+				// Rolling the back pointer to the next different number backwards
+				while (front < back && num[back] == triplet[2]) back--;
+			}
+		}
+		// Processing duplicates of Number 1
+		while (i < num.size() && i + 1 < num.size() && num[i + 1] == num[i])
+			i++;
+	}
+	return res;
+}
+
+void test3Sum()
+{
+	vector<int> array = { 4, 5, 2, 8, 6, 11, 7, 4 };
+
+	vector<vector<int> > resul = threeSum(array, 16);
+}
+
+////////////////////////////////////////////////////////////////////
+
 int gcd(int a, int b)
 {
 	if (b == 0)
@@ -99,7 +154,72 @@ void testJungleAlgo()
 	leftRotate(arr, 2, n);
 }
 
+////////////////////////////////////////////////////////////////////
+
+void mergePair(vector<pair<int, int>>& res, const pair<int, int>& toMerge)
+{
+	if (res.empty() || toMerge.first > res.back().second) {
+		res.push_back(toMerge);
+	}
+	else {
+		res.back().first = min(res.back().first, toMerge.first);
+		res.back().second = max(res.back().second, toMerge.second);
+	}
+}
+
+void mergeIntervals(const vector<pair<int, int> > &l1, const vector<pair<int, int> > &l2, vector<pair<int, int>>& result)
+{
+	for (int i = 0, j = 0; i < l1.size() || j < l2.size();) {
+		if (i == l1.size()) {
+			mergePair(result, l2[j++]);
+		}
+		else if (j == l2.size()) {
+			mergePair(result, l1[i++]);
+		}
+		else {
+			if (l1[i].second < l2[j].first) {
+				mergePair(result, l1[i++]);
+			}
+			else if (l2[j].second < l1[i].first) {
+				mergePair(result, l2[j++]);
+			}
+			else {
+				mergePair(result, { min(l1[i].first,l2[j].first),max(l1[i].second,l2[j].second) });
+				i++;
+				j++;
+			}
+		}
+	}
+}
+
+void testMergeIntervals()
+{
+	vector<pair<int, int>> l1;
+	l1.push_back(make_pair(1, 2));
+	l1.push_back(make_pair(3, 9));
+
+	vector<pair<int, int>> l2;
+	l2.push_back(make_pair(4, 5));
+	l2.push_back(make_pair(8, 10));
+	l2.push_back(make_pair(11, 12));
+
+	vector<pair<int, int>> result;
+	mergeIntervals(l1, l2, result);
+}
+
 /////////////////////////////////////////////////////////////////////
+
+void displayMatrix(vector<vector<int>> mat)
+{
+	for (int i = 0; i < mat.size(); i++)
+	{
+		for (auto val : mat[i])
+			printf("%2d ", val);
+		printf("\n");
+	}
+	printf("\n");
+}
+
 void printMaxSubSquare(int matrix[R][C])
 {
 	int i, j;
@@ -184,59 +304,7 @@ void testMaxSqureMatrix()
 	printMaxSubSquare(m, R - 1, C - 1, &maxv);
 }
 
-////////////////////////////////////////////////////////////////////
 
-void mergePair(vector<pair<int, int>>& res, const pair<int, int>& toMerge)
-{
-	if (res.empty() || toMerge.first > res.back().second) {
-		res.push_back(toMerge);
-	}
-	else {
-		res.back().first = min(res.back().first, toMerge.first);
-		res.back().second = max(res.back().second, toMerge.second);
-	}
-}
-
-void mergeIntervals(const vector<pair<int, int> > &l1, const vector<pair<int, int> > &l2, vector<pair<int, int>>& result)
-{
-	for (int i = 0, j = 0; i < l1.size() || j < l2.size();) {
-		if (i == l1.size()) {
-			mergePair(result, l2[j++]);
-		}
-		else if (j == l2.size()) {
-			mergePair(result, l1[i++]);
-		}
-		else {
-			if (l1[i].second < l2[j].first) {
-				mergePair(result, l1[i++]);
-			}
-			else if (l2[j].second < l1[i].first) {
-				mergePair(result, l2[j++]);
-			}
-			else {
-				mergePair(result, { min(l1[i].first,l2[j].first),max(l1[i].second,l2[j].second) });
-				i++;
-				j++;
-			}
-		}
-	}
-
-}
-
-void testMergeIntervals()
-{
-	vector<pair<int, int>> l1;
-	l1.push_back(make_pair(1, 2));
-	l1.push_back(make_pair(3, 9));
-
-	vector<pair<int, int>> l2;
-	l2.push_back(make_pair(4, 5));
-	l2.push_back(make_pair(8, 10));
-	l2.push_back(make_pair(11, 12));
-
-	vector<pair<int, int>> result;
-	mergeIntervals(l1, l2, result);
-}
 
 ////////////////////////////////////////////////////////////////////
 
@@ -303,71 +371,58 @@ void testIslands()
 
 ////////////////////////////////////////////////////////////////////
 
-vector<vector<int> > threeSum(vector<int> &num, int sum) {
+void rotateMatrix(vector<vector<int>>& mat)
+{
+	int N = mat.size();
+	// Consider all squares one by one 
+	for (int x = 0; x < N / 2; x++)
+	{
+		// Consider elements in group of 4 in current square 
+		for (int y = x; y < N - x - 1; y++)
+		{
+			// store current cell in temp variable 
+			int temp = mat[x][y];
 
-	vector<vector<int> > res;
+			// move values from right to top 
+			mat[x][y] = mat[y][N - 1 - x];
 
-	std::sort(num.begin(), num.end());
+			// move values from bottom to right 
+			mat[y][N - 1 - x] = mat[N - 1 - x][N - 1 - y];
 
-	for (int i = 0; i < num.size() - 2; i++) {
+			// move values from left to bottom 
+			mat[N - 1 - x][N - 1 - y] = mat[N - 1 - y][x];
 
-		int target = sum - num[i];
-		int front = i + 1;
-		int back = num.size() - 1;
-
-		while (front < back) {
-
-			int sum = num[front] + num[back];
-
-			// Finding answer which start from number num[i]
-			if (sum < target)
-				front++;
-
-			else if (sum > target)
-				back--;
-
-			else {
-				vector<int> triplet(3, 0);
-				triplet[0] = num[i];
-				triplet[1] = num[front];
-				triplet[2] = num[back];
-				res.push_back(triplet);
-
-				// Processing duplicates of Number 2
-				// Rolling the front pointer to the next different number forwards
-				while (front < back && num[front] == triplet[1]) front++;
-
-				// Processing duplicates of Number 3
-				// Rolling the back pointer to the next different number backwards
-				while (front < back && num[back] == triplet[2]) back--;
-			}
-
+			// assign temp to left 
+			mat[N - 1 - y][x] = temp;
 		}
-
-		// Processing duplicates of Number 1
-		while (i < num.size() && i + 1 < num.size() && num[i + 1] == num[i])
-			i++;
-
 	}
-
-	return res;
-
 }
 
-void test3Sum()
+void testRotateMatrix()
 {
-	vector<int> array = { 4, 5, 2, 8, 6, 11, 7, 4 };
+	// Test Case 1 
+	vector<vector<int>> mat =
+	{
+		{1, 2, 3, 4},
+		{5, 6, 7, 8},
+		{9, 10, 11, 12},
+		{13, 14, 15, 16}
+	};
 
-	vector<vector<int> > resul = threeSum(array, 16);
+	rotateMatrix(mat);
+
+	// Print rotated matrix 
+	displayMatrix(mat);
 }
 
 ////////////////////////////////////////////////////////////////////
 void testArray()
 {
-	testMaxSqureMatrix();
-	testJungleAlgo();
 	testSlidingWindow();
-	testMergeIntervals();
-	testIslands();
 	test3Sum();
+	testJungleAlgo();
+	testMergeIntervals();
+	testMaxSqureMatrix();
+	testIslands();
+	testRotateMatrix();
 }

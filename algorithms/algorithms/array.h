@@ -6,25 +6,20 @@ using namespace std;
 int min(int a, int b, int c);
 
 ////////////////////////////////////////////////////////////////////
+// Array
 // sliding window technique
 // Returns maximum sum in a subarray of size k. 
 int findSum(int arr[], int n, int k, int sum);
-void testSlidingWindow();
 
-////////////////////////////////////////////////////////////////////
+//THREE sum
+vector<vector<int> > threeSum(vector<int> &num, int sum);
+
 //A Juggling Algorithm - rotate array
 /*Fuction to get gcd of a and b*/
 int gcd(int a, int b);
-
 /*Function to left rotate arr[] of siz n by d*/
 void leftRotate(int arr[], int d, int n);
 
-////////////////////////////////////////////////////////////////////
-
-#define R 6 
-#define C 5 
-void printMaxSubSquare(int matrix[R][C]);
-void testMaxSqureMatrix();
 
 ////////////////////////////////////////////////////////////////////
 // merge sorted interval
@@ -91,18 +86,29 @@ public:
 };
 
 ////////////////////////////////////////////////////////////////////
+// MATRIX
+
+// Function to print the matrix 
+void displayMatrix(vector<vector<int>> mat);
+
+#define R 6 
+#define C 5 
+void printMaxSubSquare(int matrix[R][C]);
+void testMaxSqureMatrix();
+
 // Find number of island
 // DFS
 #define ROW 5
 #define COL 5
-
 int isSafe(int M[][COL], int row, int col, bool visited[][COL]);
 void DFS(int M[][COL], int row, int col, bool visited[][COL]);
 int countIslands(int M[][COL]);
 
+// An Inplace function to rotate a N x N matrix 
+// by 90 degrees in anti-clockwise direction  
+void rotateMatrix(vector<vector<int>>& mat);
+
 ////////////////////////////////////////////////////////////////////
-// 3 sum
-vector<vector<int> > threeSum(vector<int> &num, int sum);
-////////////////////////////////////////////////////////////////////
+
 
 void testArray();
