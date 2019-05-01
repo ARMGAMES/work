@@ -154,6 +154,40 @@ void testJungleAlgo()
 	leftRotate(arr, 2, n);
 }
 
+int findKthSmallest(int a[], int m, int b[], int n, int k) {
+	if (m < n) 
+		return findKthSmallest(b, n, a, m, k);
+	if (n == 0) 
+		return a[k - 1];
+	if (k == 1) 
+		return min(a[0], b[0]);
+
+	int j = min(n, k / 2);
+	int i = k - j;
+	if (a[i - 1] > b[j - 1]) 
+		return findKthSmallest(a, i, b + j, n - j, k - j);
+	return findKthSmallest(a + i, m - i, b, j, k - i);
+}
+
+double findMedianSortedArrays(int a[], int m, int b[], int n) 
+{
+	int k = (m + n) / 2;
+	int m1 = findKthSmallest(a, m, b, n, k + 1);
+	if ((m + n) % 2 == 0) {
+		int m2 = findKthSmallest(a, m, b, n, k);
+		return ((double)m1 + m2) / 2.0;
+	}
+	return m1;
+}
+
+void testMedianOfTwoSorted()
+{
+	int a[] = { 1,3,5,7,9,11,13,15,17,19 };
+	int b[] = { 8 };
+
+	findMedianSortedArrays(a, sizeof(a) / sizeof(int), b, sizeof(b) / sizeof(int));
+}
+
 ////////////////////////////////////////////////////////////////////
 
 void mergePair(vector<pair<int, int>>& res, const pair<int, int>& toMerge)
@@ -421,6 +455,7 @@ void testArray()
 	testSlidingWindow();
 	test3Sum();
 	testJungleAlgo();
+	testMedianOfTwoSorted();
 	testMergeIntervals();
 	testMaxSqureMatrix();
 	testIslands();

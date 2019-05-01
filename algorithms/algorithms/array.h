@@ -20,6 +20,9 @@ int gcd(int a, int b);
 /*Function to left rotate arr[] of siz n by d*/
 void leftRotate(int arr[], int d, int n);
 
+// Median of Two Sorted Arrays    
+int findKthSmallest(int a[], int m, int b[], int n, int k);
+double findMedianSortedArrays(int a[], int m, int b[], int n);
 
 ////////////////////////////////////////////////////////////////////
 // merge sorted interval
