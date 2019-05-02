@@ -1,3 +1,5 @@
-﻿  array.cpp
-c:\ericl\github\work\algorithms\algorithms\array.cpp(316): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+﻿  algorithms.cpp
+  searching.cpp
+c:\ericl\github\work\algorithms\algorithms\searching.cpp(181): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Generating Code...
   algorithms.vcxproj -> C:\ericl\github\work\algorithms\x64\Debug\algorithms.exe

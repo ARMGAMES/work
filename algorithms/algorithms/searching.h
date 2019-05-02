@@ -1,6 +1,7 @@
 #pragma once
 
 #include "sharedstructs.h"
+using namespace std;
 
 ////////////////////////////////////////////////////////////////////
 // Hashing
@@ -65,6 +66,10 @@ const int NO_OF_CHARS = 256;
 void badCharHeuristic(const char* pat, int size, int badChar[NO_OF_CHARS]);
 void badCharacterSearch(const char* pat, const char* txt);
 void testBadCharacterMatching();
+
+/////////////////////////////////////////////////////////////////////////////////////
+//Regular Expression Matching
+bool isMatch(string s, string p);
 
 /////////////////////////////////////////////////////////////////////////////////////
 
