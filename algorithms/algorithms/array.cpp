@@ -188,6 +188,40 @@ void testMedianOfTwoSorted()
 	findMedianSortedArrays(a, sizeof(a) / sizeof(int), b, sizeof(b) / sizeof(int));
 }
 
+int longestValidParenthesesDP(string s)
+{
+	int maxLength = 0;
+	vector<int> dp(s.length(), 0);
+
+	for (int i = 1; i < s.length(); i++) 
+	{
+		if (s[i] == ')') 
+		{
+			if (s[i - 1] == '(') 
+			{
+				dp[i] = (i >= 2 ? dp[i - 2] : 0) + 2;
+			}
+			else if (i - dp[i - 1] > 0 && s[i - dp[i - 1] - 1] == '(')
+			{
+				int p = (i - dp[i - 1]) >= 2 ? dp[i - dp[i - 1] - 2] : 0;
+				dp[i] = dp[i - 1] + p + 2;
+			}
+			maxLength = max(maxLength, dp[i]);
+		}
+	}
+	return maxLength;
+}
+
+void testLongestParethese()
+{
+	string s1 = "())((()))";
+	_ASSERT(longestValidParenthesesDP(s1) == 6);
+	string s2 = "()(())";
+	_ASSERT(longestValidParenthesesDP(s2) == 6);
+	string s3 = "()((()))";
+	_ASSERT(longestValidParenthesesDP(s3) == 8);
+
+}
 ////////////////////////////////////////////////////////////////////
 
 void mergePair(vector<pair<int, int>>& res, const pair<int, int>& toMerge)
@@ -455,6 +489,7 @@ void testArray()
 	testSlidingWindow();
 	test3Sum();
 	testJungleAlgo();
+	testLongestParethese();
 	testMedianOfTwoSorted();
 	testMergeIntervals();
 	testMaxSqureMatrix();

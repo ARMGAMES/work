@@ -24,6 +24,10 @@ void leftRotate(int arr[], int d, int n);
 int findKthSmallest(int a[], int m, int b[], int n, int k);
 double findMedianSortedArrays(int a[], int m, int b[], int n);
 
+// longest valid parentheses
+// Dynamic programming
+int longestValidParenthesesDP(string s);
+
 ////////////////////////////////////////////////////////////////////
 // merge sorted interval
 void mergePair(vector<pair<int, int> > &res, const pair<int, int> &toMerge);
