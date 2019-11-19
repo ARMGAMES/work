@@ -2,6 +2,7 @@
 *.exe
 *.pdb
 *.sdf
+*.log
 Analysis/Racing/obj/
 Analysis/Racing/bin/
 Analysis/Analysis/bin/
@@ -17,8 +18,7 @@ winc/debug
 winc/.vs
 winc/AlgorithmApp/debug
 algorithms/.vs
-algorithms/algorithms/ipch
-algorithms/algorithms/debug
 algorithms/algorithms/x64
-algorithms/x64/Debug
+algorithms/algorithms/x64/Debug
 algorithms/Debug
+algorithms/x64
