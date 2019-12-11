@@ -167,12 +167,14 @@ namespace Analysis
                 int prevDay = i - 1;
 
                 double prevClose = marketDataList[prevDay].adj_close;
+                double prevHigh = marketDataList[prevDay].high;
 
                 double todayOpen = marketDataList[i].open;
                 double todayClose = marketDataList[i].adj_close;
                 double todayLow = marketDataList[i].low;
                 double todayHigh = marketDataList[i].high;
 
+                /*
                 // open high
                 if (todayOpen / prevClose > (1 + enterPert))
                 {
@@ -210,41 +212,36 @@ namespace Analysis
                         }
                     }
                 }
-  
+       */
+              
 
-             /*   if (todayHigh / prevClose > (1 + enterPert))
+                if (todayHigh / prevHigh > (1 + enterPert))
                 {
                     currMonthResult.longCount++;
 
-                    double enterPrice = prevClose * (1 + enterPert);
+                    double enterPrice = prevHigh * (1 + enterPert);
 
                     if (todayOpen > enterPrice)
                     {
                         enterPrice = todayOpen;
                     }
 
-                    if (enterPrice / todayLow > (1 + stopPert))
+                    if (enterPrice > todayClose)
                     {
+                        //double lossPert = (enterPrice - todayClose) / enterPrice;
+                        double lossPert = stopPert;
                         currMonthResult.longLoss++;
-                        currMonthResult.totalLongGain *= (1 - stopPert);
+                        currMonthResult.totalLongGain *= (1 - lossPert);
                     }
-
                     else
                     {
-                        double gain = todayClose / enterPrice;
-                        currMonthResult.totalLongGain *= gain;
+                        double gainPert = todayClose / enterPrice;
+                        currMonthResult.totalLongGain *= gainPert;
 
-                        if (todayClose > enterPrice)
-                        {
-                            currMonthResult.longWin++;
-                        }
-                        else if (todayClose < enterPrice)
-                        {
-                            currMonthResult.longLoss++;
-                        }
+                        currMonthResult.longWin++;
                     }
                 }
-                */
+                
             }
         }
 
