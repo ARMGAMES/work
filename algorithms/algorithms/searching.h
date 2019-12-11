@@ -71,6 +71,11 @@ void testBadCharacterMatching();
 //Regular Expression Matching
 bool regularExpressionMatching(string s, string p);
 
+bool wildCardMatching(string s, string p);
+/////////////////////////////////////////////////////////////////////////////////////
+// Valid Number: DFA
+bool isValidNumber(string s);
+
 /////////////////////////////////////////////////////////////////////////////////////
 
 void testSearching();

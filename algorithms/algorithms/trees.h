@@ -46,9 +46,15 @@ public:
 	link findLCA3(link root, int n1, int n2);
 
 	// build BT from inorder, preorder
-	link buildTree(char in[], char pre[], int inStrt, int inEnd);
-	int search(char arr[], int strt, int end, char value);
+	link buildTree(vector<int> inorder, vector<int> preorder, int inStrt, int inEnd);
+	int search(vector<int> arr, int strt, int end, int value);
+
+	// Serialize and Deserialize Binary Tree
+	void serialize(link root, ostringstream& out);
+	link  deserialize(istringstream& in);
 };
+
+// 
 
 void testBT();
 

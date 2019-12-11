@@ -179,24 +179,48 @@ bool regularExpressionMatching(string s, string p)
 		 * '.' matches any single character
 		 */
 	int m = s.size(), n = p.size();
-	vector<vector<bool>> f(m + 1, vector<bool>(n + 1, false));
+	vector<vector<bool>> dp(m + 1, vector<bool>(n + 1, false));
 
-	f[0][0] = true;
+	dp[0][0] = true;
 	for (int i = 1; i <= m; i++)
-		f[i][0] = false;
+		dp[i][0] = false;
 	// p[0.., j - 3, j - 2, j - 1] matches empty iff p[j - 1] is '*' and p[0..j - 3] matches empty
 	for (int j = 1; j <= n; j++)
-		f[0][j] = j > 1 &&  (p[j - 1] == '*') && f[0][j - 2];
+		dp[0][j] = j > 1 &&  (p[j - 1] == '*') && dp[0][j - 2];
 
 	for (int i = 1; i <= m; i++)
 		for (int j = 1; j <= n; j++)
 			if (p[j - 1] != '*')
-				f[i][j] = f[i - 1][j - 1] && (p[j - 1] == s[i - 1] || p[j - 1] == '.');
+				dp[i][j] = dp[i - 1][j - 1] && (p[j - 1] == s[i - 1] || p[j - 1] == '.');
 			else
 				// p[0] cannot be '*' so no need to check "j > 1" here
-				f[i][j] = f[i][j - 2] || ((p[j - 2] == s[i - 1] || p[j - 2] == '.') && f[i - 1][j]);
+				dp[i][j] = dp[i][j - 2] || ((p[j - 2] == s[i - 1] || p[j - 2] == '.') && dp[i - 1][j]);
 
-	return f[m][n];
+	return dp[m][n];
+}
+
+bool wildCardMatching(string s, string p) 
+{
+	int m = s.length(), n = p.length();
+	int i = 0, j = 0, asterisk = -1, match;
+	while (i < m) {
+		if (j < n && p[j] == '*') {
+			match = i;
+			asterisk = j++;
+		}
+		else if (j < n && (s[i] == p[j] || p[j] == '?')) {
+			i++;
+			j++;
+		}
+		else if (asterisk >= 0) {
+			i = ++match;
+			j = asterisk + 1;
+		}
+		else return false;
+	}
+	while (j < n && p[j] == '*') j++;
+	return j == n;
+	string l;
 }
 
 void testRegularExpressionMatching()
@@ -208,9 +232,80 @@ void testRegularExpressionMatching()
 
 ////////////////////////////////////////////////////////////////////////////////////
 
+bool isValidNumber(string str)
+{
+	vector<vector<int>> transTable =
+	{ //+/-, 0-9, ., e, ' '
+		{1, 2, 3, -1, 0}, // s0
+		{-1, 2, -1, -1, -1}, // s1
+		{-1, 2, 4, 5, -1}, // s2
+
+	};
+
+	int state = 0;
+	for (int i = 0; i < str.length(); i++)
+	{
+		if (str[i] == '+' || str[i] == '-')
+		{
+			if (state == 0 || state == 5)
+				state++;
+			else return false;
+		}
+		else if (str[i] >= '0' && str[i] <= '9')
+		{
+			if (state <= 2)
+				state = 2;
+			else if (state == 3 || state == 4)
+				state = 4;
+			else if (state == 5 || state == 6 || state == 7)
+				state = 7;
+			else
+				return false;
+		}
+		else if (str[i] == '.')
+		{
+			if (state == 0)
+				state = 3;
+			else if (state == 2)
+				state == 4;
+			else return false;
+		}
+		else if (str[i] == 'e')
+		{
+			if (state == 2 || state == 4)
+				state = 5;
+			else return false;
+		}
+		else if (str[i] == ' ')
+		{
+			if (state != 0)
+				return false;
+		}
+	}
+	return (state == 2 || state == 4 || state == 7);
+}
+
+void testIsValidNumber()
+{
+	string s1 = ".0";
+	_ASSERT(isValidNumber(s1));
+
+	string s2 = ".";
+	_ASSERT(!isValidNumber(s2));
+
+	string s3 = " -123";
+	_ASSERT(isValidNumber(s3));
+
+	string s4 = "+23e.";
+	_ASSERT(!isValidNumber(s4));
+
+}
+
+////////////////////////////////////////////////////////////////////////////////////
 void testSearching()
 {
 	testKMPAlgorithm();
 	testBadCharacterMatching();
 	testRegularExpressionMatching();
+	testIsValidNumber();
 }
