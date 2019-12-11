@@ -28,6 +28,9 @@ double findMedianSortedArrays(int a[], int m, int b[], int n);
 // Dynamic programming
 int longestValidParenthesesDP(string s);
 
+// phone number combination
+bool phoneNumberCombo(string combination, string input, vector<string>& output);
+
 ////////////////////////////////////////////////////////////////////
 // merge sorted interval
 void mergePair(vector<pair<int, int> > &res, const pair<int, int> &toMerge);

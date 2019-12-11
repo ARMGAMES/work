@@ -161,7 +161,7 @@ BT::link BT::findLCA3(link root, int n1, int n2)
 	return NULL;
 }
 
-BT::link BT::buildTree(char inOrder[], char preOrder[], int inStrt, int inEnd)
+BT::link BT::buildTree(vector<int> inorder, vector<int> preorder, int inStrt, int inEnd)
 {
 	static int preIndex = 0;
 
@@ -169,25 +169,24 @@ BT::link BT::buildTree(char inOrder[], char preOrder[], int inStrt, int inEnd)
 		return NULL;
 
 	/* Pick current node from Preorder traversal using preIndex and increment preIndex */
-	node* tNode = new node(preOrder[preIndex++]);
+	node* currNode = new node(preorder[preIndex++]);
 
 	/* If this node has no children then return */
 	if (inStrt == inEnd)
-		return tNode;
+		return currNode;
 
 	/* Else find the index of this node in Inorder traversal */
-	int inIndex = search(inOrder, inStrt, inEnd, tNode->key);
+	int inIndex = search(inorder, inStrt, inEnd, currNode->key);
 
-	/* Using index in Inorder traversal, construct left and
-	right subtress */
-	tNode->left = buildTree(inOrder, preOrder, inStrt, inIndex - 1);
-	tNode->right = buildTree(inOrder, preOrder, inIndex + 1, inEnd);
+	/* Using index in Inorder traversal, construct left and right subtress */
+	currNode->left = buildTree(inorder, preorder, inStrt, inIndex - 1);
+	currNode->right = buildTree(inorder, preorder, inIndex + 1, inEnd);
 
-	return tNode;
+	return currNode;
 
 }
 
-int BT::search(char arr[], int strt, int end, char value)
+int BT::search(vector<int> arr, int strt, int end, int value)
 {
 	int i;
 	for (i = strt; i <= end; i++)
@@ -195,6 +194,31 @@ int BT::search(char arr[], int strt, int end, char value)
 		if (arr[i] == value)
 			return i;
 	}
+}
+
+void BT::serialize(link root, ostringstream& out)
+{
+	if (root) {
+		out << root->key << " ";
+		serialize(root->left, out);
+		serialize(root->right, out);
+	}
+	else {
+		out << "# ";
+	}
+}
+
+BT::link BT::deserialize(istringstream & in)
+{
+	string val;
+	in >> val;
+	if (val == "#")
+		return nullptr;
+
+	link root = new node(stoi(val));
+	root->left = deserialize(in);
+	root->right = deserialize(in);
+	return root;
 }
 
 void testBT()
@@ -213,6 +237,20 @@ void testBT()
 	_ASSERT(bt1.findLCA1(bt1.head, 4, 5) == 2);
 	_ASSERT(bt1.findLCA3(bt1.head, 4, 5)->key == 2);
 	_ASSERT(bt1.findLCA3(bt1.head, 4, 6)->key == 1);
+
+	BT bt2;
+	bt2.head = new BT::node(1);
+	bt2.head->left = new BT::node(2);
+	bt2.head->right = new BT::node(3);
+	bt2.head->left->right = new BT::node(5);
+	bt2.head->right->left = new BT::node(6);
+	bt2.head->right->right = new BT::node(7);
+	ostringstream out;
+	bt2.serialize(bt2.head, out);
+
+	BT bt3;
+	istringstream in(out.str());
+	bt3.head = bt3.deserialize(in);
 }
 
 ///////////////////////////////////////////////////////////////////////////////////

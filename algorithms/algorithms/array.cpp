@@ -224,6 +224,39 @@ void testLongestParethese()
 }
 ////////////////////////////////////////////////////////////////////
 
+bool phoneNumberCombo(string combination, string input, vector<string>& output)
+{
+	static const vector<string> v = { "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" };
+
+	if (input.length() == 0)
+	{
+		output.push_back(combination);
+		return true;
+	}
+
+	int num = input[0] - '0';
+	if (num < 0 || num > 9) return false;
+
+	const string& candidate = v[num];
+	if (candidate.empty()) return true;
+
+	bool result = false;
+	for (int j = 0; j < candidate.size(); ++j)
+	{
+		result = phoneNumberCombo(combination + (candidate[j]), input.substr(1, input.length()), output);
+		if (!result)
+			return result;
+	}
+}
+
+void testPhoneNumberCom()
+{
+	string s = "234";
+	string empty;
+	vector<string> output;
+	phoneNumberCombo(empty, s, output);
+}
+
 void mergePair(vector<pair<int, int>>& res, const pair<int, int>& toMerge)
 {
 	if (res.empty() || toMerge.first > res.back().second) {
@@ -483,14 +516,143 @@ void testRotateMatrix()
 	displayMatrix(mat);
 }
 
+bool versionStringCmp(const string& str1, const string& str2)
+{
+	int spaceIndex1 = str1.find(' ');
+	int spaceIndex2 = str2.find(' ');
+
+	int res = str1.substr(spaceIndex1 + 1).compare(str2.substr(spaceIndex2 + 1));
+	if (res != 0)
+	{
+		return res < 0;
+	}
+
+	return (str1.substr(0, spaceIndex1 - 1).compare(str2.substr(0, spaceIndex1 - 1)) < 0);
+}
+
+
+vector<string> orderedJunctionBoxes(int numberOfBoxes, vector<string> boxList)
+{
+	// WRITE YOUR CODE HERE
+	vector<string> newGenList;
+	vector<string> oldGenList;
+	for (int i = 0; i < boxList.size(); ++i)
+	{
+		string& currVersion = boxList[i];
+
+			int spaceIndex = currVersion.find(' ');
+			if (spaceIndex == -1 || spaceIndex == (currVersion.length() - 1))
+			{
+				//wrong version string
+				continue;
+			}
+
+		if (currVersion[spaceIndex + 1] >= '1' && currVersion[spaceIndex + 1] <= '9')
+		{
+			newGenList.push_back(currVersion);
+		}
+		else
+		{
+			oldGenList.push_back(currVersion);
+		}
+	}
+
+	sort(oldGenList.begin(), oldGenList.end(), versionStringCmp);
+	for (int i = 0; i < newGenList.size(); ++i)
+	{
+		oldGenList.push_back(newGenList[i]);
+	}
+
+	return oldGenList;
+}
+
+bool pairCmp(const pair<int, int> p1, const pair<int, int> p2)
+{
+	return p1.second < p2.second;
+}
+
+vector<pair<int, int> > optimalUtilization(int maxTravelDist,
+	vector<pair<int, int> > forwardRouteList,
+	vector<pair<int, int> > returnRouteList)
+{
+	// WRITE YOUR CODE HERE
+
+	sort(forwardRouteList.begin(), forwardRouteList.end(), pairCmp);
+	sort(returnRouteList.begin(), returnRouteList.end(), pairCmp);
+
+	vector<pair<int, int>> result;
+	pair<int, int> tempResult;
+	int tempDist = 0;
+
+	for (int i = 0; i < forwardRouteList.size(); ++i)
+	{
+		if (forwardRouteList[i].second > maxTravelDist)
+		{
+			break;
+		}
+		int forwardNum = forwardRouteList[i].first;
+		int forwardDist = forwardRouteList[i].second;
+
+		int l = 0;
+		int r = returnRouteList.size() - 1;
+		while (l < r)
+		{
+			int index = (l + r) / 2;
+			int returnNum = returnRouteList[index].first;
+			int returnDist = returnRouteList[index].second;
+
+			int totalDist = returnDist + forwardDist;
+			if (totalDist == maxTravelDist)
+			{
+				result.push_back(pair<int, int>(forwardNum, returnNum));
+				break;
+			}
+			else if (totalDist < maxTravelDist)
+			{
+				if (tempDist < totalDist)
+				{
+					tempDist = totalDist;
+					tempResult.first = forwardNum;
+					tempResult.second = returnNum;
+				}
+				l = index + 1;
+			}
+			else
+			{
+				r = index - 1;
+			}
+		}
+	}
+
+	if (result.size() == 0 && tempDist > 0)
+	{
+		result.push_back(tempResult);
+	}
+	return result;
+}
+
 ////////////////////////////////////////////////////////////////////
 void testArray()
 {
+	vector<pair<int, int>> t1;
+	vector<pair<int, int>> t2;
+	t1.push_back(pair<int, int>(1, 8));
+	t1.push_back(pair<int, int>(2, 7));
+	t1.push_back(pair<int, int>(3, 14));
+
+	t2.push_back(pair<int, int>(1, 5));
+	t2.push_back(pair<int, int>(2, 10));
+	t2.push_back(pair<int, int>(3, 14));
+
+
+	optimalUtilization(20, t1, t2);
+
 	testSlidingWindow();
 	test3Sum();
 	testJungleAlgo();
 	testLongestParethese();
 	testMedianOfTwoSorted();
+	testPhoneNumberCom();
 	testMergeIntervals();
 	testMaxSqureMatrix();
 	testIslands();
