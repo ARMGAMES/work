@@ -29,7 +29,7 @@ public:
 	{
 		intVec = value_;
 		s = new char(strlen(str) + 1);
-		strcpy(s, str);
+		strcpy_s(s, strlen(str), str);
 	}
 	
 	// copy constructor
@@ -40,7 +40,7 @@ public:
 
 		delete[]s;
 		s = new char(strlen(other.s) + 1);
-		strcpy(s, other.s);
+		strcpy_s(s, strlen(other.s), other.s);
 	}
 
 	example1& operator=(example1& other)
@@ -49,7 +49,7 @@ public:
 
 		delete[]s;
 		s = new char(strlen(other.s) + 1);
-		strcpy(s, other.s);
+		strcpy_s(s, strlen(other.s), other.s);
 
 		return *this;
 	}
