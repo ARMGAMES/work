@@ -36,6 +36,9 @@
     <ClInclude Include="array.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="mordernc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -60,6 +63,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="array.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="mordernc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -7,6 +7,7 @@
 #include "searching.h"
 #include "graph.h"
 #include "array.h"
+#include "mordernc.h"
 
 int main()
 {
@@ -15,5 +16,6 @@ int main()
 	//testSorting();
 	testSearching();
 	testGraph();
+	testMordernC();
 }
 
