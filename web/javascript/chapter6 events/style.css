@@ -14,3 +14,9 @@ li.cool{
 li.complete{
     color: gray;
 }
+
+.warning{
+    color: red;
+    font: 1em sans-serif;
+
+}

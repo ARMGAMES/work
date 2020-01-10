@@ -7,20 +7,47 @@
     <link rel="stylesheet", href="style.css">
 </head>
 
-<body>
+<body id="body">
     
-    <div id="page">
-        <h1 id="header">List</h1>
-        <h2>Buy groceries</h2>
-        <ul>
-            <li id="one" class="hot"><em>fresh</em> figs</li>
-            <li id="two" class="hot">pine nuts</li>
-            <li id="three" class="hot">honey</li>
-            <li id="four">balsamic vinegar</li>
+    <div>
+        <ul id="shoppingList">
+            <li class="complete"><a href="itemDone.php?id=1"><em>fresh</em> figs</a></li>
+            <li class="complete"><a href="itemDone.php?id=2">pine nuts</a></li>
+            <li class="complete"><a href="itemDone.php?id=3">honey</a></li>
+            <li class="complete"><a href="itemDone.php?id=4">balsamic vinegar</a></li>
         </ul>
-        <script src="events.js"></script>
+        <button id="addItemBtn">Add Item</button>
+        <p id="listCount"></p>
     </div>
 
+    <div>
+        <h2>NEW ACCOUNT</h2>
+        <h3>Create a username:</h3>
+        <input id="username">
+        <p id="user_feedback"></p>
+        <h3>Create a password:</h3>
+        <input id="password">
+        <p id="pwd_feedback"></p>
+    </div>
+
+    <div>
+        <table>
+            <tr><td>screenX:</td><td id="screenX"></td></tr>
+            <tr><td>screenY:</td><td id="screenY"></td></tr>
+            <tr><td>pageX:</td><td id="pageX"></td></tr>
+            <tr><td>pageY:</td><td id="pageY"></td></tr>
+            <tr><td>clientX:</td><td id="clientX"></td></tr>
+            <tr><td>clientY:</td><td id="clientY"></td></tr>
+        </table>
+    </div>
+
+    <div>
+        <h3>MY PROFILE</h3>
+        <textarea id="message" rows="4" cols="50"></textarea>
+        <p id="charactersLeft"></p>
+        <p id="lastKey"></p>
+    </div>
+    <script src="events.js"></script>
 </body>
 
 </html>
