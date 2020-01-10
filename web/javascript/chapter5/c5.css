@@ -1,0 +1,16 @@
+
+li {
+    color: orange;
+}
+
+li.hot{
+    color: red;
+}
+
+li.cool{
+    color: green;
+}
+
+li.complete{
+    color: gray;
+}
