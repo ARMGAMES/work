@@ -1,0 +1,31 @@
+#include "pplib.h"
+#include "getfileinterface.h"
+
+#define TOP_LEVEL_NAMESPACE GetFile
+
+namespace getfile_client
+{
+	Message MSG_GET_FILE_CHUNK
+	{
+		UINT32 client_reqId; // no limit
+        PString filePath maxlen 100;
+        UINT32 offset max 500000000;
+        PString verInfo maxlen 100 parseEndOptB4Me;
+	};
+	
+	Message MSG_GET_FILE_CHUNK_REPLY
+	{
+        UINT32 client_reqId;
+        UINT16 error;
+        if (error)
+        {
+            PString errMsg;
+        }
+        else
+        {
+            UINT32 fileLength;
+            BYTE isLast;
+            PBlock chunk;
+        }
+	};
+};

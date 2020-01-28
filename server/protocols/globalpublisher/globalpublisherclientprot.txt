@@ -1,0 +1,155 @@
+#include "GlobalPublisher.h"
+#include "PBitmask.h"
+#include "sitemasks.h"
+#include "licensemask.h"
+
+#define TOP_LEVEL_NAMESPACE GlobalPublisherClient // overwrite the default top level namespace
+
+//---------------------------------------------------------------------------------------------
+// Admin Messages
+//---------------------------------------------------------------------------------------------
+
+Message MSG_GLOBALPUBLISHER_ADMIN_REREAD_INIDATA // Admin -> GlobalPublisher 
+{
+};
+
+Message MSG_GLOBALPUBLISHER_ADMIN_REREAD_INIDATA_REPLY // GlobalPublisher -> Admin
+{
+	INT16 errCode;
+	if( errCode != 0 )
+	{
+		PString errString;
+	}
+};
+
+//---------------------------------------------------------------------------------------------
+// GlobalPublisher Data Publications
+//---------------------------------------------------------------------------------------------
+
+Struct BuildAndVersionPublData @move_only_no_copy // Leaf { 0, 0 }
+{
+	PString build;
+	PString version;
+};
+
+Struct ServerTimePublData @move_only_no_copy // Leaf { 1, 0 }
+{
+	SrvTime srvTime;
+	UINT64 encodedTime;
+};
+
+Struct DataMiningPublData @move_only_no_copy // Leaf { 2, 0 }
+{
+	UINT32 dataMining;
+};
+
+Struct ServerConnectionInfoPublData @move_only_no_copy // Leaf { 3, n }
+{
+	PString address;
+	PString instance;
+	INT32 serverStatus default eGlobalPublisherAvailabilityStatus_Unknown parseEndOptB4Me;
+};
+
+Struct MonetData
+{
+	PString name;
+	PBlock value;
+};
+
+Struct MonetPublData @move_only_no_copy // Leaf { 4, 0 }
+{
+	vector<MonetData> vMonetData;
+};
+
+MsgBodyStruct NVP
+{
+	PString name;
+	PString value;
+};
+
+Struct HelpSupportPortalPublData @move_only_no_copy // Leaf { 5, 0 }, Leaf { 5, 1 }
+{
+	vector<NVP> helpSupportPortal;
+};
+
+MsgBodyStruct ATFExtendedFlag
+{
+	UINT64 featureMask;
+	UINT64 featureMask2;
+};
+
+MsgBodyStruct ATFClientDeviceSpecificFeature
+{
+	UINT32 clientDevice;	//	enum ClientDevice
+	ATFExtendedFlag featuresMask;
+};
+
+MsgBodyStruct ATFClientTypeSpecificFeature
+{
+	UINT32 clientType;	//	enum ClientType
+	ATFExtendedFlag featuresMask;
+	vector<ATFClientDeviceSpecificFeature> clientDeviceSpecificFeatures;
+};
+
+MsgBodyStruct ATFClientPlatformSpecificFeature
+{
+	UINT32 clientPlatform;	//	enum ClientPlatform
+	ATFExtendedFlag featuresMask;
+	vector<ATFClientTypeSpecificFeature> clientTypeSpecificFeatures;
+};
+
+MsgBodyStruct ATFSiteFeaturesVisibility
+{
+	UINT32 brandId;
+	UINT32 siteId;
+	ATFExtendedFlag clientFeaturesMask;
+	vector<ATFClientPlatformSpecificFeature> clientPlatformSpecificFeatures;
+};
+
+MsgBodyStruct ATFCountryException	//	PYR-29125
+{
+	PString country;
+	ATFExtendedFlag featureMaskOn;
+	ATFExtendedFlag featureMaskOff;
+	UINT32 brandIdMask;
+	UINT32 siteVisibilityMask;
+	PSiteMask siteVisibilityMaskEx parseEndOptB4Me;
+};
+
+Struct ATFClientFeaturesVisibilityEx @move_only_no_copy // Leaf { 5, 2 }
+{
+	vector<ATFSiteFeaturesVisibility> siteFeaturesVisibilities;
+	vector<ATFCountryException> countryExceptions; // PYR-29125
+};
+
+
+//---------------------------------------------------------------------------------------------
+// GlobalPublisher MinClientVersion Publication
+//---------------------------------------------------------------------------------------------
+
+MsgBodyStruct ClientVersionInfo
+{
+	UINT32 platformId;
+	UINT32 siteId;
+	UINT32 minClientVersion;
+};
+
+Struct MinClientVersionPublication @move_only_no_copy // Leaf { 0, 0 }
+{
+	vector<ClientVersionInfo> versions;
+};
+
+//---------------------------------------------------------------------------------------------
+// GlobalPublisher MinClientVersion Publication
+//---------------------------------------------------------------------------------------------
+
+MsgBodyStruct CurrencyRate
+{
+	PString currencyCode;
+	INT64 convRateM; // mid-market rate
+};
+
+Struct CurrencyRatePublication @move_only_no_copy // Leaf { 6, 0 }
+{
+	vector<CurrencyRate> currencyRates;
+};

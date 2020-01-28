@@ -1,0 +1,127 @@
+#include "PB_Server_WAPI_Msgs.h"
+
+#define TOP_LEVEL_NAMESPACE PB
+
+	MsgBodyStruct Balance
+	{
+		PString						currency;
+		INT32						amount;
+	};
+
+	MsgBodyStruct Warning
+	{
+		INT16						code;
+		PString						description;
+	};
+
+	MsgBodyStruct StakeLimit
+	{
+		PString						currency;
+		INT32						amount;
+	};
+
+
+namespace PB_AuthWAPI // from middle-tier to server object, authenticated (WebTokenGuard)
+{
+
+	Message Q_GET_USER_INFO
+	{
+		// intentionally left blank
+	};
+
+	Message A_GET_USER_INFO
+	{
+		PString						webId;
+		PString						defaultCurrency;
+		vector<Balance>				balances;
+		PString						timezone;
+		PString						site;
+		PString						language;
+		vector<Warning>				warnings;
+		vector<StakeLimit>			stakeLimits;
+		PString						country  parseEndOptB4Me;
+ 	};
+
+	Message Q_PLACE_TICKET
+	{
+		UINT64						transactionId;
+		UINT64						ticketId;
+		PString						currency;
+		INT32						cashAmount;
+		PString						description;
+	};
+
+	Message A_PLACE_TICKET
+	{
+		// intentionally left blank
+	};
+
+	Message Q_CASHOUT_TICKET
+	{
+		UINT64						transactionId;
+		UINT64						ticketId;
+		PString						currency;
+		INT32						cashAmount;
+		INT32						remainingStake;
+		INT32						cashoutMargin;
+		PString						description;
+	};
+
+	Message A_CASHOUT_TICKET
+	{
+		// intentionally left blank
+	};
+};
+
+namespace PB_PlainWAPI // from middle-tier to server object, non-authenticated (NullGuard)
+{
+	Message Q_SETTLE_TICKET
+	{
+		PString						webId;
+		UINT64						transactionId;
+		UINT64						ticketId;
+		PString						currency;
+		INT32						cashAmount;
+		PString						description;
+	};
+
+	Message A_SETTLE_TICKET 
+	{
+		// intentionally left blank
+	};
+
+
+	Message Q_VOID_TICKET 
+	{
+		PString						webId;
+		UINT64						transactionId;
+		UINT64						ticketId;
+		PString						currency;
+		INT32						cashAmount;
+		PString						description;
+	};
+
+	Message A_VOID_TICKET 
+	{
+		// intentionally left blank
+	};
+
+
+	Message Q_CASHOUT_TICKET2
+	{
+		PString						webId;
+		UINT64						transactionId;
+		UINT64						ticketId;
+		PString						currency;
+		INT32						cashAmount;
+		INT32						remainingStake;
+		INT32						cashoutMargin;
+		PString						description;
+	};
+
+	Message A_CASHOUT_TICKET2
+	{
+		// intentionally left blank
+	};
+
+};

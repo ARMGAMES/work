@@ -1,0 +1,6 @@
+#ifndef __UPDATEKEYS_H__
+#define __UPDATEKEYS_H__
+
+static const char _pubKey2Str[] = "MIGJAoGBAM9yVjK7ofQ2ZJXHuD91KWq5+nvohf2nTYAICZTPCfgFhF4RymiR9xLC04Jr0C6U3JCcTJp0BQ9L3afOcMsQsrFZ4K16nHNZAbEIi0Mf0jsuajM5N0yqyixgZJdxpghE6Odk++t/kV+3cgg55bmWI7CpOvafbkeCwqw5zzQPCusfAgMBAAE=";
+
+#endif

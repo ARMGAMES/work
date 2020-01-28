@@ -1,0 +1,199 @@
+#include "i18n.localedef.h"
+#include "cards.h"
+#include "PBitmask.h"
+#include "sitemasks.h"
+#include "licensemask.h"
+
+#define TOP_LEVEL_NAMESPACE TableCommon${ATF_THIN_NAMESPACE_SUFFIX}
+
+
+// the following structs are shared by client and server side protocols
+
+
+// ===================================================
+// The following are struct definitions
+// Usually these structs are referenced in the message
+// protocols, so we are using the naming convention
+// P_xxxx.
+// ====================================================
+
+
+struct P_Card
+{
+	char suit;
+	BYTE rank;
+	
+	@Override P_Card(const Card& card)
+	{
+		suit = card.suit;
+		rank = static_cast< BYTE >( card.rank );
+	}
+	
+	@Override operator Card()
+	{
+		Card card;
+		card.suit = suit;
+		card.rank = rank;
+		return card;
+	}
+
+	@Override operator const Card() const
+	{
+		Card card;
+		card.suit = suit;
+		card.rank = rank;
+		return card;
+	}
+
+	@Override const char *toTraceString(PString& buf) const
+	{
+		buf.appendUint(rank);
+		if(isprint((BYTE)suit))
+			buf.append(suit);
+		else
+			buf.append('.').appendUint((BYTE)suit);
+		return buf.c_str();
+	}
+};
+
+
+// TODO: obsoleted please use P_FppFactorEx instead. To be removed once client moves to P_FppFactorEx
+struct P_FppFactor
+{
+	UINT16 fppFactor;
+	UINT32 siteIds;
+	CommSrvTime happyHourEndTime;
+};
+
+MsgBodyStruct P_FppFactorEx
+{
+	UINT16 fppFactor;
+	PSiteMask siteMasks;
+	CommSrvTime happyHourEndTime;
+};
+
+// for PIniFile
+struct P_IniFile_Item
+{
+	PString name;
+	PString value;
+
+	@Override
+	bool equals(const P_IniFile_Item& _o) const
+	{
+		return name.equalsIgnoreCase(_o.name) &&
+			value.equals(_o.value);
+	}
+};
+
+struct P_IniFile_Section
+{
+	PString name;
+	vector<P_IniFile_Item> items;
+	
+	@Override
+	bool equals(const P_IniFile_Section& _o) const
+	{
+		return name.equalsIgnoreCase(_o.name) &&
+			items.equals(_o.items);
+	}
+	@Override
+	const char *getProperty(const char *name_) const
+	{
+		for(auto&& item : items)
+		{
+			if(item.name.equalsIgnoreCase(name_))
+			{
+				return item.value;
+			}
+		}
+		return nullptr;
+	}
+	@Override
+	const char *getProperty(const char *name_, const char* defvalue) const
+	{
+		const char *v = getProperty(name_);
+		return v ? v : defvalue;
+	}
+	@Override
+	int getIntProperty(const char *name_, int defvalue) const
+	{
+		const char *v = getProperty(name_);
+		return v ? atoi(v) : defvalue;
+	}
+	@Override 
+	void setProperty(const char* name_, const char* value)
+	{
+		for(auto&& item : items)
+		{
+			if(!PString::compareIgnoreCase(name_, item.name))
+			{
+				item.value = value;
+				return;
+			}
+		}
+		P_IniFile_Item i;
+		i.name = name_;
+		i.value = value;
+		items.emplace_back(move(i));
+	}
+};
+
+MsgBodyStruct CardDictionaryItem
+{
+	P_Card index;    // dictionary index: two bytes, both bytes are in range [128, 255]
+	P_Card card;     // real card
+};
+
+struct P_IniFile
+{
+	vector<P_IniFile_Section> sections;
+	
+	@Override
+	const ${TOP_LEVEL_NAMESPACE}::P_IniFile_Section* getSection( const char * name ) const
+	{
+		for(auto&& sec : sections)
+		{
+			if(sec.name.equalsIgnoreCase(name))
+			{
+				return &sec;
+			}
+		}
+
+		return nullptr;
+	}
+};
+
+
+struct P_ScheduledTournament
+{
+	CommSrvTime startTime;
+	UINT32 clubId;
+	PString clubName;
+	UINT32 tournId;
+	PString tournName;
+	BYTE gameType;
+	bool isHiLo;
+	UINT32 buyin;
+	UINT32 rake;
+	UINT32 knockoutBounty;
+	UINT32 numPlayers;
+	bool isRegistered;
+	BYTE limit;      
+	PString currency;
+	bool isPlayMoney;
+	UINT32 maxPlayers;
+	UINT32 tournState; 
+	PString server;			// PYR-18302
+	PString serverObject;	// PYR-18302
+	UINT32	flags;
+	INT32 scalePM;
+};
+
+MsgBodyStruct TableStakes
+{
+	vector< INT64 > antes parseEndOptB4Me; // When removing this optional parsing, also remove the obsolete TableStakes field from the table publication
+	vector< INT64 > blinds;
+	vector< INT64 > stakes parseEndOptB4Me;
+	vector< INT64 > bringIns;
+};

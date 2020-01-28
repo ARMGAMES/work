@@ -1,0 +1,86 @@
+#include "WebTokenServer.h"
+
+#define TOP_LEVEL_NAMESPACE WebTokenServer
+
+namespace cli
+{
+	Message WTS_Q_GET_TOKEN
+	{
+		UINT32 tokenType default eWebTokenTypeCashier max eWebTokenTypeLast parseEndOptB4Me;
+	};
+	Message WTS_A_GET_TOKEN
+	{
+		INT16 errCode;
+		if(errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString token;
+			PString signature;			
+		}
+	};	
+	
+	Message WTS_Q_REMOVE_WEBACCOUNTSERVICE_TOKEN
+	{
+		PString tokenStr maxlen 1000;
+	};
+	Message WTS_A_REMOVE_WEBACCOUNTSERVICE_TOKEN
+	{
+		INT16 errCode;
+		if(errCode)
+		{
+			PString errDescr;
+		}
+	};	
+};
+
+namespace cli_unauth
+{
+	Message WTS_Q_GET_TOKEN_EXPIRY_TIME
+	{
+		UINT32 userIntId; // no need to check id
+		PString tokenStr maxlen 1000;
+	};
+	Message WTS_A_GET_TOKEN_EXPIRY_TIME
+	{
+		INT16 errCode;
+		if(errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			UINT32 tokenValidTimeInSec;
+			PString userId;			//	PYR-72639
+		}
+	};
+	
+	Message WTS_Q_VERIFY_PSIP_TOKEN
+	{
+		UINT32 userIntId; // no need to check id
+		PString tokenStr maxlen 1000;
+	};
+	Message WTS_A_VERIFY_PSIP_TOKEN
+	{
+		INT16 errCode;
+		if(errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString userId;
+		}
+	};
+};
+
+namespace notifications
+{
+	Message WTS_U_APP_SESSION_LOGOUT
+	{
+		UINT64 appSessionId;
+		UINT32 userIntId;
+	};
+};

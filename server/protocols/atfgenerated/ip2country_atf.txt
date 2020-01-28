@@ -1,0 +1,93 @@
+#include "lobby.h"
+#include "i18n.localedef.h"
+#include "Common_atf${ATF_THIN_FILENAME_SUFFIX}.h"
+#include "sites.h"
+#include "licenseid.h"
+
+#define TOP_LEVEL_NAMESPACE ip2country
+
+namespace cli_unauth
+{
+	Message MSG_REDIRECTOR_URL
+	{
+		UINT32 siteId max PokerStars_Last;
+		Common${ATF_THIN_NAMESPACE_SUFFIX}::AtfShared::LoginExtra clientExtra parseEndOptB4Me;
+		PString userId default "" parseEndOptB4Me maxlen 20;
+		UINT32 licenseId max eLicenceLast parseEndOptB4Me;
+	};
+
+	Message MSG_REDIRECTOR_URL_ERROR_REPLY
+	{
+		UINT16 errCode;
+	};
+
+	Message MSG_REDIRECTOR_URL_REPLY
+	{
+		PString url;
+		PString country;
+		PString ipAddr;
+		PString region;
+		CommMsgBody
+		{
+			PString redirectorTemplate;
+		};
+	};
+
+	MsgBodyStruct NameValuePair
+	{
+		PString name maxlen 128;
+		PString value maxlen 2000;
+	};
+
+	MsgBodyStruct Params
+	{
+		vector<NameValuePair> pairs maxsize 500;
+	};
+	
+	Message MSG_RESOLVER_TAG
+	{
+		PString tag maxlen 128; // In DB field name is 'RESOLVERLOG.LINK'
+		UINT32 siteId max Sites::PokerStars_Last;
+		PString country maxlen 100;
+		UINT32 localeId max MAX_LOCALES;
+		Common${ATF_THIN_NAMESPACE_SUFFIX}::AtfShared::LoginExtra clientExtra;
+		PString urlParamStr maxlen 10000;
+		bool isForceTest default false parseEndOptB4Me;
+		UINT32 appUserIntId default 0 parseEndOptB4Me; // no limit
+		SrvTime appTimeUtc parseEndOptB4Me;
+		Params params parseEndOptB4Me;
+		PString state maxlen 100 parseEndOptB4Me;
+		UINT32 licenseId max eLicenceLast parseEndOptB4Me;
+	};
+
+	Message MSG_RESOLVER_TAG_REPLY
+	{
+		INT16 errCode;
+		if ( errCode == 0 )
+		{
+			PString url;
+		}
+		else
+		{
+			PString errDescr;
+		}
+	};
+
+	Message MSG_RESOLVER_GET_VERSION
+	{
+		// Empty message body
+	};
+
+	Message MSG_RESOLVER_GET_VERSION_REPLY
+	{
+		INT16 errCode;
+		if ( errCode == 0 )
+		{
+			PString version;
+		}
+		else
+		{
+			PString errDescr;
+		}
+	};
+};

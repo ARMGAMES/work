@@ -1,0 +1,901 @@
+#include "UserDefStructs.h"
+#include "TournCommonStructs${ATF_THIN_FILENAME_SUFFIX}.h"
+#include "atfgenerated/brandimgs${ATF_THIN_FILENAME_SUFFIX}.h"
+#include "storm/TableCommonStructs${ATF_THIN_FILENAME_SUFFIX}.h"
+#include "MultidayTourn${ATF_THIN_FILENAME_SUFFIX}.h"
+#include "NStackTournInfo${ATF_THIN_FILENAME_SUFFIX}.h"
+#include "tournmilestoneprize.h"
+#include "FppFactor${ATF_THIN_FILENAME_SUFFIX}.h"
+#include "BlindLevelIntervalRule.h"
+#include "mtlobby.h"
+#include "lobby.h"
+
+#define TOP_LEVEL_NAMESPACE TournClient${ATF_THIN_NAMESPACE_SUFFIX}
+
+
+struct P_BreakPub
+{
+	INT32 breakTime;
+	UINT32 breakLength;
+};
+
+struct P_TicketType
+{
+	UINT16 ticketTypeId;
+	PString name;
+};
+
+MsgBodyStruct P_FppReward
+{
+	UINT32 siteId;
+	UINT32 reward;
+};
+
+struct P_AwardRange
+{
+	UINT32 awardAmount;
+	UINT32 nextTournId;
+	UINT32 startPlace;
+	UINT32 endPlace;
+};
+
+MsgBodyStruct P_AutopublishBody
+{
+	PString name;
+	PString value;
+};
+
+struct TournSubscr_SpinGoPrize_TargetReference
+{
+	UINT64 tournamentId;
+	PString server;
+	PString instance;
+	I18nPString name;
+};
+
+struct LobbyData_Betting
+{
+	BYTE blindsLevel;
+	BYTE handType;
+	BYTE structure;
+	BYTE hilo;
+	TableCommon${ATF_THIN_NAMESPACE_SUFFIX}::TableStakes stakes;
+};
+
+MsgBodyStruct LobbyData_MultidayTourn
+{
+	MultidayTourn mt;
+};
+
+struct P_ParticipantsInfo
+{	
+	PString name;
+	INT32 chips;
+	INT32 payment0;
+	INT32 payment1;
+};
+
+struct P_DealPayout
+{
+	INT8 position;
+	INT32 noDealPayout;
+};
+
+MsgBodyStruct ExtraInfo_StakesLevel
+{
+	TableCommon${ATF_THIN_NAMESPACE_SUFFIX}::TableStakes stakes;
+	UINT32 levelTime;
+	UINT32 addTimeBank;
+};
+
+struct TournExtraSubscr_Prize_Winner
+{
+	INT32 amount;
+	BYTE percent;
+};
+
+
+struct TournExtraSubscr_Prize_Prize
+{
+	INT32 min;
+	INT32 max;
+	INT32 numTickets;
+	vector<TournExtraSubscr_Prize_Winner> winners;
+};
+
+namespace publication
+{
+	struct TournSubscr_Static // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_STATIC_LEAF }
+	{
+		UINT32 tournamentId;
+		INT32 buyIn;
+		INT32 rake;
+		INT32 startingChips;
+		INT32 maxPlayers;
+		INT32 playersPerTable;
+		BYTE gameType;
+		BYTE isHiLo;
+		SrvTime startingTime;
+		SrvTime registrationStarts;
+		SrvTime registrationEnds;
+		SrvTime seatingStarts;
+		INT32 minPlayers;
+		BYTE restricted;
+		INT32 fppReward;
+		INT32 fppBuyIn;	
+		BYTE isRestricted;
+		BYTE isPwdProtected;
+		PString name;
+		INT32 numRebuys;
+		INT32 rebuyChips;
+		INT32 _obsolete_1;
+		INT32 rebuyMaxChips;
+		INT32 numAddOns;
+		INT32 addOnChips;
+		INT32 _obsolete_2;
+		INT32 addOnMaxChips;
+		INT32 scriptPrizeAddOn;
+		INT32 guaranteedPrizePool;
+		UINT32 tournFlags;
+		INT16 maxAllIns;
+		BYTE awardSchema;
+		UINT32 timeBank;
+		INT32 unregistrationEnds_t;
+		UINT32 satelliteTarget;
+		INT32 satelliteTargetBuyIn;
+		INT32 rebuyFppPrice;
+		INT32 addonFppPrice;
+		BYTE isPlayMoney;
+		UINT32 startingTime_t;
+		UINT32 registrationStarts_t;
+		UINT32 registrationEnds_t;
+		UINT32 seatingStarts_t;
+		UINT32 tournFlagsServInt;
+		UINT32 tournProp2;
+		vector<P_TicketType> ticketTypes;
+		UINT32 tableLogo;
+		I18nPString finalTableText;	
+		UINT16 chatLang;
+		UINT32 lobbyRestricted;
+		INT32 fppFraction;
+		PString currency;
+		INT32 rebuyFppReward;
+		INT32 addOnFppReward;
+		INT8 fppRewardPercent;
+		UINT32 nPublishLobbyPlayersLess;
+		INT32 bounty;
+		UINT32 placeHolder; // always 0 kept for client compatibility
+		CommMsgBody bounties
+		{
+			vector<UINT32> teamProBounties parseEndOptB4Me;
+			vector<UINT32> bountyMultipliers;
+		};
+		BYTE publPropFlag;
+		MultidayTourn multiday;
+		PString satelliteTargetReference;
+		UINT16 satelliteTargetReferenceLock;
+		UINT32 clubId;
+		BYTE timedTournType;
+		UINT16 timedTournLevelsOrMinutes;
+		BYTE timedTournPayoutStructure;
+		bool _obsolete_3;
+		vector<P_FppReward> vppToPublish;
+		BYTE speedDisplay;
+		PString tournBrand;
+		INT32 scalePM;
+		UINT32 blitzNormalDealingThreshold;
+		bool _obsolete_4;
+		BYTE progressiveKnockout;
+		I18nPString tableText;
+		UINT16 reEntryAllowed;
+		UINT32 tournMask;
+		UINT32 tournMask2;
+		UINT32 tournMask3;
+		UINT32 tournMask4;
+		PString internalReference;
+		PString favoriteReference;
+		INT64 ticketPrice;
+		UINT64 tournFlags2;
+		bool cannotUnregisterFromTarget;
+		CommMsgBody
+		{
+			NStackTournInfoStruct nStackInfoMsg parseEndOptB4Me;
+		};
+		SrvTime targetWhenStarts;
+		PString admission;
+		UINT32 siteMask;
+		UINT32 publStartLevel;
+		UINT32 tournMask5;
+		UINT32 tournMask6;
+		BYTE dealExclusionType;
+		INT32 dealExclusionValue;
+		BYTE timedTournPlayersPercent;
+		INT32 _obsolete_5;
+		INT32 spinGoStartDelay;
+		BYTE rmPmLobby;
+		UINT32 brandMask;
+		INT32 playerKnockOutAddOn;
+		INT32 totalKnockOutAddOn;
+		BYTE knockOutAddOnProgressive;
+		UINT32 sitGoStarterGameId;
+		UINT32 numStandardButton;
+		INT32 lateRegDelta;
+		INT32 finalTablePlusOne;
+		INT32 multidayIndex;
+		vector<LobbyData_MultidayTourn> multiDayVec;
+		PString criteria;
+		PString groupReference;
+		INT32 tournGroup;
+		INT32 prizePool;
+		vector<PString> admissions;
+		PString pokerNgGroup;
+		PSiteMask siteMaskEx;
+		UINT32 pppId parseEndOptB4Me;
+		PString tableTrait parseEndOptB4Me;
+		PString highlightColor parseEndOptB4Me;
+	};
+
+	struct TournSubscr_Betting // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_BETTING_LEAF }
+	{
+		UINT32 loBet;
+		UINT32 hiBet;
+		UINT32 bringIn;
+		UINT32 smallBlind;
+		BYTE structure;
+		UINT32 ante;
+		BYTE blindsLevel;
+		BYTE nextLevelOrdinal;
+		if( nextLevelOrdinal )
+		{
+			UINT32 nextAnte;
+			UINT32 nextSmallBlind;
+			UINT32 nextLoBet;
+			UINT32 nextHiBet;
+			UINT32 nextBringIn;
+			UINT32 nextLevelStart_t;
+			SrvTime nextLevelStart;
+		}
+		UINT16 olympicLevel;
+		BYTE gameType;
+		BYTE limit;
+		BYTE isHiLo;
+	};
+	
+	struct TournSubscr_BettingNew // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_BETTING_LEAF_NEW }
+	{
+		CommMsgBody cLevel
+		{
+			LobbyData_Betting currentLevel;
+		};
+		CommMsgBody nLevel
+		{
+			LobbyData_Betting nextLevel;
+		};
+		UINT32 nextLevelStart;
+		SrvTime nextLevelStartTime;
+		INT16 olympicLevel;
+	};
+
+	struct TournSubscr_Status // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_STATUS_LEAF }
+	{
+		UINT32 status;
+		SrvTime newStartTimeFlightTourn;
+		UINT32 minutesLateFlightTourn;
+		PString createdBy;
+		PString cancelledBy;
+		bool isBlitzTourn;
+		UINT32 timedTournPlayersThreshold;
+		bool sameLevelFlightsAvailable;
+		bool nextLevelFlightsAvailable;
+		INT32 delayedPlaceDelta;
+		UINT32 activeFlags;
+		bool isWinTheButtonTourn;
+	};
+	
+	struct TournSubscr_Board // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_MSGBOARD_LEAF }
+	{
+		PString itSessionId;
+	};
+
+	struct TournSubscr_Break // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_BREAK_LEAF }
+	{
+		SrvTime nextBreakStarts;
+		SrvTime currentBreakStops;
+		UINT32 currentBreakDuration;
+		UINT32 nextBreakStarts_t;
+		UINT32 currentBreakStops_t;
+		bool addOnEligibleBreak;
+		INT32 blitzTableRound;
+		I18nPString message;
+	};
+
+	struct TournSubscr_Closed // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_CLOSED_LEAF }
+	{
+		SrvTime closed;
+	};
+
+	struct TournSubscr_Awards // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_AWARDS_LEAF }
+	{
+		INT32 effectivePrizePool;
+		vector<INT32> prizes;
+		UINT32 nTickets; // number of awards with non-0 nextTournIds
+		vector<UINT32> nextTournIds;
+		INT32 creditPlayer;
+		INT8 mixTournSatellite;
+	};
+	
+	struct TournSubscr_AddOn // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_ADDON_LEAF }
+	{
+		BYTE waiting;
+	};
+
+	struct TournSubscr_Stakes // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_STAKES_LEAF }
+	{
+		UINT32 minStack;
+		UINT32 maxStack;
+		UINT32 avgStack;
+	};
+
+	struct TournSubscr_PrizePool // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_PRIZEPOOL_LEAF }
+	{
+		UINT32 numUsers;
+		INT32 prizePoolToPublish;
+		UINT32 totalRebuysDone;
+		UINT32 totalAddonsDone;
+		INT32 payouts;
+		INT32 flightIntermediatePayoutPrizePool;
+		INT32 flightIntermediatePayoutPerUser;
+	};
+
+	struct TournSubscr_NumRegistered // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_REGISTERED_LEAF }
+	{
+		UINT32 userCount;
+		UINT32 isBlitz;
+		UINT32 numReg;
+		UINT32 totalReentriesMade;
+	};
+
+	struct TournSubscr_AwardsPrelim // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_PRELIM_AWARDS_LEAF }
+	{
+		UINT32 prelimAwards;
+		UINT32 numPaid;
+		UINT32 numTickets;
+		vector<P_AwardRange> awardRanges;
+	};
+
+	struct TournSubscr_TableBanner // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_TABLE_MSG_LEAF }
+	{
+		UINT32 counter;
+		UINT16 duration;
+		INT32 options;
+		I18nPString banner;
+		SrvTime when;
+		UINT32 flags;
+		UINT32 licenseMask; // 32 bits
+		I18nPString observerBanner;
+		PLicenseMask licenseMaskNew;
+	};
+
+	struct TournSubscr_HappyHours // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_HAPPY_HOURS_LEAF }
+	{
+		l2vector<FppFactor> happyHourMultipliers;
+	};
+
+	struct TournSubscr_HandByHand // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_HANDBYHAND_LEAF }
+	{
+		bool handByHand;
+	};
+
+	struct TournSubscr_Bounty // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_BOUNTIES_LEAF }
+	{
+		INT32 minBounty;
+		INT32 maxBounty;
+		INT32 averageBounty;
+	};
+
+	struct TournSubscr_Golden // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_GOLDEN_LEAF }
+	{
+		INT32 goldenSnGBuyinAddon;
+		INT32 goldenSnGPrizepoolAddon;
+		INT16 goldenSnGPrizepoolMultiplier;
+		bool goldenSnGEligible;
+		INT32 ppAddonForClient;
+		INT32 goldenSnGPrizepoolEffectiveMultiplier1;
+		INT32 goldenSnGMilestoneAddon;
+		INT64 goldenSnGPrizepoolEffectiveMultiplier2;
+		INT32 goldenSnGStartTime;
+	};
+
+	struct TournSubscr_Autopublish // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_AUTOPUBLISH_LEAF }
+	{
+		vector<P_AutopublishBody> autoPublishBodies;
+	};
+
+	struct TournSubscr_PrizePoolUnit // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_PRIZEPOOLUNIT_LEAF }
+	{
+		BYTE prizePoolUnit;
+		INT32 prizePoolToPublish;
+		INT32 prizePoolMoneyToPublish;
+	};
+
+	struct TournSubscr_OptEarlyStart // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_OPTEARLYSTART_LEAF }
+	{
+		BYTE options;
+	};
+
+	struct TournSubscr_NextMilestoneEvent // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_MILESTONE_LEAF }
+	{
+		bool indicator;
+		UINT32 firstMilestone;
+		UINT32 nextMilestone;		
+		UINT32 tables;
+		TournMileStonePrize prize;
+	};
+
+	struct TournSubscr_SpinGoPrize_Vector
+	{
+		vector<INT32> prizes;
+	};
+	
+	struct TournSubscr_SpinGoPrize // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_SAG_LEAF }
+	{
+		vector<INT64> spinGoLevels;
+		UINT32 spinGoMarker;
+		vector<I18nPString> tickets;
+		UINT32 level;
+		vector<TournSubscr_SpinGoPrize_TargetReference> targetReferences;
+		INT32 spinGoMaxCashout;
+		vector<TournSubscr_SpinGoPrize_Vector> spinGoMaxLevels;
+		UINT32 animationType;
+		SrvTime animationEndTime;
+		bool isJackpot;
+		PString winner;
+		INT32 freeBetStake;
+		PString freeBetCurrency;
+		UINT32 freeBetsCampaignId;
+		UINT64 freeBetsCampaignId64 parseEndOptB4Me;
+	};
+
+	struct TournSubscr_PerHand // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_PER_HAND }
+	{
+		bool intervalInHands;
+		INT32 currentHandInLevel;
+		INT32 totalHandsInLevel;
+		INT32 handsUntilAllInLevel;
+	};
+
+	struct TournSubscr_BeatTheClock // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_BEATTHECLOCK }
+	{
+		INT16 btcStartAnimation;
+	};
+
+	struct TournSubscr_SpinGoSpinner // Path { PUBL_TOURN2004_ROOT, PUBL_TOURN2004_DYNAMIC_TRIPLE_SPINNER }
+	{
+		SrvTime time;
+		INT32 choice;
+		INT32 spinner1;
+		INT32 spinner2;
+		INT32 spinner3;
+		INT32 cashout;
+		bool timeout;
+		PString spinnerStr;
+	};
+
+	struct TournSimpleAutoDealSubscr
+	{
+		INT32 dealGeneration;
+		INT8 state;
+		INT64 timeout;
+		INT32 dealFailureState;
+		vector<P_ParticipantsInfo> participantsInfo;
+		INT32 dealExclusion;
+		INT8 type0;
+		INT8 type1;
+		INT8 playerAgreedType;
+		INT8 userAgreed0;
+		INT8 userAgreed1;
+		PString currency;
+		vector<P_DealPayout> dealPayouts;
+	};
+
+	struct TournExtraSubscr_Stakes // Path { PUBL_TOURN_INFO_ROOT, PUBL_TOURN_INFO_NEWSTAKES_LEAF }
+	{
+		vector<ExtraInfo_StakesLevel> stakeLevels;
+		UINT32 finalTableTimeBank;
+		UINT32 addRoundTimeBank;
+		INT32 currRule;
+		vector<BlindLevelIntervalRule> numRules;
+	};
+
+	struct TournExtraSubscr_Breaks // Path { PUBL_TOURN_INFO_ROOT, PUBL_TOURN_INFO_BREAKS_LEAF }
+	{
+		vector<P_BreakPub> breaks;
+	};
+
+	struct TournExtraSubscr_HandByHand // Path { PUBL_TOURN_INFO_ROOT, PUBL_TOURN_INFO_HANDBYHAND_LEAF }
+	{
+		vector<TournCommon${ATF_THIN_NAMESPACE_SUFFIX}::P_Event> handByHandRanges;
+		PString targetServer;
+		bool isSatelliteData;
+		UINT32 fallBackSatTargetSize;
+	};
+	
+	// TODO replace ExtraInfo_Prizes with corresponding data struct from TournScript
+	struct TournExtraSubscr_Prize // Path { PUBL_TOURN_INFO_ROOT, PUBL_TOURN_INFO_PRIZES_LEAF }
+	{
+		UINT32 zero;
+		UINT32 creditPlayer;
+		UINT32 returnBuyInValue;
+		INT32 rebuyPrice;
+		INT32 rebuyRake;
+		INT32 addOnPrice;
+		INT32 addOnRake;
+		vector<TournExtraSubscr_Prize_Prize> prizes;
+	};
+
+	struct TournExtraSubscr_Rake_SitesPerCountry
+	{
+		PString country;
+		UINT32 sites;
+	};
+	
+	struct TournExtraSubscr_Rake_SitesPerCountryEx
+	{
+		PString country;
+		PSiteMask sitesEx;
+	};
+
+	struct TournExtraSubscr_Rake // Path { PUBL_TOURN_INFO_ROOT, PUBL_TOURN_INFO_REBUYRAKECOUNTRIES_LEAF }
+	{
+		UINT32 sites4AllCountries default UINT_MAX;
+		UINT32 sitesNoRake;
+		vector< TournExtraSubscr_Rake_SitesPerCountry > sitesPerCountry;
+
+		PSiteMask sites4AllCountriesEx;
+		PSiteMask sitesNoRakeEx;
+		vector< TournExtraSubscr_Rake_SitesPerCountryEx > sitesPerCountryEx;
+	};
+
+	struct TournStormSubscr
+	{
+		bool stormAllowed;
+		vector<INT32> powerCostBase;
+		vector<CommMsgBody> powers;
+	};
+
+
+
+	struct TournSatelliteDataSubscr_Stat
+	{
+		UINT32 tournamentId;
+		PString server;
+		UINT32 buyIn;
+		UINT32 rake;
+		UINT32 fppBuyIn;
+		BYTE isRestricted;
+		BYTE isPlayMoney;
+		UINT32 minPlayers;
+		UINT32 tournFlags;
+		BYTE game;
+		BYTE isHiLo;
+		BYTE structure;
+		UINT32 tournSites;
+		UINT32 maxPerTable;
+		PString admissionId;
+		UINT16 chatLang;
+		PString currency;
+		UINT32 knockout;
+		UINT32 tournFlagsServInt;
+		UINT32 scalePM;
+		INT64 admissionPrice;
+		BYTE speedDisplay;
+		I18nPString name;
+		UINT64 tournFlags2;
+		UINT32 activeFlags;
+		PSiteMask tournSitesEx;
+	};
+
+	struct TournSatelliteDataSubscr_Dyna
+	{
+		SrvTime whenStart;
+		UINT32 status;
+		UINT32 entrants;
+		BYTE publProp;
+		UINT32 prizePoolToPublish;
+		BYTE prizePoolUnit;
+		INT8 mixTournSatellite;
+	};
+		
+	// PYR-61693: FTD-246
+	struct LightTournData
+	{
+		UINT32 status;
+		SrvTime whenStart;
+		INT32 prizePoolToPublish;
+		BYTE prizePoolUnit;
+		INT32 prizePoolMoneyToPublish;
+		UINT32 numUsersReg;
+	};
+
+	struct TournI18nSubscr_Name // Path { PUBL_TOURN_I18N_ROOT, PUBL_TOURN_I18N_NAME_LEAF }
+	{
+		PString name;
+	};
+
+	struct TournPlayerDataSubscr_User // path {0, playerNum, PUBL_USER_STATIC_LEAF}
+	{
+		PString name;
+		PString city;
+		INT32 place;
+		INT32 placeTo;
+		BYTE publProp;
+		INT32 bounty;
+		PString country;
+		BYTE showCity;
+		UINT32 imageId;
+		UINT16 entryNum;
+		BrandProt${ATF_THIN_NAMESPACE_SUFFIX}::BrandImageList brandImageList;		
+		UINT64 tournId;
+		PString admission;
+		INT32 tChips;
+		UINT32 tournUsersFlags;
+		UINT64 pppEntryId parseEndOptB4Me;
+	};
+
+	struct TournPlayerDataSubscr_Chips // path {0, playerNum, PUBL_USER_DYNAMIC_LEAF}
+	{
+		UINT32 chips;
+		UINT16 rank;
+		UINT32 award;
+	};
+
+	struct TournPlayerDataSubscr_Knockouts // path {0, playerNum, PUBL_USER_KNOCKOUT_LEAF}
+	{
+		INT32 knockouts;
+		INT32 headBounty;
+		INT32 collectedTotal;
+	};
+
+	struct TournPlayerDataSubscr_Ticket // path {0, playerNum, PUBL_USER_TICKET_LEAF}
+	{
+		UINT32 nextTournId;
+		PString ticketAdmission;
+	};
+
+	struct TournTableData_Stat // path {PUBL_TABLES_ROOT, tableNum, PUBL_TABLE_STATIC_LEAF}
+	{
+		UINT32 tableId;
+		PString name;
+		PString server;
+		PString serverObj;
+		INT32 placeHolder;
+		UINT64 tableId64;
+	};
+
+	struct TournTableData_Dyna // path {PUBL_TABLES_ROOT, tableNum, PUBL_TABLE_DYNAMIC_LEAF}
+	{
+		UINT32 numUsers;
+		UINT32 minStack;
+		UINT32 maxStack;
+	};
+	
+	MsgBodyStruct TournTablePlayerSubscr
+	{
+		BYTE position;
+		PString userName;
+		INT32 chips;
+		PString cityData;
+		BYTE showCity;
+		BYTE publProp;
+		INT32 headBounty;
+		INT32 collectedBountyKnockouts;
+		UINT32 imageId;		
+		BrandProt${ATF_THIN_NAMESPACE_SUFFIX}::BrandImageList brandImageList;	
+	};
+	
+	struct TournTableWithPlayersSubscr // path {PUBL_TABLES_ROOT, tableNum, 0}
+	{
+		BYTE oldSubCount;
+		l1vector<TournTablePlayerSubscr> players;
+	};
+};
+
+namespace player
+{
+	struct P_UserTicketData
+	{
+		PString admissionId;
+		UINT32 totalCount;
+		UINT32 reserved;
+	};
+
+	Message MSG_LOBBY_TOURN_REG_INFO
+	{
+		PString userId maxlen 20;
+		UINT32 tournId;
+		UINT32 tournRegInfoFlags parseEndOptB4Me max static_cast<UINT32>(TournRegInfoFlags::eTournRegInfoFlags_Last);
+	};
+
+	Message MSG_LOBBY_TOURN_REG_INFO_REPLY
+	{
+		INT16 errCode;
+		if( errCode == ERR_INSUFFICIENT_FUNDS )
+		{
+			PString errDescr;
+			TournCommon${ATF_THIN_NAMESPACE_SUFFIX}::Error_InsufficientFunds32 errInfo;
+		}
+		else if( errCode == TOURN_SPEND_LIMIT_EXCEEDED )
+		{
+			PString errDescr;
+			PString currency;
+			UINT32 buyInAndRake;
+			bool enoughMoneyInOtherCurrency;
+			TournCommon${ATF_THIN_NAMESPACE_SUFFIX}::TournSpendLimit tournSpendLimit;
+		}
+		else if( errCode )
+		{
+			PString errDescr;
+			PString currency;
+			UINT32 buyInAndRake;
+			bool enoughMoneyInOtherCurrency;
+		}
+		else
+		{
+			UINT32 buyIn;
+			UINT32 rake;
+			UINT32 fpp;
+			PString admissionId;
+			BYTE isPlayMoney;
+			BYTE isPwdProtected;
+			UINT32 userChips;
+			UINT32 userPlayChips;
+			UINT32 userFpp;
+			UINT32 numTickets;
+			UINT32 tChips;
+			UINT32 wChips;
+			PString preRegMsg;
+			BYTE game;
+			BYTE isHiLo;
+			BYTE structure;
+			PString currency;
+			bool enoughMoneyInOtherCurrency;
+			CommMsgBody currencyContext;
+			CommMsgBody clientCurrencyContext;
+			SrvTime whenStartAbs;
+			PString tournName;
+			UINT64 playChips64;
+			INT32 scalePM;
+			BYTE speed;
+			UINT32 minPlayers;
+			UINT32 maxPlayers;
+			BYTE maxPerTable;
+			UINT32 tournFlags;
+			UINT32 knockout;
+			bool isProportional;
+			INT64 admPrice;
+			vector<P_UserTicketData> effectiveAdmissions;
+			INT64 tournFlags2;
+			TournCommon${ATF_THIN_NAMESPACE_SUFFIX}::TournSpendLimit tournSpendLimit parseEndOptB4Me;
+		}
+	};
+
+	Message MTL_LOBBY_REGISTER_USER
+	{
+		PString userId maxlen 20;
+		UINT32 buyinRM;
+		UINT32 buyinPM;
+		UINT32 buyinFpp;
+		PString password maxlen 100;
+		BYTE useTicket;
+		UINT32 buyinTChips;
+		UINT32 buyinWChips;
+		CommMsgBody currencyContext;
+		// the following is not parsed/used by server
+		PString currency maxlen 5 parseEndOptB4Me;
+		BYTE game;
+		BYTE hiLo;
+		BYTE structure;
+		SrvTime startTime;
+	};
+
+	Message MTL_LOBBY_REGISTER_USER_REPLY
+	{
+		INT16 errCode;
+		PString errDescr;
+		if( !errCode )
+		{
+			INT16 maxAllins;
+			PString registrationMsg;
+			bool seatsAvailable; // TODO: check name is appropriate
+			PString serverName;
+			PString socialToken;
+			PString clientNotification;
+		}
+	};
+
+	Message MTL_LOBBY_UNREGISTER_USER
+	{
+		UINT32 tournId; // TODO: need to introduce UINT64?
+		PString userName maxlen 20;
+	};
+
+	Message MTL_LOBBY_UNREGISTER_USER_REPLY
+	{
+		INT16 errCode;
+		PString errDescr;
+		if( !errCode )
+		{
+			UINT32 refund;
+			INT32 refundPlay;
+			UINT32 refundFpp;
+			UINT32 refundTChips;
+			UINT32 refundWChips;
+			PString tournamentCurrency;
+			PString refundCurrency;
+			UINT64 refundPlay64;
+		}
+	};
+	
+	Message MTL_CLI_GOTO_FINISH
+	{
+		UINT32 place;
+		PString popupText;
+		PString socialToken;
+		UINT32 nextScheduledTournId;
+		if( nextScheduledTournId )
+		{ 
+			SrvTime startTime;
+			UINT32 clubId;
+			PString clubName;
+			UINT32 tournId;
+			PString tournName;
+			BYTE gameType;
+			bool isHiLo;
+			UINT32 buyin;
+			UINT32 rake;
+			UINT32 knockoutBounty;
+			UINT32 numPlayers;
+			bool isRegistered;
+			BYTE limit;
+			PString currency;
+			bool isPlayMoney;
+			UINT32 maxPlayers;
+			UINT32 tournState;
+			PString server;
+			PString serverObject;
+			UINT32 flags;
+			INT32 scalePM;
+		}
+		bool isNonFinalFlight;
+		if( isNonFinalFlight )
+		{
+			I18nPString nextFlightLevelTargetTournName;
+			PString nextFlightLevelTargetServer;
+		}
+		INT32 headBounty;
+		UINT32 tournFinishUserFlags;
+		INT32 award;
+		INT32 collectedBountyAndKnockouts;
+		SrvTime eligibleForLateReEntryUntil;
+		UINT32 progressivePlusInitialBuyInTierId parseEndOptB4Me;
+	};
+	
+	Message MTL_CLI_GOTO_TABLE
+	{
+		PString serverAddr;
+		PString serverObj;
+		bool isPlayMoney;
+		PString currency;
+		UINT32 chips;
+		bool sittingIn;
+		BYTE seat;
+		bool onConnect;
+		UINT64 handId;
+		UINT32 stats;
+		UINT16 actionAmountOld; //???
+		UINT32 timeoutOld; //???
+		BYTE action;
+		UINT16 actionAmount;
+		UINT32 timeout;
+	};
+};

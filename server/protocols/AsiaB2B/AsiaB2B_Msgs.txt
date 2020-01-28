@@ -1,0 +1,115 @@
+// PYR-64175 (1.1) USER from Regulator to GW
+     MSG_ASIA_GAMING_LOGIN                           = 50000   //  4sss - reqId,operatorId,userName,plainTextPwd                     struct AsiaB2B_GamingLogin    ASIA_GAMING_GATEWAY_CONN_FROM_REGULATOR
+,    MSG_ASIA_GAMING_LOGIN_REPLY                     = 50001   //  6[s|ss] - errCode[errDesc|normalizedOperatorUserId,AGAuthToken]   struct AsiaB2B_GamingLogin::Reply
+
+// PYR-64175 (1.2) USER from Regulator to GW
+,    MSG_ASIA_GAMING_VERIFY_TOKEN                    = 50002   //  4sss - reqId,operatorId,operatorUserId,AGAuthToken                struct AsiaB2B_GamingVerifyToken    ASIA_GAMING_GATEWAY_CONN_FROM_REGULATOR
+,    MSG_ASIA_GAMING_VERIFY_TOKEN_REPLY              = 50003   //  6[s|ss] - errCode[errDesc|normalizedOperatorUserId]               struct AsiaB2B_GamingVerifyToken::Reply
+
+// PYR-64175 (1.4) USER from Regulator to GW
+,    MSG_ASIA_GAMING_LOGOUT                          = 50004   //  4sss - reqId,operatorId,operatorUserId,AGAuthToken     struct AsiaB2B_GamingLogout   ASIA_GAMING_GATEWAY_CONN_FROM_REGULATOR,ASIA_GAMING_GATEWAY_CONN_FROM_WEBTOKENSRV
+,    MSG_ASIA_GAMING_LOGOUT_REPLY                    = 50005   //  6[s|s] - errCode[errDesc]                              struct AsiaB2B_GamingLogout::Reply
+
+// PYR-64175 (1.5) USER from Cashier to GW
+,    MSG_ASIA_GAMING_GET_USER_BALANCE                = 50006   //  struct AsiaB2B_GetUserBalance                            ASIA_GAMING_GATEWAY_CONN_FROM_CASHIER
+,    MSG_ASIA_GAMING_GET_USER_BALANCE_REPLY          = 50007   //  struct AsiaB2B_GetUserBalance::Reply
+
+// PYR-64175 (1.6) USER from Cashier to GW
+,    MSG_ASIA_GAMING_TRANSFER_IN_AG2PS               = 50008   // struct AsiaB2B_TransferIn_AG2PS                           ASIA_GAMING_GATEWAY_CONN_FROM_CASHIER
+,    MSG_ASIA_GAMING_TRANSFER_IN_AG2PS_REPLY         = 50009   // struct AsiaB2B_TransferIn_AG2PS::Reply
+
+// PYR-64175 (1.7) USER from Regulator to GW
+,    MSG_ASIA_GAMING_REQUEST_GAMING_URL              = 50010   //  4sss - reqId,operatorId,operatorUserId,AGAuthToken   struct AsiaB2B_RequestGamingURL  ASIA_GAMING_GATEWAY_CONN_FROM_REGULATOR
+,    MSG_ASIA_GAMING_REQUEST_GAMING_URL_REPLY        = 50011   //  6[s|s] - errCode[errDescr|url]                       struct AsiaB2B_RequestGamingURL::Reply
+
+// PYR-64175 (2.1) PLAIN from Cashier to GW
+,    MSG_ASIA_GAMING_TRANSFER_OUT_UPDATE_PS2AG       = 50012   // struct AsiaB2B_NotifyTransferOutStatus_PS2AG              ASIA_GAMING_GATEWAY_CONN_FROM_CASHIER
+,    MSG_ASIA_GAMING_TRANSFER_OUT_UPDATE_PS2AG_REPLY = 50013   // struct AsiaB2B_NotifyTransferOutStatus_PS2AG::Reply
+
+// PYR-64175 (2.2) PLAIN from Cashier to GW
+,    MSG_ASIA_GAMING_TRANSFER_OUT_PS2AG              = 50014   // struct AsiaB2B_TransferOut_PS2AG
+,    MSG_ASIA_GAMING_TRANSFER_OUT_PS2AG_REPLY        = 50015   // struct AsiaB2B_TransferOut_PS2AG::Reply
+
+// PYR-64175 (2.4) PLAIN from Cashier to GW
+,    MSG_ASIA_GAMING_CHANGE_ACCOUNT_STATUS           = 50016   // struct AsiaB2B_ChangeAccountStatus
+,    MSG_ASIA_GAMING_CHANGE_ACCOUNT_STATUS_REPLY     = 50017   // struct AsiaB2B_ChangeAccountStatus::Reply
+
+// PYR-64175 (2.5) PLAIN from CDD to GW
+,    MSG_ASIA_GAMING_REQUEST_KYC                     = 50018   //  444 - reqId,userIntId,nDays     struct AsiaB2B_RequestKYC           ASIA_GAMING_GATEWAY_CONN_FROM_CDD
+,    MSG_ASIA_GAMING_REQUEST_KYC_REPLY               = 50019   //  6[s|] - errCode[errDesc]        struct AsiaB2B_RequestKYC::Reply    
+
+// PYR-64175 (3.1) PLAIN from MiddleTier to GW   srvshared\AsiaB2B\AsiaB2B_API.txt
+,    MSG_ASIA_GAMING_Q_GetAccountStatus              = 50020
+,    MSG_ASIA_GAMING_A_GetAccountStatus              = 50021
+
+// PYR-64175 (3.1) PLAIN from GW to Cashier
+,    MSG_ASIA_GAMING_GET_ACCOUNT_STATUS              = 50022  // struct AsiaB2B_GetAccountStatus                       ASIA_GAMING_GATEWAY_CONN_TO_CASHIER
+,    MSG_ASIA_GAMING_GET_ACCOUNT_STATUS_REPLY        = 50023  // struct AsiaB2B_GetAccountStatus::Reply
+
+// PYR-64175 (3.2) PLAIN from MiddleTier to GW   srvshared\AsiaB2B\AsiaB2B_API.txt
+,    MSG_ASIA_GAMING_Q_GetTransferOutStatus          = 50024
+,    MSG_ASIA_GAMING_A_GetTransferOutStatus          = 50025
+
+// PYR-64175 (3.2) PLAIN from GW to Cashier
+,    MSG_ASIA_GAMING_GET_TRANSFEROUT_STATUS          = 50026  // struct AsiaB2B_GetTransferOutStatus                   ASIA_GAMING_GATEWAY_CONN_TO_CASHIER
+,    MSG_ASIA_GAMING_GET_TRANSFEROUT_STATUS_REPLY    = 50027  // struct AsiaB2B_GetTransferOutStatus::Reply
+
+// PYR-64175 (3.3) PLAIN from MiddleTier to GW   srvshared\AsiaB2B\AsiaB2B_API.txt
+,    MSG_ASIA_GAMING_Q_DoUpdateKYC                   = 50028
+,    MSG_ASIA_GAMING_A_DoUpdateKYC                   = 50029
+
+// PYR-64175 (4.1) PLAIN from ???? to GW (this was probably redefined by Lynn PYR-64516 as MSG_ASIA_GAMING_RT_BALANCE_UPDATE_RPT)
+,    MSG_ASIA_GAMING_CREDIT_REPORT                   = 50030   // struct AsiaB2B_CreditReport
+,    MSG_ASIA_GAMING_CREDIT_REPORT_REPLY             = 50031   // struct AsiaB2B_CreditReport::Reply
+
+// PYR-64175 (4.2) PLAIN from MiddleTier to GW   srvshared\AsiaB2B\AsiaB2B_API.txt
+,    MSG_ASIA_GAMING_Q_DoRequestAdhocReport          = 50032
+,    MSG_ASIA_GAMING_A_DoRequestAdhocReport          = 50033
+
+// PYR-64175 (4.2) PLAIN from GW to Replicator
+,    MSG_ASIA_GAMING_REQUEST_ADHOC_REPORT            = 50034   // struct AsiaB2B_RequestAdhocReport                   ASIA_GAMING_GATEWAY_CONN_TO_REPLICATOR
+,    MSG_ASIA_GAMING_REQUEST_ADHOC_REPORT_REPLY      = 50035   // struct AsiaB2B_RequestAdhocReport::Reply
+
+// PYR-64175 (4.3) PLAIN from ???? to GW  (this was probably redefined by Lynn PYR-64516 as MSG_ASIA_GAMING_RT_TOURN_TICKET_RPT + MSG_ASIA_GAMING_RT_CASH_TRAN_RPT)
+,    MSG_ASIA_GAMING_NOTIFY_ADHOC_REPORT_STATUS      = 50036   // struct AsiaB2B_NotifyAdhocReportStatus
+,    MSG_ASIA_GAMING_NOTIFY_ADHOC_REPORT_STATUS_REPLY= 50037   // struct AsiaB2B_NotifyAdhocReportStatus::Reply
+
+// PYR-64175 (4.4) PLAIN from MiddleTier to GW   srvshared\AsiaB2B\AsiaB2B_API.txt
+,    MSG_ASIA_GAMING_Q_GetAdhocReportStatus          = 50038
+,    MSG_ASIA_GAMING_A_GetAdhocReportStatus          = 50039
+
+// PYR-64175 (4.4) PLAIN from GW to Replicator
+,    MSG_ASIA_GAMING_GET_ADHOC_REPORT_STATUS         = 50040   // struct AsiaB2B_GetAdhocReportStatus                 ASIA_GAMING_GATEWAY_CONN_TO_REPLICATOR
+,    MSG_ASIA_GAMING_GET_ADHOC_REPORT_STATUS_REPLY   = 50041   // struct AsiaB2B_GetAdhocReportStatus::Reply
+
+// PYR-64516 (2.1) from Replicator to GW   ;overrides PYR-64175 (4.1)
+,    MSG_ASIA_GAMING_RT_BALANCE_UPDATE_RPT           = 50042   //  struct AsiaB2B_RealTimeBalanceUpdateReport         ASIA_GAMING_GATEWAY_CONN_FROM_REPLICATOR
+,    MSG_ASIA_GAMING_RT_BALANCE_UPDATE_RPT_REPLY     = 50043   //  struct AsiaB2B_RealTimeBalanceUpdateReport::Reply
+
+// PYR-64516 (2.2) from Replicator to GW   ;overrides PYR-64175 (4.3)
+,    MSG_ASIA_GAMING_RT_TOURN_TICKET_RPT             = 50044   //  struct AsiaB2B_TournamentTicketReport              ASIA_GAMING_GATEWAY_CONN_FROM_REPLICATOR
+,    MSG_ASIA_GAMING_RT_TOURN_TICKET_RPT_REPLY       = 50045   //  struct AsiaB2B_TournamentTicketReport::Reply
+
+// PYR-64516 (2.3) from Replicator to GW   ;overrides PYR-64175 (4.3)
+,    MSG_ASIA_GAMING_RT_CASH_TRAN_RPT                = 50046   //  struct AsiaB2B_CashTransReport                     ASIA_GAMING_GATEWAY_CONN_FROM_REPLICATOR
+,    MSG_ASIA_GAMING_RT_CASH_TRAN_RPT_REPLY          = 50047   //  struct AsiaB2B_CashTransReport::Reply
+
+// PYR-79428 (3.4) PLAIN from MiddleTier to GW   srvshared\AsiaB2B\AsiaB2B_API.txt
+,    MSG_ASIA_GAMING_Q_PushTransferIn		     	 = 50048
+,    MSG_ASIA_GAMING_A_PushTransferIn		     	 = 50049
+
+// PYR-79428 (3.4) PLAIN from GW to Cashier
+,    MSG_ASIA_GAMING_PUSH_TRANSFER_IN   	     	 = 50050  // struct AsiaB2B_PushTransferIn                       ASIA_GAMING_GATEWAY_CONN_TO_CASHIER
+,    MSG_ASIA_GAMING_PUSH_TRANSFER_IN_REPLY	     	 = 50051  // struct AsiaB2B_PushTransferIn::Reply
+
+// PYR-79428 (3.5) PLAIN from MiddleTier to GW   srvshared\AsiaB2B\AsiaB2B_API.txt
+,    MSG_ASIA_GAMING_Q_PullTransferOut		     	 = 50052
+,    MSG_ASIA_GAMING_A_PullTransferOut		     	 = 50053
+
+// PYR-79428 (3.5) PLAIN from GW to Cashier
+,    MSG_ASIA_GAMING_PULL_TRANSFER_OUT		     	 = 50054  // struct AsiaB2B_PullTransferOut                       ASIA_GAMING_GATEWAY_CONN_TO_CASHIER
+,    MSG_ASIA_GAMING_PULL_TRANSFER_OUT_REPLY	     = 50055  // struct AsiaB2B_PullTransferOut::Reply
+
+// PYR-88992 (1.8) USER from Regulator to GW
+,    MSG_ASIA_GAMING_REQUEST_WEB_URL                 = 50056   //  4sss - reqId,operatorId,operatorUserId,AGAuthToken   struct AsiaB2B_RequestWebURL  ASIA_GAMING_GATEWAY_CONN_FROM_REGULATOR
+,    MSG_ASIA_GAMING_REQUEST_WEB_URL_REPLY           = 50057   //  6[s|s] - errCode[errDescr|url]                       struct AsiaB2B_RequestWebURL::Reply

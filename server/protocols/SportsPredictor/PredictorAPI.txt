@@ -1,0 +1,95 @@
+#include "PredictorAPI_Msgs.h"
+
+#define TOP_LEVEL_NAMESPACE Predictor
+
+	MsgBodyStruct TicketDetail
+	{
+		UINT64   ticketId;         // ticket owner is the authenticated user
+		PString  status;           // 24 char; new, spent, void, expired (most recent status)
+	};
+	MsgBodyStruct RecentTransact
+	{
+		UINT64   transactionId;
+		PString  webId;             // ? 8 character ; explicit owner of the ticket 
+		UINT64   ticketId;
+		PString  status;            // 24 char; new, spent, void, expired (2018-03-09 state after the transaction NOT current state)
+		PString  timeOfTransactUTC; // Victiv may need to know the details of this transaction
+	};
+
+	MsgBodyStruct Warning
+	{
+		INT16    code;
+		PString  description;
+	};
+
+	MsgBodyStruct VoidItem
+	{
+		PString  webId; // ? 8 character ; explicit owner of the ticket
+		UINT64   ticketId;
+	};
+	MsgBodyStruct VoidResult
+	{
+		INT16    code;
+		PString  description;
+	};
+
+namespace AuthAPI // from middle-tier to server object, authenticated (WebTokenGuard)
+{
+
+	Message Q_GET_USER_INFO
+	{
+		// intentionally left blank
+	};
+
+	Message A_GET_USER_INFO
+	{
+	//	PString               webId;  // ? 8 character ; not needed, RAM provides it
+		PString               eMail;
+		PString               firstName;
+		PString               lastName;
+		PString               country;
+		bool                  extraValidation; // true = recent account creation and no spent ticket yet
+		vector<TicketDetail>  tickets; // all tickets that this user ever had
+		PString               site;
+		PString               language;
+		vector<Warning>       warnings;
+
+		// PString            more parseEndOptB4Me;
+	};
+
+	Message Q_SPEND_TICKET
+	{
+		PString   requestId;  // changed to char[22] as requested by Victiv
+		UINT64    ticketId;  // user
+	};
+
+	Message A_SPEND_TICKET
+	{
+		// intentionally left blank
+	};
+};
+
+namespace PlainAPI // from middle-tier to server object, non-authenticated (NullGuard)
+{
+	Message Q_VOID_TICKETS
+	{
+		PString          requestId;  // changed to char[22] as requested by Victiv
+		vector<VoidItem> voidItems;
+	};
+
+	Message A_VOID_TICKETS 
+	{
+		vector<VoidResult> voidResults;
+	};
+
+
+	Message Q_GET_RECENT_TICKET_TRANSACTIONS
+	{
+		UINT64   lastReceivedTransactionId;
+	};
+
+	Message A_GET_RECENT_TICKET_TRANSACTIONS 
+	{
+		vector<RecentTransact> recentTransacts;  // not all at once, chunk of max about 1000, if empty Victiv should poll again later, if not empty Victiv should poll ASAP
+	};
+};

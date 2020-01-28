@@ -1,0 +1,55 @@
+//------------------------------------------------------------------------------
+//	common structs
+//------------------------------------------------------------------------------
+//
+//	Copyright (c) 2001-2016 PYR Software Ltd. All rights reserved. This document
+//	is for the use of licensed users only and is subject to the terms and
+//	conditions of the accompanying and/or applicable license between you and
+//	PYR Software Ltd, including without limitation those terms and conditions
+//	prohibiting unauthorized translation, reverse engineering, decompilation,
+//	disassembly, and other inappropriate use of any software provided. Any
+//	unauthorized use, copying, modification, distribution, publication or
+//	disclosure of information is a violation of copyright laws. No reproduction
+//	in whole or in part of this document may be made without express written
+//	consent of PYR Software Ltd.
+//
+//
+//------------------------------------------------------------------------------
+
+
+
+
+//------------------------------------------------------------------------------
+
+#define TOP_LEVEL_NAMESPACE CrossGameLinkCommon // overwrite the default top level namespace
+
+//------------------------------------------------------------------------------
+
+
+//------------------------------------------------------------------------------
+
+MsgBodyStruct CrossGameLinkButtonDef
+{
+	PString buttonName;
+	PString click2LaunchLink;
+	PString iconName;
+	I18nPString buttonLabel;
+	I18nPString tooltip;
+	PString buttonType parseEndOptB4Me;
+};
+
+MsgBodyStruct CrossGameLinkButtonCriteria
+{
+	PString criteriaLabel;
+};
+
+MsgBodyStruct CrossGameLinkButtonData
+{
+	vector<CrossGameLinkButtonCriteria> userCriteria;
+	vector<CrossGameLinkButtonCriteria> gameCriteria;
+	CrossGameLinkButtonDef buttonDef;
+};
+
+
+
+//------------------------------------------------------------------------------

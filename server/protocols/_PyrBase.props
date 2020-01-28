@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <Warnings2017 Condition="'$(PlatformToolsetVersion)' == '141'">4456;4464;4774;5026;5027;5038</Warnings2017>
+    <Warnings2017 Condition="'$(PlatformToolsetVersion)' == '110'"></Warnings2017>
+    <PyrSslIncDir Condition="'$(PlatformToolsetVersion)' == '110'">commlib2a\openssl\windows\vs2012\include</PyrSslIncDir>
+    <PyrSslIncDir Condition="'$(PlatformToolsetVersion)' == '141'">commlib2a\openssl\windows\vs2017\include</PyrSslIncDir>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LinkIncremental>false</LinkIncremental>
+    <GenerateManifest>false</GenerateManifest>
+    <EmbedManifest>false</EmbedManifest>
+    <OutDir>$(Configuration)\</OutDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\plib;..\..\plib;..\..\..\plib;..\commlib2a;..\..\commlib2a;..\..\..\commlib2a;..\protocols;..\..\protocols;..\..\..\protocols;..\locales;..\..\locales;..\..\..\locales;..\srvshared;..\..\srvshared;..\..\..\srvshared;..\atf;..\..\atf;..\..\..\atf;..\$(PyrSslIncDir);..\..\$(PyrSslIncDir);..\..\..\$(PyrSslIncDir);$(IncludePath);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <IgnoreStandardIncludePath>true</IgnoreStandardIncludePath>
+      <StringPooling>true</StringPooling>
+      <ExceptionHandling>Async</ExceptionHandling>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4018;4061;4062;4100;4125;4127;4242;4244;4245;4263;4264;4265;4266;4131;4350;4351;4365;4389;4458;4481;4505;4510;4512;4514;4516;4548;4623;4625;4626;4640;4668;4710;4711;4820;4911;4996;5045;$(Warnings2017);%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <TreatSpecificWarningsAsErrors>4541</TreatSpecificWarningsAsErrors>
+      <AdditionalOptions>/Zc:implicitNoexcept-</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>ws2_32.lib;ssleay32.lib;libeay32.lib;plib.lib;commlib2a.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\plib\$(Configuration);..\..\plib\$(Configuration);..\..\..\plib\$(Configuration);..\commlib2a\$(Configuration);..\..\commlib2a\$(Configuration);..\..\..\commlib2a\$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/SAFESEH:NO</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>false</OptimizeReferences>
+      <ForceFileOutput>MultiplyDefinedSymbolOnly</ForceFileOutput>
+      <LargeAddressAware>true</LargeAddressAware>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

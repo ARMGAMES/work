@@ -1,0 +1,229 @@
+#include "table.h"
+#include "sites.h"
+#include "serverreplay.h"
+#include "UserDefStructs.h"
+#include "Common_atf${ATF_THIN_FILENAME_SUFFIX}.h"
+
+#define TOP_LEVEL_NAMESPACE ServerReplay
+
+namespace cli
+{
+	Message MSG_TABLE_LOGIN
+	{
+		PString user maxlen 20;
+		UINT32 clientSiteId max PokerStars_Last;
+		bool notShowWhenAllIn;
+		bool sitOutNextHand parseEndOptB4Me;
+		bool useAllInitStacks parseEndOptB4Me;
+	};
+
+	Message MSG_TABLE_LOGIN_REPLY
+	{
+		BYTE errCode;
+		PString errStr;
+		INT8 seat;
+		BYTE sittingOut;
+		PString clientIP ignoredInComparison;
+		UINT32 privilege;
+		CommMsgBody clientMsg_txtEx;
+		INT8 autoRebuyOptions;
+		UINT16 autoRebuyBigBets;
+		UINT16 autoRebuyFallUnderBigBets;
+		UINT16 autoRebuyFallUnderPercents;
+		bool playerRITFavored;
+		bool campingPreventionEnabled parseEndOptB4Me;
+		bool isTableDealingHands parseEndOptB4Me;
+		UINT16 campingCountingDownSec parseEndOptB4Me;
+	};
+	
+	Message MSG_TABLE_CHAT
+	{
+		PString chat maxlen MAX_CHAT_LEN;
+	};
+	
+	Message MSG_TABLE_CHAT2
+	{
+		PString chat maxlen MAX_CHAT_LEN;
+	};
+	
+	Message MSG_TABLE_CHAT2_REPLY
+	{
+		UINT16 errCode;
+		CommMsgBody errMsgBody;
+		PString chatMsg;
+	};
+	
+	Message MSG_REPLAY_PAUSE
+	{
+		// empty message
+	};
+	
+	Message MSG_REPLAY_PAUSE_REPLY
+	{
+		UINT16 errCode;
+		PString errMsg;
+	};
+	
+	Message MSG_REPLAY_RESUME
+	{
+		// empty message
+	};
+	
+	Message MSG_REPLAY_RESUME_REPLY
+	{
+		UINT16 errCode;
+		PString errMsg;
+	};
+	
+	Message MSG_REPLAY_NEXT_HAND
+	{
+		// empty message
+	};
+	
+	Message MSG_REPLAY_NEXT_HAND_REPLY
+	{
+		UINT16 errCode;
+		PString errMsg;
+	};
+	
+	Message MSG_REPLAY_PREV_HAND
+	{
+		// empty message
+	};
+	
+	Message MSG_REPLAY_PREV_HAND_REPLY
+	{
+		UINT16 errCode;
+		PString errMsg;
+	};
+	
+	Message MSG_REPLAY_HANDS_QUANTITY
+	{
+		// empty message
+	};
+	
+	Message MSG_REPLAY_HANDS_QUANTITY_REPLY
+	{
+		UINT16 errCode;
+		PString errMsg;
+		UINT32 quantity;
+	};
+	
+	Message MSG_REPLAY_CURR_HAND_INFO
+	{
+		// empty message
+	};
+	
+	Message MSG_REPLAY_CURR_HAND_INFO_REPLY
+	{
+		UINT16 errCode;
+		PString errMsg;	
+		UINT32 result;
+		UINT32 currentItemResult;
+	};
+	
+	Message MSG_REPLAY_GOTO_I_TH_HAND
+	{
+		UINT32 handNumber;
+	};
+	
+	Message MSG_REPLAY_GOTO_I_TH_HAND_REPLY
+	{
+		UINT16 errCode;
+		PString errMsg;
+	};
+	
+	Message MSG_REPLAY_HAND_IDS
+	{
+		// empty message
+	};
+	
+	Message MSG_REPLAY_HAND_IDS_REPLY
+	{
+		UINT16 errCode;
+		PString errMsg;	
+		vector<UINT32> results;
+	};
+	
+	Message MSG_REPLAY_GOTO_HAND_ID
+	{
+		UINT32 handId;
+	};
+	
+	Message MSG_REPLAY_GOTO_HAND_ID_REPLY
+	{
+		UINT16 errCode;
+		PString errMsg;
+	};
+	
+	Message MSG_REPLAY_PAUSE_AFTER_HAND
+	{
+		// empty message
+	};
+	
+	Message MSG_REPLAY_PAUSE_AFTER_HAND_REPLY
+	{
+		UINT16 errCode;
+		PString errMsg;
+	};
+	
+	Message MSG_REPLAY_HAND_IDS_64
+	{
+		// empty message
+	};
+	
+	Message MSG_REPLAY_HAND_IDS_64_REPLY
+	{
+		UINT16 errCode;
+		PString errMsg;	
+		vector<UINT64> results;
+	};
+	
+	Message MSG_REPLAY_CURR_HAND_INFO_64
+	{
+		// empty message
+	};
+	
+	Message MSG_REPLAY_CURR_HAND_INFO_64_REPLY
+	{
+		UINT16 errCode;
+		PString errMsg;	
+		UINT64 result;
+		UINT64 currentItemResult;
+	};
+	
+	Message MSG_REPLAY_GOTO_HAND_ID_64
+	{
+		UINT64 handId;
+	};
+	
+	Message MSG_REPLAY_GOTO_HAND_ID_64_REPLY
+	{
+		UINT16 errCode;
+		PString errMsg;
+	};
+	
+	Message MSG_REPLAY_HANDS_QUANTITY_64
+	{
+		// empty message
+	};
+	
+	Message MSG_REPLAY_HANDS_QUANTITY_64_REPLY
+	{
+		UINT16 errCode;
+		PString errMsg;
+		UINT32 quantity;
+	};
+	
+	Message MSG_REPLAY_GOTO_I_TH_HAND_64
+	{
+		UINT64 handNumber;
+	};
+	
+	Message MSG_REPLAY_GOTO_I_TH_HAND_64_REPLY
+	{
+		UINT16 errCode;
+		PString errMsg;
+	};
+
+};

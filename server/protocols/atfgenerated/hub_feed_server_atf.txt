@@ -1,0 +1,48 @@
+// ===========================================================
+// Copyright (C) 2020 Stars Technologies Services  All rights reserved.
+// =========================================================== 
+
+#include "hubFeedServer.h"
+
+#define TOP_LEVEL_NAMESPACE HubFeedServerATF
+
+namespace cli
+{
+	MsgBodyStruct ButtonInfo
+	{
+		PString label;	// empty means use I'M IN button
+		PString c2l;
+	};
+	
+	MsgBodyStruct PostItemData
+	{
+		INT32 postIcon;			//eHubFeedIconType
+		vector<ButtonInfo> buttons;
+		PString postTitle;
+		PString postBody;
+		SrvTime eventTime;
+	};
+	
+	
+	Message HFS_Q_GET_FEED_ITEMS
+	{
+		INT32 numItems min 0 max 10000;
+	};
+	
+	Message HFS_A_GET_FEED_ITEMS
+	{
+		vector<PostItemData> feedItems;
+	};
+	
+	Message HFS_Q_ADMIN_TEMPLATE_UPDATE
+	{
+		UINT32 templateId;
+		bool isPublished;
+	};
+	
+	Message HFS_A_ADMIN_TEMPLATE_UPDATE
+	{
+	};
+};
+
+

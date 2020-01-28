@@ -1,0 +1,1292 @@
+#include "dbm.h"
+#include "homelobbymsgs.h"
+#include "HgDbmSharedCli.h"
+#include "homeclub.h"
+#include "gamedefs.h"
+#include "UserDefStructs.h"
+#include "Common_atf${ATF_THIN_FILENAME_SUFFIX}.h"
+
+#define TOP_LEVEL_NAMESPACE hglobby
+
+// CLI.lobby_client
+namespace lobby_client
+{
+	struct UserId
+	{
+		PString userId maxlen 20;
+	};
+
+	Message HG_CREATE_CLUB
+	{
+		PString clubName maxlen 128;
+		PString password maxlen 128;
+	};
+	Message HG_CREATE_CLUB_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			UINT32 clubId;
+			PString socialToken;
+		}
+	};
+
+	MsgBodyStruct HgClubInfo
+	{
+		UINT32 clubId;
+		PString clubName;
+		UINT32 nbMembers;
+		UINT32 roleForUser;
+		UINT32 memberFlags;
+		UINT32 ordinal;
+		bool favoriteClub;
+		UINT32 clubNameColor; 
+	};
+	Message HG_GET_USER_CLUBS
+	{
+		bool isNewBehavior parseEndOptB4Me;
+	};
+	Message HG_GET_USER_CLUBS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<HgClubInfo> clubInfoListForClient;
+		}
+	};
+
+	Message HG_ADD_USER_CLUB
+	{
+		UINT32 clubId;
+		PString clubPassword maxlen 128;
+		PString comment maxlen 4096;
+		PString notUsedUserId maxlen 20 parseEndOptB4Me; // not parsed/used by server
+	};
+	Message HG_ADD_USER_CLUB_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString clubName;
+			PString socialToken;
+		}
+	};
+
+	struct GamesMembershipStatus
+	{
+		UINT32 status min eHgMembershipStatusApproved max eHgMembershipStatusLastAndInvalid;
+	};
+	Message HG_GET_PLAYERS_BASED_ON_STATUS
+	{
+		UINT32 clubId;
+		vector<GamesMembershipStatus> statuses maxsize 10240;
+	};
+	MsgBodyStruct PlayerListElement
+	{
+		PString userId;
+		PString city;          
+		PString comment;
+		UINT32 status;
+		UINT32 role;
+		SrvTime enrolled;
+		UINT32 flags;
+	};
+	Message HG_GET_PLAYERS_BASED_ON_STATUS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<PlayerListElement> playerList;
+		}
+	};
+
+	Message HG_CHANGE_PLAYERS_STATUS
+	{
+		UINT32 clubId;
+		UINT32 action min eHgAcceptPlayer max eHgRemoveApplication;
+		vector<UserId> usersToChange maxSize 10000;
+	};
+	Message HG_CHANGE_PLAYERS_STATUS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString socialToken;
+		}
+	};
+
+	Message HG_CHANGE_CLUB_PASSWORD
+	{
+		UINT32 clubId;
+		PString password maxlen 128;
+	};
+	Message HG_CHANGE_CLUB_PASSWORD_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message HG_CHANGE_CLUB_OPTIONS
+	{
+		UINT32 clubId;
+		UINT32 seasonLength min eHgClubSeasonsYearly max eHgClubSeasonsMonthly;
+		bool showClubStandings;
+		bool showPlayerStats;
+		PString currency maxlen 5;
+		bool showFounderFullName;
+	};
+	Message HG_CHANGE_CLUB_OPTIONS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message HG_CHANGE_CLUB_IMAGE
+	{
+		UINT32 clubId;
+		PBlock image maxsize 10485760; // 10Mb
+		bool isHeader parseEndOptB4Me;
+	};
+	Message HG_CHANGE_CLUB_IMAGE_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+
+	Message HG_GET_CLUB_SEASONS
+	{
+		UINT32 clubId;
+	};
+	MsgBodyStruct ClubSeason
+	{
+		UINT32	seasonId;
+		SrvTime	timeFrom;
+		SrvTime	timeTo;
+		bool	closed;
+		UINT32 seasonType;
+		PString	seasonName;
+	};
+	Message HG_GET_CLUB_SEASONS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<ClubSeason> seasons;
+		}
+	};
+
+	Message HG_GET_CLUB_SEASON_RANKS
+	{
+		UINT32 clubId;
+		UINT32 seasonId;
+		bool isPlayMoney;
+	};
+	MsgBodyStruct ClubSeasonUserRank
+	{
+		PString	userId;
+		UINT64	pointsTotal;
+		UINT32	gamesPlayed;
+		UINT32	rank;
+	};
+	Message HG_GET_CLUB_SEASON_RANKS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<ClubSeasonUserRank> ranks;
+		}
+	};
+
+	Message HG_GET_CLUB_SEASON_STATS
+	{
+		UINT32 clubId;
+		UINT32 seasonId;
+		bool isPlayMoney;
+	};
+	MsgBodyStruct ClubSeasonUserStats
+	{
+		PString userId;
+		PString userCity;
+		UINT32 userAvatar;
+		UINT32 qualifiedGames;
+		UINT32 bestTournPlace;
+		UINT32 bestTournPlaceTo;
+		UINT32 playersInbestTourn;
+		UINT32 worstTournPlace;
+		UINT32 worstTournPlaceTo;
+		UINT32 playersInWorstTourn;
+		UINT32 inTheMoney;
+		UINT64 points;
+		UINT32 goldFinishes;
+		UINT32 silverFinishes;
+		UINT32 bronzeFinishes;
+		UINT32 averagePlace;
+		UINT32 rank;
+		UINT32 knockouts;
+		SrvTime memberFrom;
+	};
+	Message HG_GET_CLUB_SEASON_STATS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<ClubSeasonUserStats> stats;
+		}
+	};
+
+	Message HG_GET_RECENT_TOURN_SUMMARIES
+	{
+		UINT32 clubId;
+	};
+	MsgBodyStruct ClubRecentTournamentSummary
+	{
+		UINT32	tournId;
+		PString tournName;
+		PString	currency;
+		SrvTime	started;
+		SrvTime	closed;
+		UINT32	numPlayers;
+		UINT64	prizePool;
+		UINT32	seasonId;
+		bool	playMoney;
+		UINT32	rebuys;
+		UINT32	rebuyRake;
+		bool    countingToStats;
+		INT32	scalePM;
+	};
+	Message HG_GET_RECENT_TOURN_SUMMARIES_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<ClubRecentTournamentSummary> summaries;
+		}
+	};
+
+	Message HG_GET_RECENT_TOURN_RESULTS
+	{
+		UINT32 tournId;
+	};
+	MsgBodyStruct ClubRecentTournPlayerResult
+	{
+		UINT32	tournRank;
+		PString	userId;
+		UINT32	place;
+		UINT32	placeTo;
+		UINT32	prize;
+		UINT32	pointsEarned;
+		UINT32	knockouts;
+		INT32   scalePM;
+	};
+	Message HG_GET_RECENT_TOURN_RESULTS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<ClubRecentTournPlayerResult> tournResults;
+		}
+	};
+	
+	Message HG_SET_CLUB_COLOR
+	{
+		UINT32 clubId; // no limit
+		UINT32 color; // no limit
+	};
+	Message HG_SET_CLUB_COLOR_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message HG_CHANGE_CLUB_NAME
+	{
+		UINT32 clubId;
+		PString clubName maxlen 128;
+	};
+	Message HG_CHANGE_CLUB_NAME_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message HG_GET_CLUB_OPTIONS
+	{
+		UINT32 clubId;
+	};
+	Message HG_GET_CLUB_OPTIONS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			UINT32 clubId;
+			UINT32 seasonType;
+			bool showClubStandings;
+			bool showPlayerStats;
+			PString currency;
+			bool showFounderFullName;
+		}
+	};
+
+	Message HG_GET_CLUB_TOURN_STRUCTURES
+	{
+		UINT32 clubId;
+	};
+	MsgBodyStruct GameStructure
+	{
+		BYTE handType;
+		bool isHiLo;
+		PString description;
+		vector<BYTE> potTypes;
+		vector<UINT32> tableSizes;
+		vector<bool> moneyTypes;
+	};
+	MsgBodyStruct TournBuyIn
+	{
+		UINT32 buyIn;
+		UINT32 rake;
+		UINT32 bounty;
+	};
+	// HG_CLI_VER_2
+	MsgBodyStruct TournBuyIn2
+	{
+		UINT32 buyIn;
+		UINT32 rake;
+		UINT32 bounty;
+		UINT32 scalePM;
+	};
+	struct TournCurrencyBuyIns
+	{
+		PString currency;
+		vector<TournBuyIn> tournBuyInBodies;
+	};
+	// HG_CLI_VER_2
+	struct TournCurrencyBuyIns2
+	{
+		PString currency;
+		vector<TournBuyIn2> tournBuyInBodies;
+	};
+	// HG_CLI_VER_1
+	Message HG_GET_CLUB_TOURN_STRUCTURES_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			UINT32 tournKnockoutPrize;
+			UINT32 tournMaxPlayers;
+			vector<bool> tournFastDealing;
+			vector<bool> tournSyncBreaks;
+			vector<UINT32> tournPayouts;
+			vector<UINT32> tournStartingChips;
+			vector<UINT32> tournLevelLengths;
+			vector<UINT32> tournFormats;
+
+			vector<GameStructure> gameStructures;
+			vector<TournBuyIn> tournBuyInsPM;
+			vector<TournCurrencyBuyIns> currencyBuyIns;
+			bool isVoiceEnabled;
+
+			UINT32 numMaxDaysForTournCreation;
+		}
+	};
+
+	Message HG_GET_CLUB_TABLE_STRUCTURES
+	{
+		UINT32 clubId;
+	};
+	struct TableParamsStruct
+	{
+		bool	isHiLo;
+		UINT32	tableSize min 2 max MAX_TABLE_PLAYERS;
+		bool	isFastDealing;
+		bool	isPlayMoney;
+		PString	currency maxlen 5;
+		BYTE	handType min 1 max HandType_Last;
+		BYTE	potStruct min StructLimit max PotStruct_Last;
+
+		UINT32	ante max 1000000;
+		UINT32	cap max 1000000;
+		UINT32	minBuyIn max 2000000000;
+		UINT32	maxBuyIn max 2000000000;
+		UINT32	stakesLow max 100000000;
+		UINT32	stakesHigh max 100000000;
+		PString	tableName maxlen TABLE_NAME_LEN;
+		INT32	scalePM min 1 max 1000000 parseEndOptB4Me;
+	};
+	MsgBodyStruct TableParams
+	{
+		TableParamsStruct tableParamsStruct;
+	};
+	Message HG_GET_CLUB_TABLE_STRUCTURES_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<TableParams> tableParams;
+			bool isVoceEnabled;
+		}
+	};
+
+	struct CreateTournParams
+	{
+		UINT32 clubId;
+		PString tournamentLobbyText maxlen 1024;
+		PString gameName maxlen 128;
+		bool countTowardsClubStandings;
+
+		bool	isHiLo;
+		UINT32	tableSize min 2 max 10;
+		bool	isFastDealing;
+		bool	isPlayMoney;
+		PString	currency maxlen 5;
+		BYTE	handType min 1 max HandType_Last;
+		BYTE	potStruct min StructLimit max PotStruct_Last;
+
+		UINT32	buyIn max 2000000000;
+		bool	isSyncBreaksOn;
+		UINT32	tournFormat max eHgTournFormatRebuy2RnoA;
+		UINT32	payout max 2000000000;
+		UINT32	startingChips max 100000;
+		UINT32	levelLength max 10000;
+		UINT32	tournKnockoutPrize max 2000000000;
+		UINT32	tournMaxPlayers max 1000000;
+		UINT16	year min 2016 max 3000;
+		BYTE	month min 1 max 12;
+		BYTE	day min 1 max 31;
+		BYTE	hour max 23;
+		BYTE	minute max 59;
+		INT32	scalePM min 1 max 10000 parseEndOptB4Me;
+	};
+	Message HG_CREATE_CLUB_TOURN
+	{
+		CreateTournParams createTournParams;
+		UINT32 recurringPatternType max eHgRecurringMonthly parseEndOptB4Me;
+		UINT32 nbOccurences max 10000;
+		SrvDate endDate; // no limit
+		if (recurringPatternType == eHgRecurringDaily)
+		{
+			CommMsgBody
+			{
+				UINT32 numberOfDays max 10000;
+				bool everyWeekday;
+			};
+		}
+		else if (recurringPatternType == eHgRecurringWeekly)
+		{
+			CommMsgBody
+			{
+				UINT32 numberOfWeeks max 1000;
+				UINT32 recurringDays min eHgRdNone max eHgRdEveryday;
+			};
+		}
+		else if (recurringPatternType == eHgRecurringMonthly)
+		{
+			CommMsgBody
+			{
+				BYTE dayOfMonth max 31; // can be 0
+				BYTE numberMonths max 100;
+				UINT32 whichRecurringDay min eHgWrdNone max eHgWrdLast;
+				UINT32 recurringDay min eHgRdNone max eHgRdEveryday;
+			};
+		}
+		UINT32 nbConsecutiveCancellation max 10000;
+	};
+	Message HG_CREATE_CLUB_TOURN_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString socialToken;
+			UINT32 tournId;
+			PString restartWarning;
+		}
+	};
+
+	Message HG_CREATE_CLUB_TABLE
+	{
+		UINT32 clubId;
+		TableParamsStruct tableParamsStruct;
+		bool voiceEnabled parseEndOptB4Me;
+	};
+	Message HG_CREATE_CLUB_TABLE_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString socialToken;
+			UINT32 tableId32;
+			PString restartWarning;
+			UINT64 tableId parseEndOptB4Me;
+		}
+	};
+
+	Message HG_UPDATE_MEMBERSHIP_FLAGS
+	{
+		UINT32 clubId;
+		PString userId maxlen 20;
+		UINT32 flags max HgMemberFlags_Last;
+		UINT32 mask max (2*HgMemberFlags_Last-1);
+	};
+	Message HG_UPDATE_MEMBERSHIP_FLAGS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message HG_CANCEL_CLUB_TOURNAMENT
+	{
+		UINT32 clubId;
+		UINT32 tournId;
+		bool cancelRecurrence parseEndOptB4Me;
+	};
+	Message HG_CANCEL_CLUB_TOURNAMENT_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message HG_CANCEL_CLUB_TABLE
+	{
+		UINT32 clubId;
+		UINT32 tableId32;
+		UINT64 tableId parseEndOptB4Me;
+	};
+	Message HG_CANCEL_CLUB_TABLE_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message HG_TRANSLATE_SOCIAL_EVENT
+	{
+		PString socialEventToken maxlen 1000;
+	};
+	Message HG_TRANSLATE_SOCIAL_EVENT_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString encUrl;
+		}
+	};
+
+	Message HG_GET_CLUB_TABLE_INFO
+	{
+		UINT32 tableId32;
+		UINT32 tournId;
+		UINT32 clubId;
+		UINT64 tableId parseEndOptB4Me;
+	};
+	Message HG_GET_CLUB_TABLE_INFO_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString server;
+			PString serverObject;
+			PString clubName;
+			BYTE game;
+			BYTE maxPlayers;
+			UINT32 memberRole;
+			UINT32 memberFlags;
+		}
+	};
+
+
+	Message HG_GET_CLUB_TOURN_INFO
+	{
+		UINT32 tourId;
+		UINT32 clubId;
+	};
+	Message HG_GET_CLUB_TOURN_INFO_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString server;
+			PString serverObject;
+			PString clubName;
+			UINT32 memberRole;
+			UINT32 memberFlags;
+		}
+	};
+
+	Message HG_GET_CLUB_INFO
+	{
+		UINT32 clubId;
+	};
+	Message HG_GET_CLUB_INFO_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString clubName;
+			PString tablePubName;
+			PString tournPubName;
+			UINT32 memberRole;
+			UINT32 memberFlags;
+			PString wallPubName;
+			PString announcePubName;
+			PString membershipPubName;
+		}
+	};
+
+	Message HG_GET_SCHEDULED_GAMES
+	{
+	};
+	MsgBodyStruct ScheduledTourn
+	{
+		SrvTime startTime;
+		UINT32 clubId;
+		PString	clubName;
+		UINT32	tournId;
+		PString	tournName;
+		BYTE gameType;
+		bool isHiLo;
+		UINT32 buyin;
+		UINT32 rake;
+		UINT32 knockoutBounty;
+		UINT32 numPlayers;
+		bool isRegistered;
+		BYTE limit;
+		PString currency;
+		bool isPlayMoney;
+		UINT32 maxPlayers;
+		UINT32 tournState;
+		PString server;
+		PString serverObject;
+		UINT32 flags;
+		UINT32 scalePM;
+	};
+	MsgBodyStruct ScheduledRingGame
+	{
+		UINT32 clubId;
+		PString	clubName;
+		UINT32 tableId32;
+		PString	tableName;
+		BYTE gameType;
+		bool isHiLo;
+		UINT32 buyin;
+		UINT32 numPlayers;
+		bool isSeated;
+		BYTE limit;
+		PString currency;
+		bool isPlayMoney;
+		UINT32 lowStake;
+		UINT32 highStake;
+		PString tableObject;
+		UINT32 maxNumPlayers;
+		UINT32 playersSeated;
+		UINT32 flags;
+		UINT64 tableId;
+		INT32 scalePM;
+	};
+	Message HG_GET_SCHEDULED_GAMES_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<ScheduledTourn> tourns;
+			vector<ScheduledRingGame> ringGames;
+			PString msgBoard;
+		}
+	};
+
+	Message HG_FOUNDER_GET_CLUB_PASSWORD
+	{
+		UINT32 clubId;
+	};
+	Message HG_FOUNDER_GET_CLUB_PASSWORD_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString password;
+		}
+	};
+
+	Message HG_GET_RECRUIT_SOCIAL_TOKEN
+	{
+		UINT32 clubId;
+	};
+	Message HG_GET_RECRUIT_SOCIAL_TOKEN_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString sotialToken;
+		}
+	};
+
+	Message HG_CLOSE_CLUB_BY_FOUNDER
+	{
+		UINT32 clubId;
+		// the information below is not parsed/used by server
+		UINT32 playerStatus max HgChangePlayerStatusAction_Last parseEndOptB4Me; // value=eHgRemovePlayer
+		UINT32 dummy; // value=1
+		PString userId maxlen 20;
+	};
+	Message HG_CLOSE_CLUB_BY_FOUNDER_REPLY
+	{
+		INT16 errCode;
+		PString errDesc;
+	};
+
+	Message HG_CHANGE_SEASON_NAME
+	{
+		UINT32 clubId;
+		UINT32 seasonId;
+		PString seasonName maxlen 128;
+	};
+	Message HG_CHANGE_SEASON_NAME_REPLY
+	{
+		INT16 errCode;
+		PString errDesc;
+	};
+
+	Message HG_PROCESS_SEASON_CLOSED
+	{
+		UINT32 seasonId;
+		SrvTime timeFrom;
+		SrvTime	timeTo;
+		bool closed;
+		UINT32 seasonType min eHgClubSeasonsYearly max eHgClubSeasonsMonthly;
+		PString seasonName maxlen 128;
+
+		UINT32 clubId;
+	};
+	Message HG_PROCESS_SEASON_CLOSED_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message HG_MODIFY_MEMBERSHIP_FLAGS
+	{
+		UINT32 clubId;
+		UINT32 flags min eHgTournFormatRegular max eHgTournFormatRebuy2RnoA;
+	};
+	Message HG_MODIFY_MEMBERSHIP_FLAGS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message HG_SET_FAVORITE_CLUB
+	{
+		UINT32 clubId;
+		bool isFavoriteClub;
+	};
+	Message HG_SET_FAVORITE_CLUB_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message HG_TABLE_SOCIAL_TOKEN
+	{
+		UINT32 clubId;
+		UINT32 tableId32;
+		UINT64 tableId parseEndOptB4Me;
+	};
+	Message HG_TABLE_SOCIAL_TOKEN_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString socialToken;
+		}
+	};
+
+	Message HG_TOURN_SOCIAL_TOKEN
+	{
+		UINT32 clubId;
+		UINT32 tournId;
+	};
+	Message HG_TOURN_SOCIAL_TOKEN_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString socialToken;
+		}
+	};
+
+	struct ClubMessageData
+	{
+		UINT32 type min eHgMessageTypeWall max eHgMessageTypeLast;
+		UINT64 id;
+		UINT32 clubId;
+		UINT32 pinnedPos;
+		UINT64 parentId;
+		UINT32 userIntId;
+		SrvTime created;
+		PString	userId maxlen 20;
+		PString content maxlen 10000;
+		bool obsolete;
+		UINT32 roleFlags min eHrMemberRoleMember max eHrMemberRoleSuspended;
+		UINT32 flags min eHgTournFormatRegular max eHgTournFormatRebuy2RnoA;
+	};
+	Message HG_SAVE_CLUB_MESSAGE
+	{
+		ClubMessageData clubMessageData;
+	};
+	Message HG_SAVE_CLUB_MESSAGE_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			ClubMessageData clubMessageData;
+		}
+	};
+
+	Message HG_CLUB_LOGIN
+	{
+		UINT32 clubId;
+	};
+	Message HG_CLUB_LOGIN_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message HG_CLUB_LOGOUT
+	{
+		UINT32 clubId;
+	};
+	Message HG_CLUB_LOGOUT_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message HG_UPDATE_MEMBERSHIP_FLAGS2
+	{
+		UINT32 clubId;
+		UINT32 flags max HgMemberFlags_Last;
+		UINT32 mask max (2*HgMemberFlags_Last-1);
+		vector<UserId> userIds maxsize 10240;
+	};
+	Message HG_UPDATE_MEMBERSHIP_FLAGS2_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	MsgBodyStruct RecurringTournament
+	{
+		UINT32 recurringPatternType min eHgNotRecurring max eHgRecurringMonthly;
+		UINT32 nbOccurences max 10000;
+		SrvDate endDate;
+		if (recurringPatternType == eHgRecurringDaily)
+		{
+            CommMsgBody
+            {
+                UINT32 numberOfDays max 10000;
+                bool everyWeekday;
+            };
+		}
+		else if (recurringPatternType == eHgRecurringWeekly)
+		{
+            CommMsgBody
+            {
+                UINT32 numberOfWeeks max 1000;
+                UINT32 recurringDays min eHgRdNone max eHgRdEveryday;
+            };
+		}
+		else if (recurringPatternType == eHgRecurringMonthly)
+		{
+            CommMsgBody
+            {
+                BYTE dayOfMonth max 31; // can be 0
+                BYTE numberMonths max 100;
+                UINT32 whichRecurringDay min eHgWrdNone max eHgWrdLast;
+                UINT32 recurringDay min eHgRdNone max eHgRdEveryday;
+            };
+		}
+        UINT32 nbConsecutiveCancellation max 10000 parseEndOptB4Me;
+	};
+	MsgBodyStruct CreateTournParams2
+	{
+		CreateTournParams createTournParams;
+		bool voiceEnabled;
+	};
+
+	// HG_CLI_VER_1
+	Message HG_CREATE_CLUB_TOURN2
+	{
+		CreateTournParams2 createTournParams2;
+		RecurringTournament recurringTournament parseEndOptB4Me;
+	};
+	Message HG_CREATE_CLUB_TOURN_REPLY2
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString socialToken;
+			UINT32 tournId;
+			PString restartWarning;
+		}
+	};
+
+	Message HG_GET_CLUBS_AND_SCHEDULED_GAMES
+	{
+		bool isNewBehavior parseEndOptB4Me;
+	};
+	Message HG_GET_CLUBS_AND_SCHEDULED_GAMES_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<HgClubInfo> clubInfoListForClient;
+			vector<ScheduledTourn> tourns;
+			vector<ScheduledRingGame> ringGames;
+			PString msgBoard;
+		}
+	};
+
+	Message HG_SET_ARCHIVE_PENDING
+	{
+		SrvTime archiveDate; // no limit
+		vector<UINT32> clubIds maxsize 10240;
+	};
+	Message HG_SET_ARCHIVE_PENDING_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message HG_ARCHIVE_CLUBS
+	{
+		vector<UINT32> clubIds;
+	};
+	Message HG_ARCHIVE_CLUBS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message HG_GET_CLUB_TABLE_STRUCTURES2
+	{
+		UINT32 clubId;
+	};
+	Message HG_GET_CLUB_TABLE_STRUCTURES_REPLY2
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<TableParams> tableParams;
+			bool isVoceEnabled;
+		}
+	};
+
+	Message HG_GET_CLUBS_AND_SCHEDULED_GAMES2
+	{
+		bool isNewBehavior parseEndOptB4Me;
+	};
+
+	Message HG_GET_CLUBS_AND_SCHEDULED_GAMES_REPLY2
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<HgClubInfo> clubInfoListForClient;
+			vector<ScheduledTourn> tourns;
+			vector<ScheduledRingGame> ringGames;
+			PString msgBoard;
+		}
+	};
+
+	Message HG_GET_SCHEDULED_GAMES2
+	{
+	};
+	Message HG_GET_SCHEDULED_GAMES_REPLY2
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<ScheduledTourn> tourns;
+			vector<ScheduledRingGame> ringGames;
+			PString msgBoard;
+		}
+	};
+
+	Message HG_GET_CLUB_TOURN_STRUCTURES2
+	{
+		UINT32 clubId;
+	};
+	// HG_CLI_VER_2
+	Message HG_GET_CLUB_TOURN_STRUCTURES_REPLY2
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			UINT32 tournKnockoutPrize;
+			UINT32 tournMaxPlayers;
+			vector<bool> tournFastDealing;
+			vector<bool> tournSyncBreaks;
+			vector<UINT32> tournPayouts;
+			vector<UINT32> tournStartingChips;
+			vector<UINT32> tournLevelLengths;
+			vector<UINT32> tournFormats;
+
+			vector<GameStructure> gameStructures;
+			vector<TournBuyIn2> tournBuyInsPM;
+			vector<TournCurrencyBuyIns2> currencyBuyIns;
+			bool isVoiceEnabled;
+
+			UINT32 numMaxDaysForTournCreation;
+		}
+	};
+
+	// HG_CLI_VER_2
+	Message HG_CREATE_CLUB_TOURN3
+	{
+		CreateTournParams2 createTournParams2;
+		RecurringTournament recurringTournament parseEndOptB4Me;
+	};
+	Message HG_CREATE_CLUB_TOURN_REPLY3
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString socialToken;
+			UINT32 tournId;
+			PString restartWarning;
+		}
+	};
+
+	Message HG_GET_RECENT_TOURN_SUMMARIES2
+	{
+		UINT32 clubId;
+	};
+	Message HG_GET_RECENT_TOURN_SUMMARIES_REPLY2
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<ClubRecentTournamentSummary> summaries;
+		}
+	};
+
+	Message HG_GET_RECENT_TOURN_RESULTS2
+	{
+		UINT32 tournId;
+	};
+	Message HG_GET_RECENT_TOURN_RESULTS_REPLY2
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<ClubRecentTournPlayerResult> tournResults;
+		}
+	};
+
+	Message HG_GET_CLUB_INFO2
+	{
+		UINT32 clubId;
+	};
+	Message HG_GET_CLUB_INFO_REPLY2
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString clubName;
+			PString tablePubName;
+			PString tournPubName;
+			UINT32 memberRole;
+			UINT32 memberFlags;
+			PString wallPubName;
+			PString announcePubName;
+			PString membershipPubName;
+		}
+	};
+};

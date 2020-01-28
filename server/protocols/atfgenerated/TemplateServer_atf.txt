@@ -1,0 +1,105 @@
+#include "sites.h"
+#include "clientplatforms.h"
+#include "templateserver.h"
+ 
+#define TOP_LEVEL_NAMESPACE TemplateServerATF
+
+
+MsgBodyStruct ContentDataSectionStruct
+{
+	UINT32 locale;
+	PString text;
+};
+
+MsgBodyStruct ContentDataStruct
+{
+	UINT32 sectionCode;
+	vector<ContentDataSectionStruct> sections;
+};
+
+MsgBodyStruct ContentStruct
+{
+	UINT32 contentId;
+	PString criteria;
+	SrvTime from;
+	SrvTime until;
+	vector<ContentDataStruct> contentDatas;
+};
+
+MsgBodyStruct TemplateStruct
+{
+	UINT32 saveTemplateMask;
+	UINT32 templateId;
+	UINT32 type;
+	PString name;
+	PString templateCode;
+	PString description;
+	UINT32 status;
+	vector<ContentStruct> content;
+};
+
+Message TS_Q_ADMIN_SAVE_BRANDED_LOBBIES
+{
+	vector<TemplateStruct> templates;
+};
+Message TS_A_ADMIN_SAVE_BRANDED_LOBBIES
+{
+	INT16 errCode;
+	PString msg;
+};
+
+
+Message TS_Q_PS_NEED_DATA
+{
+	INT32 templateType;
+};
+
+Message TS_A_PS_NEED_DATA
+{
+	INT16 errCode;
+	if( errCode )
+	{
+		PString sqlErr;
+	}
+	else
+	{
+		vector<TemplateStruct> templates;
+	}
+};
+
+
+Message TS_Q_HFS_NEED_DATA
+{
+	INT32 templateType;
+};
+
+Message TS_A_HFS_NEED_DATA
+{
+	INT16 errCode;
+	if( errCode )
+	{
+		PString sqlErr;
+	}
+	else
+	{
+		vector<TemplateStruct> templates;
+	}
+};
+
+Message TS_Q_HFS_GET_TEMPLATE_DATA
+{
+	INT32 templateId;
+};
+
+Message TS_A_HFS_GET_TEMPLATE_DATA
+{
+	INT16 errCode;
+	if( errCode )
+	{
+		PString sqlErr;
+	}
+	else
+	{
+		vector<TemplateStruct> templates;
+	}
+};

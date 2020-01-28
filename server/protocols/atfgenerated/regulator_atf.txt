@@ -1,0 +1,2259 @@
+#include "regulator.h"
+#include "cashier.h"
+#include "lobby.h"
+#include "UserDefStructs.h"
+#include "i18n.localedef.h"
+#include "clientplatforms.h"
+#include "timezone.h"
+#include "tsclientshared.h"
+#include "Common_atf${ATF_THIN_FILENAME_SUFFIX}.h"
+
+#define TOP_LEVEL_NAMESPACE regulator
+
+#define CHALLENGE_ANSWERS_SIZE 2
+
+//////////////////////////////////// COMMON STRUCTS ////////////////////////////
+namespace common_structs
+{
+	struct ResetPwdMessageStruct // request
+	{
+		PString user maxlen USER_NAME_LEN;
+		PString zip maxlen 100000; // client does not limit the length
+		PString addr maxlen 100000; // client does not limit the length
+		PString email maxlen USER_EMAIL_LEN;
+		bool useChallengeQuestions;
+		PString answer1 maxlen 10000;
+		PString answer2 maxlen 10000;
+		PString ssn4 maxlen SSN_4_LEN;
+	};
+	struct ChallengeQuestion // reply
+	{
+		UINT32 id;
+		PString txt;
+	};
+
+	struct LobbyNameAvailableStruct // request
+	{
+		PString userId maxlen 100; // clients can send strings longer than USER_NAME_LEN due to utf8 characters
+		UINT32 localeId max MAX_LOCALES;
+	};
+	struct LobbyNameAvailableReplyStruct // response
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString userId_;
+			vector<PString> suggestedIds; 
+		}
+	};
+
+	struct EmailAttachmentStruct // request
+	{
+		PString attName maxlen 10000;
+		PBlock attBody maxsize 10000000;
+	};
+	struct EmailAttachmentVec // request
+	{
+		vector<EmailAttachmentStruct> attachments maxsize 10000;
+	};
+	struct EmailAttachmentPart // request
+	{
+		PString clientVersion maxlen 100; // client can send longer than CLIENT_TO_SUPPORT_VER_LEN
+		PString clientOsInfo maxlen 100; // client can send longer than CLIENT_TO_SUPPORT_OS_LEN
+		EmailAttachmentVec attachments parseEndOptB4Me;
+	};
+	struct LobbyClientToSupportEmailStruct // request
+	{
+		PString userId maxlen USER_NAME_LEN;
+		UINT32 category min eClientEmailCategory_None max eClientEmailCategory_Last; // enum eClientEmailCategory
+		UINT32 subCategory; // generic field, can be one of many subcategories in tsclientshared.h
+		PString subject maxlen EMAIL_SUBJ_LEN;
+		PString body maxlen 10000;
+		EmailAttachmentPart attPart parseEndOptB4Me;
+	};
+	struct LobbyClientToSupportEmailReplyStruct // reply
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+
+	struct ChallengeAnswer // request
+	{
+		PString answer maxlen 10000;
+	};
+	
+	struct UserProfile // request
+	{
+		PString firstName maxlen USER_FIRST_NAME_LEN;
+		PString lastName maxlen USER_LAST_NAME_LEN;
+		PString sex maxlen USER_SEX_LEN;
+		
+		PString addr_1 maxlen USER_ADDR_LEN;
+		PString citymaxlen maxlen USER_CITY_LEN;
+		PString state maxlen USER_STATE_LEN;
+		PString country maxlen USER_COUNTRY_LEN;
+		PString zipCode maxlen USER_ZIP_LEN;
+		
+		CommSrvDate birthDate;
+		PString birthCity maxlen USER_CITY_LEN;
+		PString birthState maxlen USER_STATE_LEN;
+		PString birthCountry maxlen USER_COUNTRY_LEN;
+		
+		PString phone maxlen 100;
+		PString mobile maxlen USER_MOBILE_LEN;
+		PString email maxlen USER_EMAIL_LEN;
+		
+		PString fiscalCode maxlen USER_FISCAL_CODE_LEN;
+		UINT32 documentType; // no limit, limit depends on license
+		PString documentNumber maxlen 100;
+		CommSrvDate documentIssueDate;
+		PString documentPlaceOfIssue maxlen 300;
+		UINT32 documentIssuingAuthority max 100; // limit depends on document type
+		
+		// PYR-19416 (for ARJEL)
+		UINT32 flags min 0 max ((UINT32(1)<<(userFlagsLastUsedBit+UINT32(1)))-UINT32(1));
+		UINT64 flags2 min 0 max ((ONE64<<(userFlags2LastUsedBit+ONE64))-ONE64);
+		
+		PString profession maxlen 100;
+	};
+	
+	struct UserUpdateElement // request
+	{
+		UINT32 updateType min eUserUpdateTypeUndefined max eUserUpdateTypeLast;
+		
+		if (updateType == eUserUpdateTypeAddress)
+		{
+			CommMsgBody
+			{
+				PString addr_1 maxlen USER_ADDR_LEN;
+				PString addr_2 maxlen USER_ADDR2_LEN;
+				PString city maxlen USER_CITY_LEN;
+				PString state maxlen USER_STATE_LEN;
+				PString country maxlen USER_COUNTRY_LEN;
+				PString zipCode maxlen USER_ZIP_LEN;
+			};
+		}
+		else if (updateType == eUserUpdateTypeEmail)
+		{
+			CommMsgBody
+			{
+				PString email maxlen USER_EMAIL_LEN;
+				bool autoValidateEmail default false parseEndOptB4Me;
+			};
+		}
+		else if (updateType == eUserUpdateTypePassword)
+		{
+			CommMsgBody
+			{
+				PString pwd maxlen USER_PWD_LEN;
+			};
+		}
+		else if (updateType == eUserUpdateTypeImage)
+		{
+			CommMsgBody
+			{
+				BYTE imageType enum { IMAGE_TYPE_NONE, IMAGE_TYPE_PRIVATE };
+				PBlock imgData maxlen IMAGE_LEN; // dbm.h
+			};
+		}
+		else if (updateType == eUserUpdateTypeFullName)
+		{
+			CommMsgBody
+			{
+				PString fullName maxlen USER_FULLNAME_LEN;
+			};
+		}
+		else if (updateType == eUserUpdateTypePhone)
+		{
+			CommMsgBody
+			{
+				PString phone maxlen 100;
+			};
+		}
+		else if (updateType == eUserUpdateTypeRealMoney)
+		{
+			CommMsgBody
+			{
+				// empty
+				// client is NOT sending anything here, all userProfile goes via eUserUpdateTypeExternalValidation (sic)
+			};
+		}
+		else if (updateType == eUserUpdateTypeFirstNameLastName)
+		{
+			CommMsgBody
+			{
+				PString firstName maxlen USER_FIRST_NAME_LEN;
+				PString lastName maxlen USER_LAST_NAME_LEN;
+			};
+		}
+		else if (updateType == eUserUpdateTypeFiscalCode)
+		{
+			CommMsgBody
+			{
+				PString fiscalCode maxlen USER_FISCAL_CODE_LEN;
+			};
+		}
+		else if (updateType == eUserUpdateTypeEncrFiscalCode)
+		{
+			CommMsgBody
+			{
+				PString encrFiscalCode maxlen 4000;
+			};
+		}
+		else if (updateType == eUserUpdateTypeProperties)
+		{
+			CommMsgBody
+			{
+				vector<Common${ATF_THIN_NAMESPACE_SUFFIX}::AtfShared::UserPropertyLegacy> properties maxsize 2000;
+			};
+		}
+		else if (updateType == eUserUpdateTypeBirthday)
+		{
+			CommMsgBody
+			{
+				CommSrvDate birthDate;
+			};
+		}
+		else if (updateType == eUserUpdateTypeImageId)
+		{
+			CommMsgBody
+			{
+				UINT32 imageId;
+				UINT32 currentImageId;
+				bool isCurrentImageFromGallery;
+			};
+		}
+		else if (updateType == eUserUpdateTypeSwitchImageId)
+		{
+			CommMsgBody
+			{
+				UINT32 imageId;
+				bool isGalleryImage;
+				UINT32 currentImageId;
+				bool isCurrentImageFromGallery;
+				UINT32 adminIntId;
+				PString adminId;
+			};
+		}
+		else if (updateType == eUserUpdateTypeSex)
+		{
+			CommMsgBody
+			{
+				PString sex maxlen USER_SEX_LEN;
+			};
+		}
+		else if (updateType == eUserUpdateTypeMobile)
+		{
+			CommMsgBody
+			{
+				PString mobile maxlen 100; // should be USER_MOBILE_LEN. Client to fix it under PYR-61334
+			};
+		}
+		else if (updateType == eUserUpdateTypeEstoniaValidation)
+		{
+			CommMsgBody
+			{
+				PString verificationCertificate maxlen 2000; // assumption
+				PString verificationSignedData maxlen 2000; // assumption
+			};
+		}
+		else if (updateType == eUserUpdateTypeMailList)
+		{
+			CommMsgBody
+			{
+				bool mailListIn;
+			};
+		}
+		else if (updateType == eUserUpdateTypeMailListNew)
+		{
+			CommMsgBody
+			{
+				bool mailListPokerIn;
+				bool mailListCasinoIn;
+				bool mailListSportsIn;
+				bool mailListSportsLiveAlertIn parseEndOptB4Me;
+			};
+		}
+		else if (updateType == eUserUpdateTypeExternalValidation)
+		{
+			CommMsgBody
+			{
+				UserProfile profile;
+			};
+		}
+		else if (updateType == eUserUpdateTypeRealMoneyOkFlag)
+		{
+			CommMsgBody
+			{
+				bool realMoneyOkSet;
+				PString comment maxlen 1000; // assumption
+			};
+		}
+		else if (updateType == eUserUpdateTypeSetLimits)
+		{
+			CommMsgBody
+			{
+				INT32 weeklyDepositLimit min -1 max MAX_BANKROLL_SIZE; // -1 is handled as INCONSISTENT_DATA in Regulator code
+				INT32 buyInLimit min -1 max MAX_BANKROLL_SIZE; // -1 is used by some clients if isBuyInLimitValid is false
+				bool isBuyInLimitValid;
+				INT32 sportsAccumulatedLimit default NO_TABLE_LIMIT_MARKER parseEndOptB4Me;
+			};
+		}
+		else if (updateType == eUserUpdateTypeSMSPwdReset)
+		{
+			CommMsgBody
+			{
+				bool allowSMSPwdReset;
+			};
+		}
+		else if (updateType == eUserUpdateTypeSmsMarketingFlag)
+		{
+			CommMsgBody
+			{
+				bool smsMarketingFlagValue;
+			};
+		}
+		else if (updateType == eUserUpdateTypePwdStrongAuth)
+		{
+			CommMsgBody
+			{
+				PString answer1 maxlen 1000; // assumption
+				PString answer2 maxlen 1000; // assumption
+				PString ssn4 maxlen SSN_4_LEN;
+			};
+		}
+		else if (updateType == eUserUpdateTypeBooleanActions)
+		{
+			CommMsgBody
+			{
+				UINT32 booleanActions;
+			};
+		}
+		else if (updateType == eUserUpdateTypeLeaderBoard)
+		{
+			CommMsgBody
+			{
+				bool optinLeaderBoard;
+			};
+		}
+		else if (updateType == eUserUpdateTypeInternalServerNonUpdInfo)
+		{
+			CommMsgBody
+			{
+				UINT64 appLoginId; // no limit
+				UINT32 brandId min BrandType_None max BrandType_Last;
+				UINT32 adminIntId; // no limit
+				PString adminId maxlen USER_NAME_LEN;
+			};
+		}
+		else if (updateType == eUserUpdateTypeAgeVerification)
+		{
+			CommMsgBody
+			{
+				INT32 requestCtx; // no limit
+			};
+		}
+		else
+		{
+			CommMsgBody dummy_makeATFdefinitionForThisUpdateType maxsize 0; // this will trigger validation error in case of unsupported type
+		}
+	};
+	
+	struct UserUpdateValidationResult // response
+	{
+		INT32 updateType;
+		INT16 errCode;
+		PString errDescr;
+	};
+	
+	struct SwissUrlParamString	//	PYR-89580
+	{
+		PString param maxlen 256;	//	PYR-89580. Param encapsulated in struct in order to limit length.
+	};
+	struct SwissUrlRequest		
+	{
+		UINT32 locale;
+		UINT32 urlType;					//	enum eRegulatorSwissURLType
+		vector<SwissUrlParamString> params maxsize 8 notrace;	//	Optional param dependent on urlType
+	};
+};
+
+//////////////////////////////////// AUTHENTICATED CLIENT CONNECTION ////////////////////////////
+namespace cli
+{
+	//--------------------------------------------- MSG_LOBBY_UPDATE_USER2 (cli) ------------------------------------------
+	Message MSG_LOBBY_UPDATE_USER2 // 389
+	{
+		PString userId_ignore maxlen USER_NAME_LEN;
+		vector<common_structs::UserUpdateElement> elements maxsize 1000;
+		UINT32 flags_ingore; // PYR-19416 - for arjel purpose (sent since Sep 2011)
+		UINT64 flags2_ignore;
+	};
+	
+	Message MSG_LOBBY_UPDATE_USER2_REPLY // 390
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString frArjelUserHash; // PYR-23674; client ignores it - composed for Arjel
+			bool doReconnect;
+			bool emailAutoValidated; // PYR-36060
+			CommMsgBody specificContext parseEndOptB4Me; // depends on license
+		}
+	};
+	
+	//--------------------------------------------- MSG_CASHIER_LOOKUP_FISCAL_CODE (cli) ------------------------------------------
+	// NOTE: also used for admin connection with the exactly same definition
+	Message MSG_CASHIER_LOOKUP_FISCAL_CODE // 5415
+	{
+		PString fiscalCode maxlen 32; // FISCAL_CODE_LENGTH(16) is defined only locally, regulator handles other values by itself, sending INCONSISTENT_DATA errCode
+	};
+	
+	MsgBodyStruct FiscalCodeCountry // reply
+	{
+		PString code;
+		PString country;
+	};
+	
+	MsgBodyStruct FiscalCodeCity // reply
+	{
+		PString province;
+		PString city;
+	};
+	
+	Message MSG_CASHIER_LOOKUP_FISCAL_CODE_REPLY // 5416
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			vector<FiscalCodeCity> cities;
+			l2vector<FiscalCodeCountry> countries;
+		}
+	};
+	//--------------------------------------------- MSG_REGULATOR_CHECK_USER_FISCALCODE_UNIQUE (CLI) PYR-46312 ---------------------------
+	Message MSG_REGULATOR_CHECK_USER_FISCALCODE_UNIQUE // 7316
+	{
+		UINT32 unusedUserIntId;
+		PString unusedUserId maxlen USER_NAME_LEN;
+		PString fiscalCode maxlen 32;
+	};
+	Message MSG_REGULATOR_CHECK_USER_FISCALCODE_UNIQUE_REPLY
+	{
+		INT16 errCode;
+		if (errCode)
+		{	
+			PString errDesc;
+		}
+		//else { }
+	};
+	//--------------------------------------------- MSG_REGULATOR_USER_GET_INFO (cli) ------------------------------------------
+	Message MSG_REGULATOR_USER_GET_INFO // 7100
+	{
+		PString clientVersionInfo maxlen 1000 alias clVer;
+		UINT32 requestFlags default 0 parseEndOptB4Me alias f; // eRegulatorUserGetInfoFlags
+	};
+	
+	MsgBodyStruct UserInfoCurrencyAccountBody // reply
+	{
+		PString currency;
+		INT64 chips;
+		INT64 tChips;
+	};
+	
+	MsgBodyStruct UserInfoCommonBody // reply
+	{
+		UINT32 userOptions;
+		UINT32 flags;
+		UINT64 flags2;
+		UINT32 privileges;
+		UINT64 privileges2;
+		CommSrvTime registered;
+		CommSrvTime firstDeposit;
+		UINT64 privileges3;
+		PString userWebId;
+		INT32 licenseId;
+		PString country;
+		INT32 locale;
+		vector<UserInfoCurrencyAccountBody> balances;
+		PString userId;
+		INT64 fppAmountCents;
+		INT64 playChips;
+		UINT32 imageId;
+		PString email;
+		PString phone;
+		PString mobile;
+		PString sex;
+		PString addr1;
+		PString addr2;
+		PString city;
+		PString state;
+		PString zipCode;
+		UINT32 timezone;
+		PString firstName;
+		PString lastName;
+		PString fullName;
+		UINT64 flags3;
+		vector<Common${ATF_THIN_NAMESPACE_SUFFIX}::AtfShared::UserPropertyBody> userProperies;
+		INT32 emLocale; // PYR-88289
+	};
+	
+	struct UserInfoRegulatorAction // reply
+	{
+		UINT32 actionRequest; // enum eRegulatorActionRequest
+		CommMsgBody specificBody; 
+	};
+	
+	struct UserInfoRegulatorNotification // reply
+	{
+		UINT32 notificationType; // enum eRegulatorNotificationType
+		CommMsgBody specificBody;
+	};
+
+	Message MSG_REGULATOR_USER_GET_INFO_REPLY // 7101
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			UserInfoCommonBody commonBody;
+			vector<UserInfoRegulatorAction> regulatorActions;
+			CommMsgBody
+			{
+				vector<UserInfoRegulatorNotification> regulatorNotifications;
+			};
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_USER_GET_INFO_NO_ACTIONS (cli) ------------------------------------------
+	Message MSG_REGULATOR_USER_GET_INFO_NO_ACTIONS // 7274, PYR-71570 (same as MSG_REGULATOR_USER_GET_INFO, but no actions in reply)
+	{
+		PString clientVersionInfo maxlen 1000;
+	};
+	
+	Message MSG_REGULATOR_USER_GET_INFO_NO_ACTIONS_REPLY // 7275
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			UserInfoCommonBody commonBody;
+			vector<UserInfoRegulatorAction> regulatorActions_alwaysEmpty; // keep it empty
+			CommMsgBody
+			{
+				vector<UserInfoRegulatorNotification> regulatorNotifications_alwaysEmpty; // keep it empty
+			};
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_MIGRATION_GET_INFO (cli) ------------------------------------------
+	Message MSG_REGULATOR_MIGRATION_GET_INFO // 7102
+	{
+		// empty
+	};
+	
+	Message MSG_REGULATOR_MIGRATION_GET_INFO_REPLY // 7103
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_MIGRATION_PERFORM (cli) ------------------------------------------
+	Message MSG_REGULATOR_MIGRATION_PERFORM // 7104
+	{
+		UINT32 migrFlags max ((UINT32(eMigrationFlagLast)<<1)-UINT32(1));
+		UINT32 migrSiteId min PokerStars_SiteUnknown max PokerStars_Last;
+	};
+	
+	Message MSG_REGULATOR_MIGRATION_PERFORM_REPLY // 7105
+	{
+		INT16 errCode;
+		PString errDescr;
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_MIGRATION_CHECK_ONLY (cli) ------------------------------------------
+	Message MSG_REGULATOR_MIGRATION_CHECK_ONLY // 7314
+	{
+		UINT32 migrFlags max ((UINT32(eMigrationCheckFlagLast)<<1)-UINT32(1));
+		UINT32 migrSiteId min PokerStars_SiteUnknown max PokerStars_Last;
+	};
+	
+	Struct RegulatorMigrCheckOnlyReplyStruct
+	{
+		UINT32 targetLicenceId enum{
+			eLicenceCH, // PYR-89650
+		};
+		if (targetLicenceId == eLicenceCH)
+		{
+			CommMsgBody
+			{
+				PString migrToken maxlen 24;
+			};
+		}
+	};
+	
+	Message MSG_REGULATOR_MIGRATION_CHECK_ONLY_REPLY // 7315
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			RegulatorMigrCheckOnlyReplyStruct	replyStruct;		
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_CONVERT_FUNDS_TO_ONE_ACCT_FOR_NJMIGR (cli) ------------------------------------------
+	// obsolete
+	Message MSG_REGULATOR_CONVERT_FUNDS_TO_ONE_ACCT_FOR_NJMIGR // 7200, PYR-27224
+	{
+		// empty
+	};
+	
+	// regulator always replies with an error - NOT_ALLOWED
+	Message MSG_REGULATOR_CONVERT_FUNDS_TO_ONE_ACCT_FOR_NJMIGR_REPLY // 7201
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_EULA_TERMS_SIGNED (cli) ------------------------------------------
+	Message MSG_REGULATOR_EULA_TERMS_SIGNED //
+	{
+		bool mailList parseEndOptB4Me;
+		bool useMailList parseEndOptB4Me;
+	};
+	Message MSG_REGULATOR_EULA_TERMS_SIGNED_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+	
+	//--------------------------------------------- MSG_CASHIER_SET_RMF_BANKACCOUNT (cli) ------------------------------------------
+	// same as cashier's, should we omit it?
+	Message MSG_CASHIER_SET_RMF_BANKACCOUNT // 5345
+	{
+		PString bankName maxlen 1000;
+		PString accountNumberDecrypted maxlen 1000;
+		PString bankCountry maxlen 100;
+	};
+	
+	// same as cashier's, should we omit it?
+	Message MSG_CASHIER_SET_RMF_BANKACCOUNT_REPLY // 5346
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString reference;
+			bool isValid;
+			
+			CommMsgBody
+			{
+				BYTE realMoneyOk min 0 max 1;
+				PString accountNumberDecrypted;
+			};
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_GET_LAST_LOGIN_DETAILS (cli) ------------------------------------------
+	Message MSG_REGULATOR_GET_LAST_LOGIN_DETAILS // 7108, PYR-23308
+	{
+		// empty
+	};
+	
+	MsgBodyStruct LoginDetailsClientTournBody // reply only
+	{
+		UINT32 tournId;
+		PString tournName;
+		bool isPublished;
+	};
+	
+	MsgBodyStruct LoginDetailsBody
+	{
+		// if (license != ES) // FIXME: ATF doesn't allow to check for external parameters
+		//{
+			PString lastLogoutIp;
+		//}
+		/*else // ES body
+		{
+			CommMsgBody
+			{
+				CommSrvTime lastLoginTime;
+				CommSrvTime lastLogoutTime;
+				PString reasonDescr;
+				INT64 totalPlayed;
+				INT64 totalWon;
+			};
+			vector<LoginDetailsClientTournBody> tourns;
+			CommMsgBody hands; // copied directly
+		}*/
+	};
+	
+	Message MSG_REGULATOR_GET_LAST_LOGIN_DETAILS_REPLY // 7109
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			CommSrvTime lastLoginTime;
+			LoginDetailsBody loginDetails;
+			bool isFirstLoginSession;
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_GET_USER_WINNINGS (cli) ------------------------------------------
+	Message MSG_REGULATOR_GET_USER_WINNINGS // 7212, PYR-37856
+	{
+		CommSrvTime loginTime;
+	};
+	
+	Message MSG_REGULATOR_GET_USER_WINNINGS_REPLY // 7213
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			INT64 totalPlayed;
+			INT64 totalWon;
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_GET_FACEBOOK_LINK_CODE (cli) ------------------------------------------
+	Message MSG_REGULATOR_GET_FACEBOOK_LINK_CODE // 7114, PYR-23923
+	{
+		// empty
+	};
+	Message MSG_REGULATOR_GET_FACEBOOK_LINK_CODE_REPLY // 7115
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			UINT32 facebookLinkCode;
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_GET_FTP_PAIRING_CODE (cli) ------------------------------------------
+	// obsolete
+	Message MSG_REGULATOR_GET_FTP_PAIRING_CODE // 7120, PYR-23771
+	{
+		// empty
+	};
+	
+	// alwys returns MSG_REGULATOR_GET_FTP_PAIRING_CODE_REPLY
+	Message MSG_REGULATOR_GET_FTP_PAIRING_CODE_REPLY // 7121
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+	};
+	
+	//--------------------------------------------- MSG_LOBBY_SUPPORT_EMAIL_READY (cli) ------------------------------------------
+	Message MSG_LOBBY_SUPPORT_EMAIL_READY // 1212, PYR-27504
+	{
+		PString userIdNotUsed maxlen USER_NAME_LEN parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_SUPPORT_EMAIL_READY_REPLY // 1213
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+	
+	//--------------------------------------------- MSG_LOBBY_CLIENT_TO_SUPPORT_EMAIL (cli) ------------------------------------------
+	Message MSG_LOBBY_CLIENT_TO_SUPPORT_EMAIL // 1172, PYR-27504
+	{
+		common_structs::LobbyClientToSupportEmailStruct body;
+	};
+	Message MSG_LOBBY_CLIENT_TO_SUPPORT_EMAIL_REPLY // 1208
+	{
+		common_structs::LobbyClientToSupportEmailReplyStruct replyBody;
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_CONFIRMED_USER_LIMITS (cli) ------------------------------------------
+	MsgBodyStruct NjDepositLimitActionBody // request, struct NjLimitAction PYR-27779, PYR-27795
+	{
+		UINT32 limitType enum {eDailyDepositLimit, eWeeklyDepositLimit, eMonthlyDepositLimit}; // enum SelfDepositLimitType in dbm.h
+		UINT32 limitId;
+		bool isApprove;
+		INT32 prevLimit min -1 max MAX_BANKROLL_SIZE; // forwarded to, but not used by dbm
+		INT32 limit min -1 max MAX_BANKROLL_SIZE;     // forwarded to, but not used by dbm
+		PString currency maxlen CURRENCY_LEN;         // forwarded to, but not used by dbm
+	};
+	MsgBodyStruct NjGameLimitActionBody // request, struct NjLimitAction PYR-27779, PYR-27795
+	{
+		UINT32 limitType min eTableLimitTypeAny max (numLimitTypes-1); // eTableLimitType in dbm.h
+		UINT32 limitId;
+		bool isApprove;
+		INT32 prevLimit min -1 max MAX_BANKROLL_SIZE;
+		INT32 limit min -1 max MAX_BANKROLL_SIZE;
+		PString currency maxlen CURRENCY_LEN;
+	};
+	
+	MsgBodyStruct UserDepositLimitsBody // request and response
+	{
+		vector<NjDepositLimitActionBody> limits maxsize 1000 parseEndOptB4Me;
+	};
+	MsgBodyStruct UserGameLimitsBody // request and response
+	{
+		vector<NjGameLimitActionBody> limits maxsize 1000 parseEndOptB4Me;
+	};
+	
+	Message MSG_REGULATOR_CONFIRMED_USER_LIMITS // 7130, PYR-27795
+	{
+		UserDepositLimitsBody depositLimits;
+		UserGameLimitsBody gameLimits;
+	};
+	
+	MsgBodyStruct UserDepositLimitsResultBody // response
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			UserDepositLimitsBody limits;
+		}
+	};
+	MsgBodyStruct UserGameLimitsResultBody // response
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			UserGameLimitsBody limits;
+		}
+	};
+	
+	Message MSG_REGULATOR_CONFIRMED_USER_LIMITS_REPLY // 7131
+	{
+		UserDepositLimitsResultBody depositLimits;
+		UserGameLimitsResultBody gameLimits;
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_CHALLENGE_QUESTION (cli) ------------------------------------------
+	Message MSG_REGULATOR_CHALLENGE_QUESTION // 7138, PYR-27258
+	{
+		UINT32 locale max MAX_LOCALES;
+	};
+	Message MSG_REGULATOR_CHALLENGE_QUESTION_REPLY // 7139
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			l2vector<common_structs::ChallengeQuestion> challengeQuestions;
+		}
+	};
+	
+	//--------------------------------------------- MSG_CASHIER_LIFETIME_LIMIT_CONFIRMED (cli) ------------------------------------------
+	Message MSG_CASHIER_LIFETIME_LIMIT_CONFIRMED // 5483, PYR-27262
+	{
+		// empty
+	};
+	Message MSG_CASHIER_LIFETIME_LIMIT_CONFIRMED_REPLY // 5484
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_CLIENT_FTPLAUNCHER (cli) ------------------------------------------
+	// obsolete
+	Message MSG_REGULATOR_CLIENT_FTPLAUNCHER // 7164, PYR-30114
+	{
+		// empty
+	};
+	
+	// always returns NOT_ALLOWED
+	Message MSG_REGULATOR_CLIENT_FTPLAUNCHER_REPLY // 7165
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_SET_PROMO_CODE (cli) ------------------------------------------
+	Message MSG_REGULATOR_SET_PROMO_CODE // 7162, PYR-29811
+	{
+		PString promoCode maxlen 10000;
+	};
+	Message MSG_REGULATOR_SET_PROMO_CODE_REPLY // 7163
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_SET_PWD_REMINDER (cli) ------------------------------------------
+	Message MSG_REGULATOR_SET_PWD_REMINDER // 7168, PYR-30480
+	{
+		bool remind;
+	};
+	Message MSG_REGULATOR_SET_PWD_REMINDER_REPLY //7169
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_VALIDATE_CHALLENGE_ANSWERS (cli) ------------------------------------------
+	Message MSG_REGULATOR_VALIDATE_CHALLENGE_ANSWERS // 7170, PYR-28732
+	{
+		vector<common_structs::ChallengeAnswer> answers minsize CHALLENGE_ANSWERS_SIZE maxsize CHALLENGE_ANSWERS_SIZE;
+	};
+	Message MSG_REGULATOR_VALIDATE_CHALLENGE_ANSWERS_REPLY // 7171
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			bool match;
+			bool allowMoreAttempts;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_REMOVE_CHALLENGE_QUESTIONS (cli) ------------------------------------------
+	Message MSG_REGULATOR_REMOVE_CHALLENGE_QUESTIONS // 7172, PYR-28732
+	{
+		// empty
+	};
+	Message MSG_REGULATOR_REMOVE_CHALLENGE_QUESTIONS_REPLY // 7173
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_SET_CHALLENGE_QUESTIONS_REMINDER (cli) ------------------------------------------
+	Message MSG_REGULATOR_SET_CHALLENGE_QUESTIONS_REMINDER // 7172, PYR-28732
+	{
+		bool remind default true parseEndOptB4Me;
+	};
+	Message MSG_REGULATOR_SET_CHALLENGE_QUESTIONS_REMINDER_REPLY // 7173
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_CHALLENGE_QUESTION_SETUP_REFUSED (cli) ------------------------------------------
+	Message MSG_REGULATOR_CHALLENGE_QUESTION_SETUP_REFUSED // 7176, PYR-28732
+	{
+		// empty
+	};
+	Message MSG_REGULATOR_CHALLENGE_QUESTION_SETUP_REFUSED_REPLY // 7177
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_MATCH_ZIP_CODE (cli) ------------------------------------------
+	Message MSG_REGULATOR_MATCH_ZIP_CODE // 7180, PYR-27186
+	{
+		PString streetNum maxlen USER_ADDR_LEN;
+		PString zipCode maxlen USER_ZIP_LEN;
+		PString countryCode maxlen COUNTRY_CODE_LEN;
+	};
+	MsgBodyStruct Address
+	{
+		PString address;
+		PString city;
+		PString state;
+		PString zip;
+		PString country;
+	};
+	Message MSG_REGULATOR_MATCH_ZIP_CODE_REPLY // 7181
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			vector<Address> addresses;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_SET_SHOW_CASINO_GAMES_FLAG (cli) ------------------------------------------
+	Message MSG_REGULATOR_SET_SHOW_CASINO_GAMES_FLAG // 7206, PYR-33086
+	{
+		bool setNotRemove;
+		PString userId maxlen USER_NAME_LEN;
+		PString comment maxlen USER_COMMENTS_LEN;
+	};
+	Message MSG_REGULATOR_SET_SHOW_CASINO_GAMES_FLAG_REPLY // 7207
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_RESET_PWD (cli) ------------------------------------------
+	Message MSG_REGULATOR_RESET_PWD // 7134, PYR-27258
+	{
+		common_structs::ResetPwdMessageStruct resetPwd;
+	};
+	Message MSG_REGULATOR_RESET_PWD_REPLY // 7135
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_GET_CONFIG_INFO (cli) ------------------------------------------
+	Message MSG_REGULATOR_GET_CONFIG_INFO // 7210, PYR-31215
+	{
+		UINT32 configInfoMask max 3; // mask of eRegulatorConfigInfoType
+	};
+	struct RegulatorConfigInfo // response
+	{
+		UINT32 configInfoType min eRegulatorConfigInfoType_None max eRegulatorConfigInfoType_AgeVerifyAttempts;
+		if (configInfoType == eRegulatorConfigInfoType_AddressLookup)
+		{
+			CommMsgBody { bool showAddressLookup; UINT32 addressLookupRMFtypesMask; };
+		}
+		if (configInfoType == eRegulatorConfigInfoType_AgeVerifyAttempts)
+		{
+			CommMsgBody { INT32 deshMaxAgeVerifyAttempts; };
+		}
+	};
+	Message MSG_REGULATOR_GET_CONFIG_INFO_REPLY // 7211
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			vector<RegulatorConfigInfo> configInfoData;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_SET_RATE_MOBILE_FLAG (cli) ------------------------------------------
+	Message MSG_REGULATOR_SET_RATE_MOBILE_FLAG // 7216, PYR-33276
+	{
+		bool setNotRemove;
+		PString userId maxlen 0; // client sends blank, admin sends actual userId
+		PString comment maxlen 0; // client sends blank, admin sends a comment
+	};
+	Message MSG_REGULATOR_SET_RATE_MOBILE_FLAG_REPLY // 7217
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_SAVE_CONSENT (cli) ------------------------------------------
+	Message MSG_LOBBY_SAVE_CONSENT // 1109, PYR-40406
+	{
+		PString userId maxlen USER_NAME_LEN;
+		UINT32 consentId;
+		UINT32 status min 1 max 2; // USERCONSENTS.STATUS (Declined = 1, Agree = 2)
+	};
+	Message MSG_LOBBY_SAVE_CONSENT_REPLY // 1110
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_FULLTILT_CONVERSION_PERFORM (cli) ------------------------------------------
+	Message MSG_REGULATOR_FULLTILT_CONVERSION_PERFORM // 7230, PYR-39878
+	{
+		UINT32 playerix;
+		UINT32 userIntId;
+		PString ftToken maxlen 10000;
+		INT32 conversionType min eFullTiltConversionType_Unknown 
+			max eFullTiltConversionType_Last; // enum eFullTiltConversionType (dbm.h)
+	};
+	Message MSG_REGULATOR_FULLTILT_CONVERSION_PERFORM_REPLY // 7231
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			bool isRmPlayer;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_GET_USER_SESSION_WINNINGS (cli) ------------------------------------------
+	Message MSG_REGULATOR_GET_USER_SESSION_WINNINGS // 7240, PYR-43867
+	{
+		// empty
+	};
+	Message MSG_REGULATOR_GET_USER_SESSION_WINNINGS_REPLY // 7241
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			bool isLastSession;
+			CommSrvTime sessionStartTime;
+			CommSrvTime sessionEndTime;
+			INT64 wager;
+			INT64 winLoss;
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_VALIDATE_USER_UPDATE (cli) ------------------------------------------
+	Message MSG_REGULATOR_VALIDATE_USER_UPDATE // 7250, PYR-45841
+	{
+		PString userId_ignore maxlen USER_NAME_LEN;
+		vector<common_structs::UserUpdateElement> elements maxsize 1000;
+		UINT32 locale max MAX_LOCALES;
+	};
+	
+	Message MSG_REGULATOR_VALIDATE_USER_UPDATE_REPLY // 7251
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			vector<common_structs::UserUpdateValidationResult> validationResults;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_FR_ACC_VAL_PLAYER_ACTION (cli) ------------------------------------------
+	Message MSG_REGULATOR_FR_ACC_VAL_PLAYER_ACTION // 7248, PYR-43398
+	{
+		INT32 action; // enum eRegulatorFrAccValPlayerAction (regulator.h), no limits, explicitly validated in process function
+	};
+	Message MSG_REGULATOR_FR_ACC_VAL_PLAYER_ACTION_REPLY // 7249
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_CHECK_USER_DOCUMENT_UNIQUE (cli) ------------------------------------------
+	Message MSG_REGULATOR_CHECK_USER_DOCUMENT_UNIQUE // 7258, PYR-50428
+	{
+		PString document maxlen 10000;
+		INT32 docType max 100; // limit depends on license
+		PString country maxlen COUNTRY_CODE_LEN parseEndOptB4Me; 
+	};
+	Message MSG_REGULATOR_CHECK_USER_DOCUMENT_UNIQUE_REPLY // 7259
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_SE_BANKID_VERIFY (cli) ------------------------------------------
+	Message MSG_REGULATOR_SE_BANKID_VERIFY // 7286, PYR-78110
+	{
+		PString personalNumber maxlen 12;
+		bool mobileBankIdOnly;
+	};
+	Message MSG_REGULATOR_SE_BANKID_VERIFY_REPLY // 7287
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			INT32 status min 0 max 2; // enum eRegulatorSeBankIdVerificationStatus (regulator.h)
+			CommMsgBody replyDetails; // respose data that depends on status value; once nested conditions supported by ATF should be described as follows:
+			//if ( status == 0 ) // eRegulatorSeBankIdVerificationStatus_Pending
+			//{
+			//	PString autoStartToken maxlen 2000;
+			//	INT32 orderId min 1; // no max limit
+			//}
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_SE_BANKID_COLLECT (cli) ------------------------------------------
+	Message MSG_REGULATOR_SE_BANKID_COLLECT // 7288, PYR-78110
+	{
+		INT32 orderId min 1; // no max limit
+		bool bankIdClientStartedAutomatically;
+	};
+	Message MSG_REGULATOR_SE_BANKID_COLLECT_REPLY // 7289
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			INT32 status min 0 max 2; // enum eRegulatorSeBankIdVerificationStatus (regulator.h)
+			CommMsgBody replyDetails; // respose data that depends on status value; once nested conditions supported by ATF should be described as follows:
+			//if ( status == 0 ) // eRegulatorSeBankIdVerificationStatus_Pending
+			//{
+			//	PString messageCode maxlen 5;
+			//}
+			//else if ( status == 1 ) // eRegulatorSeBankIdVerificationStatus_Complete
+			//{
+			//	PString firstName maxlen 200;
+			//	PString lastName maxlen 200;
+			//	PString personalNumber maxlen 12;
+			//}
+			//else if ( status == 2 ) // eRegulatorSeBankIdVerificationStatus_Failed
+			//{
+			//	PString messageCode maxlen 5;
+			//}
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_GET_USER_BLACKLIST_INFO (cli) ------------------------------------------
+	
+	MsgBodyStruct BlackListInfo
+	{
+		INT32 durationDays min 0 max 90;
+		SrvTime timeFrom;
+		SrvTime timeUntil;
+	};
+	
+	struct BlackListInfoConditional
+	{
+		bool isBlacklisted;
+		if(isBlacklisted)
+		{
+			BlackListInfo infoBody;
+		}
+	};
+	
+	Message MSG_REGULATOR_GET_USER_BLACKLIST_INFO // 7292, PYR-82532
+	{
+		// empty
+	};
+	Message MSG_REGULATOR_GET_USER_BLACKLIST_INFO_REPLY // 7293
+	{
+		INT16 errCode;
+		
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			BlackListInfoConditional blackListInfo;
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_REQUEST_USER_BLACKLIST_INFO (cli) ------------------------------------------
+	Message MSG_REGULATOR_REQUEST_USER_BLACKLISTED // 7294, PYR-82532
+	{
+		INT32 durationDays min 0 max 90;
+	};
+	Message MSG_REGULATOR_REQUEST_USER_BLACKLISTED_REPLY // 7295
+	{
+		INT16 errCode;
+		
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			BlackListInfo infoBody;
+		}
+	};
+
+	//----------------------------------------- MSG_REGULATOR_GET_SWISS_URL (cli) ----------------------------------------------------------------
+	Message MSG_REGULATOR_GET_SWISS_URL		//	PYR-89580
+	{
+		common_structs::SwissUrlRequest commonRequest;
+	};
+	Message MSG_REGULATOR_GET_SWISS_URL_REPLY
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString url;
+		}
+	};	
+	
+	//----------------------------------------- MSG_REGULATOR_GET_ASIA_GAMING_URL (cli) ----------------------------------------------------------------
+	Message MSG_REGULATOR_GET_ASIA_GAMING_URL		//	PYR-51935, PYR-65389
+	{
+		INT16	urlType default 1 max eAsiaB2B_LinkType_Last parseEndOptB4Me;		//	enum AsiaB2B_LinkType
+	};
+	Message MSG_REGULATOR_GET_ASIA_GAMING_URL_REPLY
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString url notrace;
+		}
+	};	
+
+	//--------------------------------------------- MSG_REGULATOR_REACTIVATE_DORMANT_ACCOUNT (cli) ------------------------------------------
+	Message MSG_REGULATOR_REACTIVATE_DORMANT_ACCOUNT // 7330, PYR-102822
+	{
+		// empty
+	};
+	Message MSG_REGULATOR_REACTIVATE_DORMANT_ACCOUNT_REPLY // 7331
+	{
+		INT16 errCode;
+		
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message MSG_REGULATOR_ES_IDSCAN_DOCUMENT_SUBMISSION // 7338, PYR-60240
+	{
+		PString journeyId maxlen 40;
+	};
+	Message MSG_REGULATOR_ES_IDSCAN_DOCUMENT_SUBMISSION_REPLY // 7339, PYR-60240
+	{
+		INT16 errCode;
+		
+		if ( errCode )
+		{
+			PString errDesc;
+		}
+	};
+
+};
+
+//////////////////////////////////// UNAUTHENTICATED CLIENT CONNECTION ////////////////////////////
+namespace cli_unauth
+{
+	//--------------------------------------------- MSG_LOBBY_REPORT_CREATE_ACCOUNT_GIVE_UP (cli_unauth) ------------------------------------------
+	Message MSG_LOBBY_REPORT_CREATE_ACCOUNT_GIVE_UP // 563, PYR-17950
+	{
+		PString installId maxlen 100;
+		UINT32 siteId min PokerStars_SiteUnknown max PokerStars_Last; // enum Sites in sites.h
+		UINT32 platformId min Client_UnknownPlatform max Client_Last; // enum ClientPlatform in clientplatforms.h
+		PString accountWizardPageName maxlen 100;
+		Common${ATF_THIN_NAMESPACE_SUFFIX}::AtfShared::LoginExtra clientExtra parseEndOptB4Me;
+	};
+
+	//--------------------------------------------- MSG_LOBBY_NAME_AVAILABLE (cli_unauth) ------------------------------------------
+	Message MSG_LOBBY_NAME_AVAILABLE // 1136
+	{
+		common_structs::LobbyNameAvailableStruct body;
+	};
+	Message MSG_LOBBY_NAME_AVAILABLE_REPLY // 1137
+	{
+		common_structs::LobbyNameAvailableReplyStruct replyBody;
+	};
+
+	//--------------------------------------------- MSG_LOBBY_COMPARE_SITE_FOR_IP (cli_unauth) ------------------------------------------
+	Message MSG_LOBBY_COMPARE_SITE_FOR_IP // 513, PYR-17233
+	{
+		UINT32 siteId min PokerStars_SiteUnknown max PokerStars_Last;
+		Common${ATF_THIN_NAMESPACE_SUFFIX}::AtfShared::LoginExtra clientExtra parseEndOptB4Me;
+	};
+	struct SiteMetadata
+	{
+		UINT32 siteId;
+		PString name;
+		PString contactEmail;
+		PString contactURL;
+		PString downloadURL;
+		PString faqURL;
+	};
+	Message MSG_LOBBY_COMPARE_SITE_FOR_IP_REPLY // 514
+	{
+		INT16 errCode;
+		PString country;
+		SiteMetadata siteMetadata;
+	};
+
+	//--------------------------------------------- MSG_LOBBY_SIGNUP_QUESTIONNAIRE (cli_unauth) ------------------------------------------
+	Message MSG_LOBBY_SIGNUP_QUESTIONNAIRE // 439
+	{
+		PString country maxlen 5; // normally it has length 2, but there are examples of "*****"
+		UINT32 locale max MAX_LOCALES;
+	};
+	struct ReferralSource // reply
+	{
+		UINT32 sourceId;
+		PString sourceName;
+		PString pleaseSpecify;
+		vector<PString> options; 
+	};
+	Message MSG_LOBBY_SIGNUP_QUESTIONNAIRE_REPLY // 440
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			vector<ReferralSource> sources;
+		}
+	};
+
+	MsgBodyStruct RegisterNewUserPrivileges
+	{
+		UINT32 untrustedPriv;
+		UINT32 untrustedPrivMask;
+		UINT64 untrustedPriv2;
+		UINT64 untrustedPriv2Mask;
+		UINT64 untrustedPriv3;
+		UINT64 untrustedPriv3Mask;
+	};
+
+	struct RegisterNewUserRequest // request
+	{
+		PString id maxlen USER_NAME_LEN; // limit from InsertAcctCreationFailureStmt
+		PString pwd maxlen USER_PWD_LEN;
+		PString fullName maxlen USER_FULLNAME_LEN;
+		PString email maxlen USER_EMAIL_LEN;
+		PString addr_1 maxlen USER_ADDR_LEN;
+		PString addr_2 maxlen USER_ADDR2_LEN;
+		PString city maxlen USER_CITY_LEN;
+		PString state maxlen USER_STATE_LEN;
+		PString country maxlen USER_COUNTRY_LEN;
+		PString zipCode maxlen USER_ZIP_LEN;
+		PString userInstallId maxlen USER_INSTALLID_LEN;
+		BYTE imageType min IMAGE_TYPE_NONE max IMAGE_TYPE_LAST; // dbm.h
+		PBlock imageData maxlen IMAGE_LEN; // dbm.h
+		PString _dummy maxlen 1000;
+		UINT32 siteIdShifted min (UINT32(PokerStars_SiteUnknown)>>1) max (UINT32(PokerStars_Last)>>1);
+		INT32 referenceType; // limit removed: min -1 max 1000; // limit estimated, questionnaire type, observed to be -1
+		PString referenceStr maxlen 1000;
+		INT32 _promisedFppDummy;
+		CommSrvDate dob;
+		UINT32 locale max MAX_LOCALES;
+		PString tiVer maxlen TINFO_VERSION_LEN;
+		PString tiGUID maxlen TINFO_GUID_LEN;
+		PString tiManualPromo maxlen 300; // maxlen 38 observed in QA env
+		PString tiPromoCode maxlen PROMO_NAME_LEN;
+		PString tiInfoFile maxlen 1000;
+		bool ignoreInvalidManualPromo;
+		PString firstName maxlen USER_FIRST_NAME_LEN;
+		PString lastName maxlen USER_LAST_NAME_LEN;
+		PBlock captchaData maxlen 10000;
+		PString captchaText maxlen 100;
+		bool mailList;
+		PString sex maxlen USER_SEX_LEN;
+		PString refDomain maxlen TINFO_TINFO_RDN_LEN;
+		PString mobile maxlen USER_MOBILE_LEN;
+		UINT32 timezone min eTzUTC max (eTzNumber-1); // enum eTimeZone in timezone.h
+		Common${ATF_THIN_NAMESPACE_SUFFIX}::AtfShared::LoginExtra clientExtra parseEndOptB4Me;
+		UINT32 imageId default 0 parseEndOptB4Me;
+		UINT32 clientFlags max ((UINT32(eRegisterNewUserFlags_Last)<<1)-1) parseEndOptB4Me;
+		Common${ATF_THIN_NAMESPACE_SUFFIX}::AtfShared::LoginExtra clientExtra_ignored parseEndOptB4Me; // not used by server
+		RegisterNewUserPrivileges privileges parseEndOptB4Me;
+		UINT32 regSiteId min PokerStars_Com max PokerStars_Last parseEndOptB4Me;
+	};
+	
+	//--------------------------------------------- MSG_LOBBY_REGISTER_NEW_USER (cli_unauth) ------------------------------------------
+	Message MSG_LOBBY_REGISTER_NEW_USER // 28
+	{
+		RegisterNewUserRequest newUser;
+	};
+	
+	Message MSG_LOBBY_REGISTER_NEW_USER_REPLY // 29
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			INT32 fppForQuestionnaire;
+			PString empty;
+			INT32 firstDepositBonusAmount;
+			PString firstDepositBonusCurrency;
+			PString fdbPrompt;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_1ST_TIME_FACEBOOK_LOGIN (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_1ST_TIME_FACEBOOK_LOGIN // 7118
+	{
+		PString userId maxlen USER_NAME_LEN;
+		PString email maxlen USER_EMAIL_LEN;
+		PString installId maxlen USER_INSTALLID_LEN;
+		UINT32 locale max MAX_LOCALES;
+		UINT32 siteId min PokerStars_SiteUnknown max PokerStars_Last;
+		UINT32 platformId min Client_UnknownPlatform max Client_Last;
+		Common${ATF_THIN_NAMESPACE_SUFFIX}::AtfShared::LoginExtra clientExtra parseEndOptB4Me;
+	};
+	Message MSG_REGULATOR_1ST_TIME_FACEBOOK_LOGIN_REPLY // 7119
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_EMAIL_AVAILABLE (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_EMAIL_AVAILABLE // 7244, PYR-42399
+	{
+		PString email maxlen USER_EMAIL_LEN;
+		UINT32 locale max MAX_LOCALES;
+		Common${ATF_THIN_NAMESPACE_SUFFIX}::AtfShared::LoginExtra clientExtra;
+	};
+	Message MSG_REGULATOR_EMAIL_AVAILABLE_REPLY // 7245
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		if (errCode == DUPLICATE_NEW_USER_EMAIL)
+		{
+			UINT32 brandId;
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_RESET_PWD (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_RESET_PWD // 7134, PYR-27258
+	{
+		common_structs::ResetPwdMessageStruct resetPwd;
+	};
+	Message MSG_REGULATOR_RESET_PWD_REPLY // 7135
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_RETRIEVE_USERID ------------------------------------------
+	Message MSG_LOBBY_RETRIEVE_USERID // 455
+	{
+		PString email maxlen USER_EMAIL_LEN;
+		UINT32 locale default LOCALE_DEFAULT max MAX_LOCALES parseEndOptB4Me;
+		UINT32 clientSiteId default PokerStars_SiteUnknown min PokerStars_SiteUnknown max PokerStars_Last parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_RETRIEVE_USERID_REPLY // 456
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString emptyStr;
+		}
+		if (errCode == USER_EXISTS_ON_OTHER_LICENSE)
+		{
+			UINT32 licenseId;
+		}
+		if (errCode == CANNOT_RETRIEVE_USERID_STRONG_AUTH_REQD)
+		{
+			l2vector<common_structs::ChallengeQuestion> challengeQuestions;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_SMS_RESET_PWD (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_SMS_RESET_PWD // 7136, PYR-27258 (orig PYR-22184 MSG_LOBBY_SMS_RESET_PWD2 via lobby -> removed PYR-40405)
+	{
+		PString user maxlen USER_NAME_LEN;
+		PString email maxlen USER_EMAIL_LEN;
+		PString mobile maxlen USER_MOBILE_LEN;
+	};
+	Message MSG_REGULATOR_SMS_RESET_PWD_REPLY // 7137
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_PWD_RESET_QUESTIONS (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_PWD_RESET_QUESTIONS // 7140, PYR-27258
+	{
+		PString userId maxlen 100; // client does not limit the length correctly (should be 20 max)
+		PString email maxlen USER_EMAIL_LEN;
+		UINT32 locale max MAX_LOCALES;
+	};
+	Message MSG_REGULATOR_PWD_RESET_QUESTIONS_REPLY // 7141
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			bool isRM;
+			l2vector<common_structs::ChallengeQuestion> challengeQuestions;
+			bool allowSMSReset;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_PWD_RESET_QUESTIONS2 (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_PWD_RESET_QUESTIONS2 // 7142, PYR-27258
+	{
+		PString userId maxlen 100; // client does not limit the length correctly (should be 20 max)
+		UINT32 locale max MAX_LOCALES;
+		UINT32 userIntId default 0 parseEndOptB4Me;
+	};
+	Message MSG_REGULATOR_PWD_RESET_QUESTIONS2_REPLY // 7143
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			l2vector<common_structs::ChallengeQuestion> challengeQuestions;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_CLEAR_STRONG_AUTH_REQD (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_CLEAR_STRONG_AUTH_REQD // 7144, PYR-27258
+	{
+		PString user maxlen USER_NAME_LEN;
+		PString answer1 maxlen 10000;
+		PString answer2 maxlen 10000;
+		PString ssn4 maxlen SSN_4_LEN;
+	};
+	Message MSG_REGULATOR_CLEAR_STRONG_AUTH_REQD_REPLY // 7145
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_RETRIEVE_USERID2 (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_RETRIEVE_USERID2 // 7150, PYR-28472
+	{
+		PString eMail maxlen USER_EMAIL_LEN;
+		PString answer1 maxlen 10000;
+		PString answer2 maxlen 10000;
+		PString ssn4 maxlen SSN_4_LEN;
+		UINT32 locale default LOCALE_DEFAULT max MAX_LOCALES parseEndOptB4Me;
+		UINT32 clientSiteId default PokerStars_SiteUnknown min PokerStars_SiteUnknown max PokerStars_Last;
+	};
+	Message MSG_REGULATOR_RETRIEVE_USERID2_REPLY // 7151
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString emptyStr;
+		}
+		if (errCode == USER_EXISTS_ON_OTHER_LICENSE)
+		{
+			UINT32 licenseId;
+		}
+		if (errCode == CANNOT_RETRIEVE_USERID_STRONG_AUTH_REQD)
+		{
+			l2vector<common_structs::ChallengeQuestion> challengeQuestions;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_GET_AVAIL_REVALIDATION_METHODS (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_GET_AVAIL_REVALIDATION_METHODS // 7182, PYR-31219
+	{
+		PString userId maxlen USER_NAME_LEN;
+		UINT32 locale max MAX_LOCALES;
+		UINT32 clientSiteId min PokerStars_SiteUnknown max PokerStars_Last;
+		UINT32 userIntId default 0 parseEndOptB4Me;
+	};
+	Message MSG_REGULATOR_GET_AVAIL_REVALIDATION_METHODS_REPLY // 7183
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			UINT32 revalidationMethods;
+			PString phoneNumber;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_CLEAR_ACCOUNT_REVALIDATION (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_CLEAR_ACCOUNT_REVALIDATION // 7184, PYR-31219
+	{
+		PString userId maxlen USER_NAME_LEN;
+		UINT32 locale max MAX_LOCALES;
+		UINT32 clientSiteId min PokerStars_SiteUnknown max PokerStars_Last;
+		INT32 revalidationMethod min eRegulatorRevalidationMethods_None max eRegulatorRevalidationMethods_Last;
+		PString answer1 maxlen 10000;
+		PString answer2 maxlen 10000;
+		UINT32 userIntId default 0 parseEndOptB4Me;
+	};
+	Message MSG_REGULATOR_CLEAR_ACCOUNT_REVALIDATION_REPLY // 7185
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_ACCOUNT_REVALIDATION_CANCELLED (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_ACCOUNT_REVALIDATION_CANCELLED // 7186, PYR-31219
+	{
+		PString userId maxlen USER_NAME_LEN;
+		UINT32 locale max MAX_LOCALES;
+		UINT32 clientSiteId min PokerStars_SiteUnknown max PokerStars_Last;
+		UINT32 userIntId default 0 parseEndOptB4Me;
+	};
+	Message MSG_REGULATOR_ACCOUNT_REVALIDATION_CANCELLED_REPLY // 7187
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_ACCOUNT_REVALIDATION_SEND_SMS (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_ACCOUNT_REVALIDATION_SEND_SMS // 7188, PYR-31219
+	{
+		PString userId maxlen USER_NAME_LEN;
+		UINT32 locale max MAX_LOCALES;
+		UINT32 clientSiteId min PokerStars_SiteUnknown max PokerStars_Last;
+		UINT32 userIntId default 0 parseEndOptB4Me;
+	};
+	Message MSG_REGULATOR_ACCOUNT_REVALIDATION_SEND_SMS_REPLY // 7189
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_ACCOUNT_REVALIDATION_GET_LAST_CC (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_ACCOUNT_REVALIDATION_GET_LAST_CC // 7190, PYR-31219
+	{
+		PString userId maxlen USER_NAME_LEN;
+		UINT32 locale max MAX_LOCALES;
+		UINT32 clientSiteId min PokerStars_SiteUnknown max PokerStars_Last;
+		UINT32 userIntId default 0 parseEndOptB4Me;
+	};
+	struct MaskedCardNum // reply
+	{
+		PString paysystem;
+		PString maskedNum;
+		SrvTime whenUsed;
+	};
+	Message MSG_REGULATOR_ACCOUNT_REVALIDATION_GET_LAST_CC_REPLY // 7191
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			vector<MaskedCardNum> userMaskedCreditCards;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_VALIDATE_CHALLENGE_ANSWERS2 (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_VALIDATE_CHALLENGE_ANSWERS2 // 7204, PYR-32706
+	{
+		PString userId maxlen USER_NAME_LEN;
+		UINT32 locale max MAX_LOCALES;
+		UINT32 clientSiteId min PokerStars_SiteUnknown max PokerStars_Last;
+		vector<common_structs::ChallengeAnswer> answers minsize CHALLENGE_ANSWERS_SIZE maxsize CHALLENGE_ANSWERS_SIZE;
+	};
+	Message MSG_REGULATOR_VALIDATE_CHALLENGE_ANSWERS2_REPLY // 7205
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			bool match;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_REMIND_SID (cli_unauth) ------------------------------------------
+	Message MSG_LOBBY_REMIND_SID // 234, PYR-40406
+	{
+		PString userId maxlen 100; // client does not limit the length correctly (should be 20 max)
+	};
+	Message MSG_LOBBY_REMIND_SID_REPLY // 235
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString mobileOrEmail;
+			bool viaSMS;
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_SEND_WEB_PWD_RESET_EMAIL (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_SEND_WEB_PWD_RESET_EMAIL // 7232, PYR-41017
+	{
+		PString userIdOrEmail maxlen 1000; // USER_EMAIL_LEN; // USER_EMAIL_LEN > USER_NAME_LEN // client can send longer string
+		UINT32 locale max MAX_LOCALES;
+		UINT32 clientSiteId min PokerStars_SiteUnknown max PokerStars_Last;
+		PString installId maxlen USER_INSTALLID_LEN;
+		INT32 brandId min BrandType_None max BrandType_Last;
+		//if (ramConn)
+		//PString ipAddr parseEndOptB4Me;
+		Common${ATF_THIN_NAMESPACE_SUFFIX}::AtfShared::LoginExtra clientExtra parseEndOptB4Me;
+	};
+	
+	Message MSG_REGULATOR_SEND_WEB_PWD_RESET_EMAIL_REPLY // 7233
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			INT32 inputFormat;
+			PString eMailMask;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_WEB_PWD_SET_NEW_PWD (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_WEB_PWD_SET_NEW_PWD // 7234, PYR-41017
+	{
+		PString encryptedData maxlen 10000;
+		PString newPwd maxlen 100; // client does not limit the length correctly
+		PString ipAddr maxlen IP_ADDR_LEN;
+	};
+	Message MSG_REGULATOR_WEB_PWD_SET_NEW_PWD_REPLY // 7235
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_WEB_PWD_GET_TOKEN_INFO (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_WEB_PWD_GET_TOKEN_INFO // 7238
+	{
+		PString encryptedData maxlen 10000;
+	};
+	Message MSG_REGULATOR_WEB_PWD_GET_TOKEN_INFO_REPLY // 7239
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString userId;
+			bool isRMOK;
+			PString userFirstName;
+			PString userLastName;
+			UINT32 userLicenseId;
+			SrvTime tokenExpiry;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_SET_PRIV_NO_SURVEY (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_SET_PRIV_NO_SURVEY // 7242, PYR-37989
+	{
+		PString encryptedData maxlen 10000;
+	};
+	Message MSG_REGULATOR_SET_PRIV_NO_SURVEY_REPLY // 7243
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+	};
+	
+	//--------------------------------------------- MSG_REGULATOR_VALIDATE_USER_UPDATE (cli_unauth) ------------------------------------------
+	Message MSG_REGULATOR_VALIDATE_USER_UPDATE // 7250, PYR-45841
+	{
+		PString userId_ignore maxlen USER_NAME_LEN;
+		vector<common_structs::UserUpdateElement> elements maxsize 1000;
+		UINT32 locale max MAX_LOCALES;
+	};
+	
+	Message MSG_REGULATOR_VALIDATE_USER_UPDATE_REPLY // 7251, PYR-45841
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			vector<common_structs::UserUpdateValidationResult> validationResults;
+		}
+	};
+	
+	//---------------- MSG_REGULATOR_GET_SWISS_URL (cli_unauth) -------------------------------------------------------------------
+	Message MSG_REGULATOR_GET_SWISS_URL		//	PYR-89580
+	{
+		Common${ATF_THIN_NAMESPACE_SUFFIX}::AtfShared::LoginExtra	loginExtra;
+		common_structs::SwissUrlRequest commonRequest;
+	};
+	Message MSG_REGULATOR_GET_SWISS_URL_REPLY
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString url;
+		}
+	};
+	
+	//---------------- MSG_REGULATOR_VALIDATE_REGISTRATION_COUNTRY (cli_unauth) -------------------------------------------------------------------
+	Message MSG_REGULATOR_VALIDATE_REGISTRATION_COUNTRY		//	PYR-124003
+	{
+        Common${ATF_THIN_NAMESPACE_SUFFIX}::AtfShared::LoginExtra clientExtra;
+		PString country maxlen COUNTRY_CODE_LEN;
+        UINT32 localeId max MAX_LOCALES;
+	};
+	Message MSG_REGULATOR_VALIDATE_REGISTRATION_COUNTRY_REPLY
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+	};
+};
+
+//////////////////////////////////// CORE CLIENT (FACEBOOK) CONNECTION ////////////////////////////
+namespace core
+{
+	//--------------------------------------------- MSG_LOBBY_NAME_AVAILABLE (core) ------------------------------------------
+	Message MSG_LOBBY_NAME_AVAILABLE //
+	{
+		UINT32 reqId;
+		common_structs::LobbyNameAvailableStruct body;
+	};
+	Message MSG_LOBBY_NAME_AVAILABLE_REPLY
+	{
+		UINT32 reqId;
+		common_structs::LobbyNameAvailableReplyStruct replyBody;
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_REGISTER_NEW_USER2 (core) ------------------------------------------
+	struct AppTypeEssentials
+	{
+		UINT32 brandId default BrandType_PokerStars min BrandType_None max BrandType_Last;
+		UINT32 osId default OSId_Unknown min OSId_Unknown max OsId_Last;
+		UINT32 appTypeId default AppTypeId_Unknown min AppTypeId_Unknown max AppTypeId_Last;
+		UINT32 productId default ProductId_Unknown min ProductId_Unknown max ProductId_Last;
+	};
+	Message MSG_REGULATOR_REGISTER_NEW_USER2 // PYR-23343
+	{
+		UINT32 reqId;
+		PString ipAddr maxlen IP_ADDR_LEN;
+		PString id maxlen USER_NAME_LEN;
+		UINT64 facebookIntId;
+		PString email maxlen USER_EMAIL_LEN;
+		PString userInstallId maxlen USER_INSTALLID_LEN;
+		PString addr_1 maxlen USER_ADDR_LEN;
+		PString city maxlen USER_CITY_LEN;
+		PString state maxlen USER_STATE_LEN;
+		PString country maxlen USER_COUNTRY_LEN;
+		PString zipCode maxlen USER_ZIP_LEN;
+		CommSrvDate dob;
+		UINT32 locale max MAX_LOCALES;
+		PString firstName maxlen USER_FIRST_NAME_LEN;
+		PString lastName maxlen USER_LAST_NAME_LEN;
+		PString sex maxlen USER_SEX_LEN;
+		UINT32 timezone_ min eTzUTC max eTzNumber; // enum eTimeZone
+		UINT32 clientPlatform min Client_UnknownPlatform max Client_Last;
+		UINT32 clientType min ClientType_Unknown max ClientType_Last;
+		UINT32 clientDevice min ClientDevice_Unknown max ClientDevice_Last;
+		AppTypeEssentials appTypeEssentials parseEndOptB4Me;
+		PString phone maxlen USER_PHONE_LEN parseEndOptB4Me;
+	};
+	Message MSG_REGULATOR_REGISTER_NEW_USER2_REPLY
+	{
+		UINT32 reqId;
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			UINT32 userIntId;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_GET_FACEBOOK_LINK_CODE (core) ------------------------------------------
+	Message MSG_REGULATOR_GET_FACEBOOK_LINK_CODE // PYR-23923
+	{
+		UINT32 reqId;
+		PString userId maxlen USER_NAME_LEN;
+		PString email maxlen USER_EMAIL_LEN;
+	};
+	Message MSG_REGULATOR_GET_FACEBOOK_LINK_CODE_REPLY
+	{
+		UINT32 reqId;
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			UINT32 facebookLinkCode;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_CREATE_FACEBOOK_LINK (core) ------------------------------------------
+	Message MSG_REGULATOR_CREATE_FACEBOOK_LINK // PYR-23923
+	{
+		UINT32 reqId;
+		PString userId maxlen USER_NAME_LEN;
+		UINT64 facebookIntId;
+		UINT32 linkCode;
+	};
+	Message MSG_REGULATOR_CREATE_FACEBOOK_LINK_REPLY
+	{
+		UINT32 reqId;
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			UINT32 userIntId;
+			PString userId;
+		}
+	};
+
+	//--------------------------------------------- MSG_REGULATOR_RAM ------------------------------------------
+	Message MSG_REGULATOR_SET_COMM_PREFS // PYR-64017
+	{
+		PString token maxlen 4096;
+		bool poker;
+		bool casino;
+		bool sports;
+	};
+	Message MSG_REGULATOR_SET_COMM_PREFS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+	Message MSG_REGULATOR_GET_COMM_PREFS // PYR-64017
+	{
+		PString token maxlen 4096;
+	};
+	Message MSG_REGULATOR_GET_COMM_PREFS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString userId;
+			bool poker;
+			bool casino;
+			bool sports;
+		}
+	};
+	Message MSG_REGULATOR_SET_COMM_PREFS_SV // PYR-64017
+	{
+		PString userId maxlen USER_NAME_LEN;
+		bool poker;
+		bool casino;
+		bool sports;
+	};
+	Message MSG_REGULATOR_SET_COMM_PREFS_SV_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+	Message MSG_REGULATOR_GET_COMM_PREFS_SV // PYR-64017
+	{
+		UINT32 userIntId;
+	};
+	Message MSG_REGULATOR_GET_COMM_PREFS_SV_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString userId;
+			bool poker;
+			bool casino;
+			bool sports;
+		}
+	};
+};
+
+namespace Asia
+{
+	Message MSG_REGULATOR_GET_EXTERNAL_OP_TOKEN		//	PYR-65464
+	{
+	};
+	Message MSG_REGULATOR_GET_EXTERNAL_OP_TOKEN_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString token;
+			PString tokenSignature;
+			UINT32 userIntId;
+		}
+	};
+};
+
+//////////////////////////////////// CLIENT DOCS CONNECTION ////////////////////////////
+// client -> regulator for sending attached documents
+namespace cli_docs
+{
+	//--------------------------------------------- MSG_LOBBY_SUPPORT_EMAIL_READY (cli_docs) ------------------------------------------
+	Message MSG_LOBBY_SUPPORT_EMAIL_READY // PYR-27504
+	{
+		PString userIdNotUsed maxlen USER_NAME_LEN parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_SUPPORT_EMAIL_READY_REPLY
+	{
+		INT16 errCode;
+		if ( errCode )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_CLIENT_TO_SUPPORT_EMAIL (cli_docs) ------------------------------------------
+	Message MSG_LOBBY_CLIENT_TO_SUPPORT_EMAIL // PYR-27504
+	{
+		common_structs::LobbyClientToSupportEmailStruct body;
+	};
+	Message MSG_LOBBY_CLIENT_TO_SUPPORT_EMAIL_REPLY
+	{
+		common_structs::LobbyClientToSupportEmailReplyStruct replyBody;
+	};
+};

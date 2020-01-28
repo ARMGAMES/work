@@ -1,0 +1,2344 @@
+#include "UserDefStructs.h"
+#include "lobby.h"
+#include "admincommon.h"
+#include "sites.h"
+#include "aamsgateway.h"
+
+#define TOP_LEVEL_NAMESPACE MainLobbyMsgs
+
+namespace adminMsgs
+{
+	//-------------------------------- MSG_LOBBY_ADMIN_APPROVE_USERS ------------------------------------------------------
+	Struct MsgApproveUserRequest
+	{
+		PString userName;
+		BYTE approval;
+		PString comments;
+		UINT32 imageId;
+	};
+
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.	
+	Message MSG_LOBBY_ADMIN_APPROVE_USERS
+	{
+		vector<MsgApproveUserRequest> requests;
+	};
+	Message MSG_LOBBY_ADMIN_APPROVE_USERS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			vector<PString> email;
+		}
+	};
+
+	//-------------------------------- MSG_LOBBY_ADMIN_SET_PRIVILEGES -------------------------------------------------------
+	Message MSG_LOBBY_ADMIN_SET_PRIVILEGES
+	{
+		PString userId;
+		UINT32 privileges;
+		UINT32 prev_privs;
+		UINT64 priv2;
+		UINT64 prev_priv2;
+		UINT64 priv3;
+		UINT64 prev_priv3;
+	};
+	Message MSG_LOBBY_ADMIN_SET_PRIVILEGES_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString userId;
+			UINT32 privileges;
+			UINT32 flags;
+			UINT64 privileges2;
+			UINT64 privileges3;
+		}
+	};
+
+	//-------------------------------- MSG_LOBBY_ADMIN_CANCEL_TOURNAMENT -------------------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.	
+	Message MSG_LOBBY_ADMIN_CANCEL_TOURNAMENT
+	{
+		UINT32  tournId;
+		BYTE ryoOnly;
+	};
+	Message MSG_LOBBY_ADMIN_CANCEL_TOURNAMENT_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//------------------------------------ MSG_LOBBY_ADMIN_DESTROY_TOURNAMENT ---------------------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.	
+	Message MSG_LOBBY_ADMIN_DESTROY_TOURNAMENT
+	{
+		UINT32  id;
+		BYTE ryoOnly parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_ADMIN_DESTROY_TOURNAMENT_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//------------------------------------ MSG_LOBBY_ADMIN_CANCEL_RANGE_TOURNAMENT ---------------------------------------------------------
+	Message MSG_LOBBY_ADMIN_CANCEL_RANGE_TOURNAMENT
+	{
+		UINT32  startId;
+		UINT32  stopId;
+	};
+	Message MSG_LOBBY_ADMIN_CANCEL_RANGE_TOURNAMENT_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CANCEL_TOURNAMENT_WITHUSERS ------------------------------------------
+	Message MSG_LOBBY_ADMIN_CANCEL_TOURNAMENT_WITHUSERS
+	{
+		UINT32  tournId;
+		BYTE ryoOnly parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_ADMIN_CANCEL_TOURNAMENT_WITHUSERS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CANCEL_RUNNING_TOURN ------------------------------------------
+	Message MSG_LOBBY_ADMIN_CANCEL_RUNNING_TOURN
+	{
+		UINT32  type;
+		UINT32  formula;
+		PString  text;
+		UINT32 site	parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_ADMIN_CANCEL_RUNNING_TOURN_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_TOURN_ADDR ------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_LOBBY_ADMIN_TOURN_ADDR
+	{
+		UINT32 tournId;
+	};
+	Message MSG_LOBBY_ADMIN_TOURN_ADDR_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString server;
+			PString serverObj;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_BLITZ_ADDR ------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_LOBBY_ADMIN_BLITZ_ADDR
+	{
+		UINT32 blitzId;
+		if ( !blitzId )
+		{
+			PString name;
+		}
+	};
+	Message MSG_LOBBY_ADMIN_BLITZ_ADDR_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString serverAddr;
+			PString serverInstance;
+			UINT32 id;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_BROADCAST ------------------------------------------
+	Message MSG_LOBBY_ADMIN_BROADCAST
+	{
+		PString messageText;
+		UINT32 flags;
+		BYTE dst;
+	};
+	Message MSG_LOBBY_ADMIN_BROADCAST_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_I18N_BROADCAST ------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_LOBBY_ADMIN_I18N_BROADCAST
+	{
+		I18nPString messageText;
+		UINT32 flags;
+		BYTE dst;
+	};
+	Message MSG_LOBBY_ADMIN_I18N_BROADCAST_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_IMPROVED_BROADCAST ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_IMPROVED_BROADCAST
+	//{
+		//	TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_IMPROVED_BROADCAST_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_GET_ALL_SCHED_BROADCAST_MSG ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_GET_ALL_SCHED_BROADCAST_MSG
+	//{
+		//	TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_GET_ALL_SCHED_BROADCAST_MSG_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_UPDATE_SCHED_BROADCAST_MSG ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_UPDATE_SCHED_BROADCAST_MSG
+	//{
+		//	TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_UPDATE_SCHED_BROADCAST_MSG_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_DELETE_SCHED_BROADCAST_MSG ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_DELETE_SCHED_BROADCAST_MSG
+	//{
+		//	TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_DELETE_SCHED_BROADCAST_MSG_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_TABLE_MESSAGE ------------------------------------------
+	Message MSG_LOBBY_ADMIN_TABLE_MESSAGE
+	{
+		UINT64  tableId;
+		PString tableText;
+		UINT32  options;
+	};
+	Message MSG_LOBBY_ADMIN_TABLE_MESSAGE_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_STOP_DEALING ------------------------------------------
+	Message MSG_LOBBY_ADMIN_STOP_DEALING
+	{
+		PString  messageText;
+		BYTE broadcastFlags;
+		PString tableName;
+		UINT32 site;
+		UINT64 tableId parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_ADMIN_STOP_DEALING_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_RESUME_DEALING ------------------------------------------
+	Message MSG_LOBBY_ADMIN_RESUME_DEALING
+	{
+		BYTE broadcastFlags;
+		PString tableName;
+		UINT32 site;
+		UINT64 tableId parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_ADMIN_RESUME_DEALING_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+//--------------------------------------------- MSG_LOBBY_CREATE_TOURNAMENT ------------------------------------------
+	//Message MSG_LOBBY_CREATE_TOURNAMENT
+	//{
+		//	TODO
+	//};
+	//Message MSG_LOBBY_CREATE_TOURNAMENT_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_SETUP_INFO ------------------------------------------
+	Message MSG_LOBBY_SETUP_INFO
+	{
+		PString script;
+		PString fileName;
+	};
+	Message MSG_LOBBY_SETUP_INFO_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_SAY_TO_USER ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_SAY_TO_USER
+	//{
+		//	Message is being deprecated - don't do
+	//};
+	//Message MSG_LOBBY_ADMIN_SAY_TO_USER_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_FORCELOGOUT_USER ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_FORCELOGOUT_USER
+	//{
+	//	PString userId;
+	//};
+	//Message MSG_LOBBY_ADMIN_FORCELOGOUT_USER_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_RECREATE_TOURNAMENT ------------------------------------------
+	//Message MSG_LOBBY_RECREATE_TOURNAMENT
+	//{
+		// TODO
+	//};
+	//Message MSG_LOBBY_RECREATE_TOURNAMENT_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_NEW_SITANDGO ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_NEW_SITANDGO
+	//{
+		//	TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_NEW_SITANDGO_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_UPDATE_SITANDGO ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_UPDATE_SITANDGO
+	//{
+		//	TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_UPDATE_SITANDGO_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_NEW_SITANDGO2 ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_NEW_SITANDGO2
+	//{
+		// TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_NEW_SITANDGO2_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_UPDATE_SITANDGO2 ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_UPDATE_SITANDGO2
+	//{
+		// TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_UPDATE_SITANDGO2_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_DELETE_SITANDGO ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_DELETE_SITANDGO
+	//{
+		//	TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_DELETE_SITANDGO_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_DELETE_SITANDGO2 ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_DELETE_SITANDGO2
+	//{
+		// TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_DELETE_SITANDGO2_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_QUERY_SITANDGO ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_QUERY_SITANDGO
+	//{
+		//	empty
+	//};
+	//Message MSG_LOBBY_ADMIN_QUERY_SITANDGO_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	else
+	//	{
+	//		vector<PString> sitAndGoTitles;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_SET_DISCONN_STATE ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_SET_DISCONN_STATE
+	//{
+	//	BYTE state;
+	//};
+	//Message MSG_LOBBY_ADMIN_SET_DISCONN_STATE_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	else
+	//	{
+	//		BYTE tempState;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_STOP_ALLTOURNAMENTS ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_STOP_ALLTOURNAMENTS
+	//{
+		/*	TODO. Conditional parsing:
+		
+			if( parser.parseEnded() )
+				adminMessage.putPString( text );
+			else
+				adminMessage.parse( parser );
+		*/
+		
+	//	PString  text;
+	//	UINT32  flags;
+	//	UINT32  site;
+	//	I18nPString adminMessage parseEndOptB4Me;
+	//};
+	//Message MSG_LOBBY_ADMIN_STOP_ALLTOURNAMENTS_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_RESUME_ALLTOURNAMENTS ------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_LOBBY_ADMIN_RESUME_ALLTOURNAMENTS
+	{
+		UINT32  flags;
+		UINT32 site parseEndOptB4Me;
+		vector<UINT32> tournsToExclude parseEndOptB4Me;
+		SrvTime excludeScheduledTournamentsBefore parseEndOptB4Me; // compared to tourn start time
+		SrvTime excludeNonScheduledTournamentsBefore; // compared to tourn created time
+	};
+	Message MSG_LOBBY_ADMIN_RESUME_ALLTOURNAMENTS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_STOP_TOURNREGEN ------------------------------------------
+	Message MSG_LOBBY_ADMIN_STOP_TOURNREGEN
+	{
+		UINT32  flags;
+		UINT32 site parseEndOptB4Me;
+		UINT32 segment parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_ADMIN_STOP_TOURNREGEN_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_RESUME_TOURNREGEN ------------------------------------------
+	Message MSG_LOBBY_ADMIN_RESUME_TOURNREGEN
+	{
+		UINT32  flags;
+		UINT32 site parseEndOptB4Me;
+		UINT32 segment parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_ADMIN_RESUME_TOURNREGEN_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_GET_TABLES_STATE2 ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_GET_TABLES_STATE2
+	//{
+	//	// Empty
+	//};
+	//Message MSG_LOBBY_ADMIN_GET_TABLES_STATE2_REPLY
+	//{
+		//	TODO
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CREATE_REPLAY ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_CREATE_REPLAY
+	//{
+		// TODO
+		// No reqId for this message
+	//};
+	//Message MSG_LOBBY_ADMIN_CREATE_REPLAY_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CANCEL_REPLAY ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_CANCEL_REPLAY
+	//{
+		//	TODO
+		// No reqId for this message
+	//};
+	//Message MSG_LOBBY_ADMIN_CANCEL_REPLAY_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_RESTART_TOURN ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_RESTART_TOURN
+	//{
+	//	UINT32 tournId;
+	//};
+	//Message MSG_LOBBY_ADMIN_RESTART_TOURN_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	else
+	//	{
+	//		PString empty;
+	//		vector<UINT64> tableIds;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_TABLE_ADMIN_REINIT ------------------------------------------
+	//Message MSG_TABLE_ADMIN_REINIT
+	//{
+		// Empty
+	//};
+	//Message MSG_TABLE_ADMIN_REINIT_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_NOIMAGES ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_NOIMAGES
+	//{
+	//	BYTE imagesOff;
+	//};
+	//Message MSG_LOBBY_ADMIN_NOIMAGES_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_REVOKE_CHAT ------------------------------------------
+	struct RevokeChatRequest
+	{
+		PString userId;
+		BYTE bitFlags;
+		PString comment;
+		BYTE severity;
+		SrvTime srvUntil;
+	};
+	Message MSG_LOBBY_ADMIN_REVOKE_CHAT
+	{
+		PString  complainer;
+		PString  complainerComment;
+		vector<RevokeChatRequest> request;
+	};
+	struct RevokeChatResponse
+	{
+		PString userId;
+		PString email;
+	};
+	Message MSG_LOBBY_ADMIN_REVOKE_CHAT_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString complainerEmail;
+			vector<RevokeChatResponse> users;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_KICK_USER_FORM_TABLE ------------------------------------------
+	Message MSG_LOBBY_ADMIN_KICK_USER_FORM_TABLE
+	{
+		PString  userId;
+		PString  tableName;
+		PString  messageText;
+		UINT64 tableId parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_ADMIN_KICK_USER_FORM_TABLE_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_MODERATOR_SWITCH ------------------------------------------
+	Message MSG_LOBBY_ADMIN_MODERATOR_SWITCH
+	{
+		BYTE on;
+	};
+	Message MSG_LOBBY_ADMIN_MODERATOR_SWITCH_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CLIENT_DATA_MINING ------------------------------------------
+	Message MSG_LOBBY_ADMIN_CLIENT_DATA_MINING
+	{
+		UINT32  opt0;
+		UINT32  opt1;
+	};
+	Message MSG_LOBBY_ADMIN_CLIENT_DATA_MINING_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_GET_TEAM_PS_LIST ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_GET_TEAM_PS_LIST
+	//{
+		//	Empty
+	//};
+	//struct TeamPsInfo
+	//{
+	//	PString userId;
+	//	PString name;
+	//	PString displayCountry;
+	//	UINT32 siteId;
+	//};
+	//Message MSG_LOBBY_ADMIN_GET_TEAM_PS_LIST_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	else
+	//	{
+	//		vector<TeamPsInfo> response;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_SET_TEAM_PS_LIST ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_SET_TEAM_PS_LIST
+	//{
+	//	vector<TeamPsInfo> request;
+	//};
+	//Message MSG_LOBBY_ADMIN_SET_TEAM_PS_LIST_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_REREAD_MSGS ------------------------------------------
+	//Message MSG_LOBBY_REREAD_MSGS
+	//{
+	//	//	Empty
+	//};
+	//Message MSG_LOBBY_REREAD_MSGS_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_GET_CHAT_STATUS ------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_LOBBY_ADMIN_GET_CHAT_STATUS
+	{
+		PString  tableName;
+		UINT64 tableId parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_ADMIN_GET_CHAT_STATUS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			PString tableName;
+			BYTE state;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_SET_CHAT_STATUS ------------------------------------------
+	Message MSG_LOBBY_ADMIN_SET_CHAT_STATUS
+	{
+		BYTE status;
+		PString  tableName;
+		bool  teamBlocked;
+		UINT64 tableId parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_ADMIN_SET_CHAT_STATUS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_LOBBY_FLYER ------------------------------------------
+	Message MSG_LOBBY_ADMIN_LOBBY_FLYER
+	{
+		BYTE action;
+		UINT32  attrib;
+		UINT32  flags;
+		UINT32  locale;
+		PString  text;
+		UINT32 siteId parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_ADMIN_LOBBY_FLYER_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_LOBBY_FLYER_UPDATE ------------------------------------------
+	Message MSG_LOBBY_ADMIN_LOBBY_FLYER_UPDATE
+	{
+		UINT32 templateId;
+	};
+	Message MSG_LOBBY_ADMIN_LOBBY_FLYER_UPDATE_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_LOBBY_FLYER_REMOVE ------------------------------------------
+	Message MSG_LOBBY_ADMIN_LOBBY_FLYER_REMOVE
+	{
+		UINT32 templateId;
+		UINT32 siteIdMask;
+		vector<UINT32> attributes;
+		vector<UINT32> flags;
+		PSiteMask siteIdMaskEx parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_ADMIN_LOBBY_FLYER_REMOVE_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CHANGE_TOURN_NAME ------------------------------------------
+	Message MSG_LOBBY_ADMIN_CHANGE_TOURN_NAME
+	{
+		UINT32  tournId;
+		I18nPString name;
+	};
+	Message MSG_LOBBY_ADMIN_CHANGE_TOURN_NAME_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CHANGE_TOURN_STATUS ------------------------------------------
+	Message MSG_LOBBY_ADMIN_CHANGE_TOURN_STATUS
+	{
+		UINT32  tournId;
+		UINT32  newStatus;
+	};
+	Message MSG_LOBBY_ADMIN_CHANGE_TOURN_STATUS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_TO_AAMS ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_TO_AAMS
+	//{
+	//	CommMsgBody msg;
+	//	UINT32 gatewayType parseEndOptB4Me default eAGTTournament;
+	//};
+	//Message MSG_LOBBY_ADMIN_TO_AAMS_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_UPDATE_TABLE_NAMES ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_UPDATE_TABLE_NAMES
+	//{
+		//	Empty
+	//};
+	//Message MSG_LOBBY_ADMIN_UPDATE_TABLE_NAMES_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_REFRESH_TABLEDBM_SETTINGS ------------------------------------------
+	//Message MSG_LOBBY_REFRESH_TABLEDBM_SETTINGS
+	//{
+		//	Empty
+	//};
+	//Message MSG_LOBBY_REFRESH_TABLEDBM_SETTINGS_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CLOSE_TABLE ------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_LOBBY_ADMIN_CLOSE_TABLE
+	{
+		PString tableName;
+		I18nPString messageText;
+		UINT64 tableId parseEndOptB4Me;
+		bool forceKill parseEndOptB4Me; //PYR-69670
+	};
+	Message MSG_LOBBY_ADMIN_CLOSE_TABLE_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CLEANUP_DEAD_TABLE ------------------------------------------
+	Message MSG_LOBBY_ADMIN_CLEANUP_DEAD_TABLE
+	{
+		PString tableName;
+		PString messageText;
+		UINT64 tableId parseEndOptB4Me;
+	};
+	Message MSG_LOBBY_ADMIN_CLEANUP_DEAD_TABLE_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_JUBILEE_PRIZES ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_JUBILEE_PRIZES
+	//{
+	//	//	TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_JUBILEE_PRIZES_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_SET_PUBL_PROPERTY ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_SET_PUBL_PROPERTY
+	//{
+	//	// TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_SET_PUBL_PROPERTY_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_LIST_PUBL_PROPERTY ------------------------------------------
+	Message MSG_LOBBY_ADMIN_LIST_PUBL_PROPERTY
+	{
+		UINT32 siteId parseEndOptB4Me default PokerStars_Com;
+	};
+	struct PropertyInfo
+	{
+		PString s1;
+		PString s2;
+	};
+	Message MSG_LOBBY_ADMIN_LIST_PUBL_PROPERTY_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			vector<PropertyInfo> propertyInfo;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_DELETE_PUBL_PROPERTY ------------------------------------------
+	Message MSG_LOBBY_ADMIN_DELETE_PUBL_PROPERTY
+	{
+		PString  name;
+		UINT32 siteId parseEndOptB4Me default PokerStars_Com;
+	};
+	Message MSG_LOBBY_ADMIN_DELETE_PUBL_PROPERTY_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_MASS_UNREGISTER_USER ------------------------------------------
+	Message MSG_LOBBY_ADMIN_MASS_UNREGISTER_USER
+	{
+		PString userId;
+		CommSrvTime until;
+		UINT32 reason;
+	};
+	Message MSG_LOBBY_ADMIN_MASS_UNREGISTER_USER_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_GET_CHALLENGE_QA ------------------------------------------
+	Message MSG_LOBBY_ADMIN_GET_CHALLENGE_QA
+	{
+		PString userId;
+	};
+	Message MSG_LOBBY_ADMIN_GET_CHALLENGE_QA_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			bool isRM;
+			UINT16 numOfQuestions;
+			UINT32 id1;
+			PString question1;
+			PString answer1;
+			UINT32 id2;
+			PString question2;
+			PString answer2;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_UPDATE_LANG_PATTERNS ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_UPDATE_LANG_PATTERNS
+	//{
+	//	UINT32 locale;
+	//	vector<PString> patterns;
+	//	bool isWhiteList parseEndOptB4Me;
+	//};
+	//Message MSG_LOBBY_ADMIN_UPDATE_LANG_PATTERNS_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_GET_TABLE_PAUSING_INFO ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_GET_TABLE_PAUSING_INFO
+	//{
+		//	Empty
+	//};
+	//struct PausedTableInfo
+	//{
+	//	UINT64 tableId;
+	//	CommSrvTime pausingFrom;
+	//	CommSrvTime pausingTo;
+	//	UINT32 pausingAfterNumHands;
+	//	UINT32 pausingStatus;
+	//	UINT32 numHandsPlayed;
+	//};
+	//Message MSG_LOBBY_ADMIN_GET_TABLE_PAUSING_INFO_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	else
+	//	{
+	//		vector<PausedTableInfo> pausedTableInfo;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_SET_TABLE_PAUSING_INFO ------------------------------------------
+	Message MSG_LOBBY_ADMIN_SET_TABLE_PAUSING_INFO
+	{
+		UINT64 tableId;
+		CommSrvTime pausingFrom;
+		CommSrvTime pausingTo;
+		UINT32 pausingAfterNumHands;
+	};
+	Message MSG_LOBBY_ADMIN_SET_TABLE_PAUSING_INFO_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_SET_JUBILEE_HAND ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_SET_JUBILEE_HAND
+	//{
+	//	//	TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_SET_JUBILEE_HAND_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_GET_TABLES_BY_NAME ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_GET_TABLES_BY_NAME
+	//{
+	//	PString tableName;
+	//};
+	//struct TablesByNameReply
+	//{
+	//	UINT64 tableId;
+	//	BYTE game;
+	//	BYTE structure;
+	//	BYTE isHiLo;
+	//	BYTE isPlayMoney;
+	//	BYTE isOneOnOne;
+	//	UINT32 smartLoBet;
+	//	UINT32 loBet;
+	//	UINT32 hiBet;
+	//	PString currency;
+	//	UINT32 clubId;
+	//};
+	//Message MSG_LOBBY_ADMIN_GET_TABLES_BY_NAME_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	else
+	//	{
+	//		PString tableName;
+	//		vector<TablesByNameReply> tablesByNameReply;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_GET_TABLE_ADDRESS ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_GET_TABLE_ADDRESS
+	//{
+	//	UINT32 tableId32;
+	//	UINT64 tableId parseEndOptB4Me;
+	
+		/*	TODO: conditional parsing
+			parseUINT32(tableId32);
+			if(!parser.parseEnded())
+			{
+				parseUINT64(tableId);
+			}
+			else
+			{
+				tableId = tableId32;
+			}
+		*/
+	//};
+	//Message MSG_LOBBY_ADMIN_GET_TABLE_ADDRESS_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	else
+	//	{
+	//		PString server;
+	//		PString serverObject;
+	//		PString tablePublicationName;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CREATE_RING_GAME_REPLAY ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_CREATE_RING_GAME_REPLAY
+	//{
+	//	//	TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_CREATE_RING_GAME_REPLAY_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CANCEL_RING_GAME_REPLAY ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_CANCEL_RING_GAME_REPLAY
+	//{
+	//	UINT32 id;
+	//};
+	//Message MSG_LOBBY_ADMIN_CANCEL_RING_GAME_REPLAY_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CANCEL_RING_GAME_REPLAY_BY_NAME ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_CANCEL_RING_GAME_REPLAY_BY_NAME
+	//{
+	//	PString  replayName;
+	//};
+	//Message MSG_LOBBY_ADMIN_CANCEL_RING_GAME_REPLAY_BY_NAME_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_RESEND_MOBILE_VALIDATION ------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_LOBBY_RESEND_MOBILE_VALIDATION
+	{
+		PString  user;
+		bool newCode parseEndOptB4Me default true;
+	};
+	Message MSG_LOBBY_RESEND_MOBILE_VALIDATION_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_RESET_STACKS_TABLE ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_RESET_STACKS_TABLE
+	//{
+	//	UINT64  tableId;
+	//};
+	//Message MSG_LOBBY_ADMIN_RESET_STACKS_TABLE_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CREATE_BLITZ ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_CREATE_BLITZ
+	//{
+	//	//	TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_CREATE_BLITZ_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_REGENERATE_BLITZ ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_REGENERATE_BLITZ
+	//{
+	//	//	TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_REGENERATE_BLITZ_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_STOP_BLITZ_DEALING ------------------------------------------
+	Message MSG_LOBBY_ADMIN_STOP_BLITZ_DEALING
+	{
+		I18nPString i18nMsg;
+		UINT32 msgFlags;
+		BYTE flags;
+		UINT32 sites;
+	};
+	Message MSG_LOBBY_ADMIN_STOP_BLITZ_DEALING_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_RESUME_BLITZ_DEALING ------------------------------------------
+	Message MSG_LOBBY_ADMIN_RESUME_BLITZ_DEALING
+	{
+		I18nPString i18nMsg;
+		UINT32 msgFlags;
+		BYTE flags;
+		UINT32 sites;
+	};
+	Message MSG_LOBBY_ADMIN_RESUME_BLITZ_DEALING_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_REREAD_INIDATA ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_REREAD_INIDATA
+	//{
+	//	//	Empty
+	//};
+	//Message MSG_LOBBY_ADMIN_REREAD_INIDATA_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_ADMIN_REOPEN_LOG_FILE ------------------------------------------
+	//Message MSG_ADMIN_REOPEN_LOG_FILE
+	//{
+	//	//	Empty
+	//};
+	//Message MSG_ADMIN_REOPEN_LOG_FILE_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_GET_TOURN_SCRIPT ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_GET_TOURN_SCRIPT
+	//{
+	//	//	TODO
+	//};
+	//Message MSG_LOBBY_ADMIN_GET_TOURN_SCRIPT_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CLEANUP_DEAD_TOURN ------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_LOBBY_ADMIN_CLEANUP_DEAD_TOURN
+	{
+        UINT32  tournId;
+		bool cleanupAllocated;
+	};
+	Message MSG_LOBBY_ADMIN_CLEANUP_DEAD_TOURN_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CLEANUP_DEAD_BLITZ ------------------------------------------
+	Message MSG_LOBBY_ADMIN_CLEANUP_DEAD_BLITZ
+	{
+		PString  blitzName;
+		bool  creditStuckUsers;
+	};
+	Message MSG_LOBBY_ADMIN_CLEANUP_DEAD_BLITZ_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_MANAGE_INSTALLID ------------------------------------------
+	Message MSG_LOBBY_ADMIN_MANAGE_INSTALLID
+	{
+        PString  userId;
+		PString  installId;
+		bool  validate;
+	};
+	Message MSG_LOBBY_ADMIN_MANAGE_INSTALLID_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_ADMIN_LOBBY_SHUTDOWN_TGM ------------------------------------------
+	Message MSG_ADMIN_LOBBY_SHUTDOWN_TGM
+	{
+		PString  groupName;
+		UINT32  type;
+		bool  restart;
+		bool  force;
+	};
+	Message MSG_ADMIN_LOBBY_SHUTDOWN_TGM_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_ADMIN_LOBBY_RESTORE_TGM ------------------------------------------
+	Message MSG_ADMIN_LOBBY_RESTORE_TGM
+	{
+		PString  groupName;
+		UINT32  type;
+	};
+	Message MSG_ADMIN_LOBBY_RESTORE_TGM_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_ADMIN_LOBBY_GET_JH_SIMILAR_PLAYERS_VPP ------------------------------------------
+	//Message MSG_ADMIN_LOBBY_GET_JH_SIMILAR_PLAYERS_VPP
+	//{
+	//	UINT64  tableId;
+	//	bool test parseEndOptB4Me;
+	//};
+	//struct JHSimiliarPlayer
+	//{
+	//	PString userId;
+	//	UINT32 vpp;
+	//};
+	//struct JHSimiliarData
+	//{
+	//	UINT64 tableId;
+	//	CommSrvTime timestamp;
+	//	vector<JHSimiliarPlayer> players;
+	//};
+	//Message MSG_ADMIN_LOBBY_GET_JH_SIMILAR_PLAYERS_VPP_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	else
+	//	{
+	//		vector<JHSimiliarData> jhSimiliarData;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_ADMIN_LOBBY_SHARED_STAKES_USER_NOTIFY ------------------------------------------
+	Message MSG_ADMIN_LOBBY_SHARED_STAKES_USER_NOTIFY
+	{
+		PString  tableName;
+		UINT32  totalAmount;
+		PString  userId;
+		UINT32  amount;
+	};
+	Message MSG_ADMIN_LOBBY_SHARED_STAKES_USER_NOTIFY_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_ADMIN_LOBBY_SHARED_STAKES_TABLE_NOTIFY ------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_ADMIN_LOBBY_SHARED_STAKES_TABLE_NOTIFY
+	{
+		PString  tableName;
+		UINT32  totalAmount;
+		UINT64  tableId;
+	};
+	Message MSG_ADMIN_LOBBY_SHARED_STAKES_TABLE_NOTIFY_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_ADMIN_LOBBY_REMOVE_FLIGHT_USER ------------------------------------------
+	//Message MSG_ADMIN_LOBBY_REMOVE_FLIGHT_USER
+	//{
+	//	UINT32  tournId;
+	//	PString  userId;
+	//	PString  comment;
+	//};
+	//Message MSG_ADMIN_LOBBY_REMOVE_FLIGHT_USER_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_ADMIN_LOBBY_CLI_POPUP_TO_CONFIRM ------------------------------------------
+	//Message MSG_ADMIN_LOBBY_CLI_POPUP_TO_CONFIRM
+	//{
+	//	vector<PString> users;
+	//	UINT32 templateId;
+	//	UINT64 tableId;
+	//};
+	//Message MSG_ADMIN_LOBBY_CLI_POPUP_TO_CONFIRM_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	//else
+	//	//{
+	//	//	TODO
+	//	//}
+	//};
+
+	//--------------------------------------------- MSG_ADMIN_LOBBY_GET_TGMS ------------------------------------------
+	//Message MSG_ADMIN_LOBBY_GET_TGMS
+	//{
+	//	UINT32 type;
+	//	bool activeOnly;
+	//};
+	//Message MSG_ADMIN_LOBBY_GET_TGMS_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	//else
+	//	//{
+	//	//	TODO
+	//	//}
+	//};
+
+	//--------------------------------------------- MSG_ADMIN_LOBBY_CREATE_TGM ------------------------------------------
+	//Message MSG_ADMIN_LOBBY_CREATE_TGM
+	//{
+	//	UINT32 type;
+	//	PString groupName;
+	//	CommSrvTime startTime;
+	//	CommSrvTime endTime;
+	//	UINT32 maxEntry;
+	//	UINT32 tgmFlags;
+	//	INT32 periodMins;
+	//	CommSrvTime periodStartTime;
+	//};
+	//Message MSG_ADMIN_LOBBY_CREATE_TGM_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	//else
+	//	//{
+	//		//	TODO
+	//	//}
+	//};
+
+	//--------------------------------------------- MSG_ADMIN_LOBBY_UPDATE_TGM ------------------------------------------
+	//Message MSG_ADMIN_LOBBY_UPDATE_TGM
+	//{
+	//		UINT32 tgmId;
+	//		UINT32 type;
+	//		PString groupName;
+	//		CommSrvTime startTime;
+	//		CommSrvTime endTime;
+	//		UINT32 maxEntry;
+	//		UINT32 tgmFlags;
+	//		INT32 periodInMins;
+	//		CommSrvTime periodStartTime;
+	//};
+	//Message MSG_ADMIN_LOBBY_UPDATE_TGM_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	//else
+	//	//{
+	//		//	TODO
+	//	//}
+	//};
+
+	//--------------------------------------------- MSG_ADMIN_LOBBY_DELETE_TGM ------------------------------------------
+	//Message MSG_ADMIN_LOBBY_DELETE_TGM
+	//{
+	//	UINT32 tgmId;
+	//	UINT32 type;
+	//};
+	//Message MSG_ADMIN_LOBBY_DELETE_TGM_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	//else
+	//	//{
+	//		//	TODO
+	//	//}
+	//};
+
+	//--------------------------------------------- MSG_ADMIN_LOBBY_ALLOW_ONE_MORE_ENTRY ------------------------------------------
+	//Message MSG_ADMIN_LOBBY_ALLOW_ONE_MORE_ENTRY
+	//{
+	//	UINT32 tgmId;
+	//	UINT32 type;
+	//};
+	//Message MSG_ADMIN_LOBBY_ALLOW_ONE_MORE_ENTRY_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	//else
+	//	//{
+	//		//	TODO
+	//	//}
+	//};
+
+	//--------------------------------------------- MSG_ADMIN_LOBBY_REMOVE_TOURN_FROM_GROUP ------------------------------------------
+	//Message MSG_ADMIN_LOBBY_REMOVE_TOURN_FROM_GROUP
+	//{
+	//	UINT32 tgmId;
+	//	UINT32 type;
+	//	UINT32 tournId;
+	//};
+	//Message MSG_ADMIN_LOBBY_REMOVE_TOURN_FROM_GROUP_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	//else
+	//	//{
+	//		//	TODO
+	//	//}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_FACTORY_DOWN ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_FACTORY_DOWN
+	//{
+	//	vector<UINT32> factoryIds;
+	//};
+	//struct FactoryReply
+	//{
+	//	UINT32 factoryId;
+	//	INT16 errCode;
+	//	PString errDsecr;
+	//};
+	//Message MSG_LOBBY_ADMIN_FACTORY_DOWN_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	else
+	//	{
+	//		vector<FactoryReply> replies;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_RESURRECT_FACTORY ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_RESURRECT_FACTORY
+	//{
+	//	UINT32 objMask;
+	//	UINT32 tournFlags;
+	//	UINT32 tableFlags;
+	//	UINT32 siteId;
+	//	vector<UINT32> factoryIds;
+	//};
+	//Message MSG_LOBBY_ADMIN_RESURRECT_FACTORY_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	else
+	//	{
+	//		vector<FactoryReply> replies;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_RESUME_RESURRECTED_TOURS ------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_LOBBY_ADMIN_RESUME_RESURRECTED_TOURS
+	{
+		UINT32 tournFlags;
+		UINT32 siteId;
+		bool regular;
+		bool guarateed;
+		INT32 minutes;
+	};
+	Message MSG_LOBBY_ADMIN_RESUME_RESURRECTED_TOURS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			UINT32 counter;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_ROLLFORWARD_RESURRECTED_TOURS ------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_LOBBY_ADMIN_ROLLFORWARD_RESURRECTED_TOURS
+	{
+		UINT32 tournFlags;
+		UINT32 siteId;
+		bool regular;
+		bool guarateed;
+		INT32 minutes;
+		PString adminMsg;
+	};
+	Message MSG_LOBBY_ADMIN_ROLLFORWARD_RESURRECTED_TOURS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			UINT32 counter;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_GET_UNHANDLED_RESURRECTED_TOURS ------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_LOBBY_ADMIN_GET_UNHANDLED_RESURRECTED_TOURS
+	{
+		UINT32 tournFlags;
+		UINT32 siteId;
+		bool regular;
+		bool guarateed;
+		INT32 minutesMin;
+		INT32 minutesMax;
+	};
+	struct UnhandledResurrectedTourn
+	{
+		UINT32 tournamentId;
+		PString name;
+		CommSrvTime whenStart;
+		bool isPlayMoney;
+		UINT32 status;
+		UINT32 buyInPlusRake;
+		UINT32 guaranteedPrizePool;
+		UINT32 prizePoolToPublish;
+		UINT32 tournSites;
+		PString currency;
+	};
+	Message MSG_LOBBY_ADMIN_GET_UNHANDLED_RESURRECTED_TOURS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			vector<UnhandledResurrectedTourn> unhandledResurrectedTourn;
+		}
+	};
+
+	Message MSG_LOBBY_ADMIN_GET_UNHANDLED_RESURRECTED_TOURS2
+	{
+		UINT32 tournFlags;
+		UINT32 siteId;
+		bool regular;
+		bool guarateed;
+		INT32 minutesMin;
+		INT32 minutesMax;
+	};
+	MsgBodyStruct UnhandledResurrectedTourn2
+	{
+		UINT32 tournamentId;
+		PString name;
+		CommSrvTime whenStart;
+		bool isPlayMoney;
+		UINT32 status;
+		UINT32 buyInPlusRake;
+		UINT32 guaranteedPrizePool;
+		UINT32 prizePoolToPublish;
+		PSiteMask tournSites;
+		PString currency;
+	};
+	Message MSG_LOBBY_ADMIN_GET_UNHANDLED_RESURRECTED_TOURS2_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			vector<UnhandledResurrectedTourn2> unhandledResurrectedTourn;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_MASS_RESUME_RESURRECTED_TOURNS ------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_LOBBY_ADMIN_MASS_RESUME_RESURRECTED_TOURNS
+	{
+		vector<UINT32> tournIds;
+	};
+	Message MSG_LOBBY_ADMIN_MASS_RESUME_RESURRECTED_TOURNS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_MASS_ROLLBACK_RESURRECTED_TOURNS ------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_LOBBY_ADMIN_MASS_ROLLBACK_RESURRECTED_TOURNS
+	{
+		UINT32 formula;
+		PString text;
+		vector<UINT32> tournIds;
+	};
+	Message MSG_LOBBY_ADMIN_MASS_ROLLBACK_RESURRECTED_TOURNS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_MASS_CANCEL_RESURRECTED_TOURNS ------------------------------------------
+	// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_LOBBY_ADMIN_MASS_CANCEL_RESURRECTED_TOURNS
+	{
+		vector<UINT32> tournIds;
+	};
+	Message MSG_LOBBY_ADMIN_MASS_CANCEL_RESURRECTED_TOURNS_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_SET_HIDE_CASINO_GAMES_FLAGS2 ------------------------------------------
+	Message MSG_LOBBY_ADMIN_SET_HIDE_CASINO_GAMES_FLAGS2
+	{
+		PString userId;
+		bool setNotRemove;
+	};
+	Message MSG_LOBBY_ADMIN_SET_HIDE_CASINO_GAMES_FLAGS2_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_RESTORE_DEAD_TABLE ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_RESTORE_DEAD_TABLE
+	//{
+	//	UINT64  tableId;
+	//};
+	//Message MSG_LOBBY_ADMIN_RESTORE_DEAD_TABLE_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_GET_OBJ_STATE ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_GET_OBJ_STATE
+	//{
+	//	INT8 objType;
+	//	UINT32  statusFilterMask;
+	//};
+	//Message MSG_LOBBY_ADMIN_GET_OBJ_STATE_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	//else
+	//	//{
+	//		//	TODO
+	//	//}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_GET_OBJ_SUMMARY ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_GET_OBJ_SUMMARY
+	//{
+	//	//	Empty
+	//};
+	//Message MSG_LOBBY_ADMIN_GET_OBJ_SUMMARY_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	//else
+	//	//{
+	//		//	TODO
+	//	//}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_TICKET_TOURNIDS ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_TICKET_TOURNIDS
+	//{
+	//	UINT32 clientLicenseId;
+	//	PString userId;
+	//	UINT32 ticketId;
+	//};
+	//Message MSG_LOBBY_ADMIN_TICKET_TOURNIDS_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	//else
+	//	//{
+	//		//	TODO
+	//	//}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_GET_CLIENT_VISIBILITY ------------------------------------------
+	Message MSG_LOBBY_ADMIN_GET_CLIENT_VISIBILITY
+	{
+		UINT32 clientLicenseId;
+		PString country;
+	};
+	Message MSG_LOBBY_ADMIN_GET_CLIENT_VISIBILITY_REPLY
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errDescr;
+		}
+		else
+		{
+			vector<UINT64> visibilities;
+		}
+	};
+
+	//--------------------------------------------- MSG_LOBBY_ADMIN_GET_SEATFINDERS_STATS ------------------------------------------
+	//Message MSG_LOBBY_ADMIN_GET_SEATFINDERS_STATS
+	//{
+	//	UINT32  siteId;
+	//	CommSrvTime  from; 
+	//	CommSrvTime  to;
+	//};
+	//Message MSG_LOBBY_ADMIN_GET_SEATFINDERS_STATS_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	//else
+	//	//{
+	//		//	TODO
+	//	//}
+	//};
+
+	//--------------------------------------------- MSG_LOBBY_GET_OBLIGATIONS_REPORT ------------------------------------------
+	//Message MSG_LOBBY_GET_OBLIGATIONS_REPORT
+	//{
+	//	UINT32  userIntId;
+	//	UINT32  tableTypeId;
+	//};
+	//Message MSG_LOBBY_GET_OBLIGATIONS_REPORT_REPLY
+	//{
+	//	INT16 errCode;
+	//	if ( errCode != 0 )
+	//	{
+	//		PString errDescr;
+	//	}
+	//	//else
+	//	//{
+	//		//	TODO
+	//	//}
+	//};
+	
+	
+	//--------------------------------------------- MSG_LOBBY_ADMIN_CANCEL_TOURNAMENT_WITHUSERS2 ------------------------------------------
+	Message MSG_LOBBY_ADMIN_CANCEL_TOURNAMENT_WITHUSERS2
+	{
+		vector<UINT64>  tournIds;
+	};
+	Message MSG_LOBBY_ADMIN_CANCEL_TOURNAMENT_WITHUSERS2_REPLY
+	{
+		INT16 errCode;
+		vector<UINT64>  successTournIds;
+		vector<UINT64>  failedTournIds;
+	};
+	
+	enum eMassRollEffectiveAddonFilterComparator
+	{
+		eEffectiveAddonFilterComparator_GreaterThan = 0,
+		eEffectiveAddonFilterComparator_LessThan = 1,
+	};
+
+	struct MassRollEffectiveAddonFilter
+	{
+		bool enabled;
+		INT16 comparator; // eMassRollEffectiveAddonFilterComparator
+		INT32 effectiveAddon;
+	};
+
+	struct CurrencyAmount
+	{
+		PString currency;
+		INT64 amount;
+	};
+	
+	enum eMassRollTournType
+	{
+		eMassRollTournType_NonRegenerating,
+		eMassRollTournType_SAG,
+		eMassRollTournType_SAGMAX,
+		eMassRollTournType_SNG,
+		eMassRollTournType_PowerUp,
+		eMassRollTournType_HomeGameNonRegenerating,
+		eMassRollTournType_HomeGameSNG,
+		eMassRollTournType_ProgressivePlus
+	};
+	
+	MsgBodyStruct MassRollTournAndRollTypeTotals
+	{
+		INT32 tournType; // eMassRollTournType
+		bool performRoll;
+		INT32 formula; // not valid if !performRoll
+		INT32 numTourns;
+		INT64 pmRefunds;
+		INT64 fppRefunds;
+		vector<CurrencyAmount> rmRefunds;	
+	};
+
+	MsgBodyStruct MassRollProjectedTournRollPayouts
+	{
+		INT32 formula;
+		INT64 rmRefund;
+		INT64 pmRefund;
+		INT64 fppRefund;
+	};
+
+	MsgBodyStruct MassRollTournDetails
+	{
+		// populated by Lobby directly
+		UINT64 tournId;
+		PString name;
+		CommSrvTime startTime;
+		PString currency;
+		bool isPlayMoney;
+		INT32 tournType; // eMassRollTournType
+		INT64 buyIn;
+		INT64 rake;
+		INT32 fppBuyIn;
+		INT64 amountGuaranteed;
+		// populated by Lobby via MtLobby
+		INT64 totalPrizePool;
+		INT64 effectiveAddon;
+		bool started;
+		bool lateRegActive;
+		INT32 playersRemaining;
+		bool performRoll;
+		INT32 selectedFormula;
+		vector<MassRollProjectedTournRollPayouts> availableRollTypes;
+		PString noRollReason;
+		bool inTheMoney;
+		INT32 rmAlreadyPaid;
+		INT64 pmAlreadyPaid;
+		INT32 fppAlreadyPaid;
+	};
+
+	struct MassRollTournUpdate
+	{
+		UINT64 tournId;
+		bool performRoll;
+		INT32 formula;
+	};
+
+	struct MassRollIncompleteRoll
+	{
+		UINT64 tournId;
+		PString name;
+		PString reason;
+	};
+	
+	struct MassRollRecentUser
+	{
+		PString adminId;
+		CommSrvTime initTime;
+	};
+
+	Message MSG_ADMIN_LOBBY_MASS_ROLL_INIT
+	{
+		PString cancellationText;
+		vector<UINT64> tournIds; // if !empty, filters are ignored
+		// filters
+		UINT32 flags;
+		UINT32 siteMask;
+		MassRollEffectiveAddonFilter effectiveAddonFilter;
+		PSiteMask siteMaskEx parseEndOptB4Me;
+	};
+
+	Message MSG_ADMIN_LOBBY_MASS_ROLL_INIT_REPLY
+	{
+		INT16 errCode;
+		if( errCode != 0 )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			INT32 token;
+		}
+	};
+
+	Message MSG_ADMIN_LOBBY_MASS_ROLL_SUMMARY_STATUS
+	{
+		INT32 token;
+	};
+
+	Message MSG_ADMIN_LOBBY_MASS_ROLL_SUMMARY_STATUS_REPLY
+	{
+		INT16 errCode;
+		if( errCode != 0 )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<MassRollTournAndRollTypeTotals> tournAndRollTypeTotals;
+			vector<MassRollRecentUser> recentUsers;
+		}
+	};
+
+	Message MSG_ADMIN_LOBBY_MASS_ROLL_DETAILED_STATUS
+	{
+		INT32 token;
+	};
+
+	Message MSG_ADMIN_LOBBY_MASS_ROLL_DETAILED_STATUS_REPLY
+	{
+		INT16 errCode;
+		if( errCode != 0 )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			vector<MassRollTournDetails> tournDetails;
+		}
+	};
+
+	Message MSG_ADMIN_LOBBY_MASS_ROLL_UPDATE
+	{
+		INT32 token;
+		vector<MassRollTournUpdate> updates;
+	};
+
+	Message MSG_ADMIN_LOBBY_MASS_ROLL_UPDATE_REPLY
+	{
+		INT16 errCode;
+		if( errCode != 0 )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message MSG_ADMIN_LOBBY_MASS_ROLL_COMMIT
+	{
+		INT32 token;
+	};
+
+	Message MSG_ADMIN_LOBBY_MASS_ROLL_COMMIT_REPLY
+	{
+		INT16 errCode;
+		if( errCode != 0 )
+		{
+			PString errDesc;
+		}
+	};
+
+	Message MSG_ADMIN_LOBBY_MASS_ROLL_RESULTS	
+	{
+		INT32 token;
+	};
+
+	Message MSG_ADMIN_LOBBY_MASS_ROLL_RESULTS_REPLY
+	{
+		INT16 errCode;
+		if( errCode != 0 )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			INT32 numSuccessfulRolls;
+			vector<MassRollIncompleteRoll> incompleteRolls;
+		}
+	};	
+
+
+	Message MSG_ADMIN_LOBBY_GET_TOURN_TABLE_OBJECTS
+	{
+		UINT64 tournId;
+	};
+
+	Message MSG_ADMIN_LOBBY_GET_TOURN_TABLE_OBJECTS_REPLY
+	{
+		INT16 errCode;
+		if( errCode != 0 )
+		{
+			PString errDesc;
+		}
+		else
+		{
+			PString address;
+			vector<PString> instances;
+		}
+	};	
+};

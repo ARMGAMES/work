@@ -1,0 +1,1410 @@
+//------------------------------------------------------------------------------
+//	Mini Game Lobby <-> Client Protocol
+//------------------------------------------------------------------------------
+//
+//	Copyright (c) 2001-2016 PYR Software Ltd. All rights reserved. This document
+//	is for the use of licensed users only and is subject to the terms and
+//	conditions of the accompanying and/or applicable license between you and
+//	PYR Software Ltd, including without limitation those terms and conditions
+//	prohibiting unauthorized translation, reverse engineering, decompilation,
+//	disassembly, and other inappropriate use of any software provided. Any
+//	unauthorized use, copying, modification, distribution, publication or
+//	disclosure of information is a violation of copyright laws. No reproduction
+//	in whole or in part of this document may be made without express written
+//	consent of PYR Software Ltd.
+//
+//
+//------------------------------------------------------------------------------
+
+#include "UserDefStructs.h"
+#include "ppcontainer.h"
+#include "minigames/minigamescommonprot.h"
+#include "pyrtime.h"
+#include "sitemasks.h"
+#include "licensemask.h"
+
+#include "atfgenerated/brandimgs${ATF_THIN_FILENAME_SUFFIX}.h"
+#include "cvl/cvlclientprotocol${ATF_THIN_FILENAME_SUFFIX}.h"
+
+//------------------------------------------------------------------------------
+
+#define TOP_LEVEL_NAMESPACE MiniGameClient // overwrite the default top level namespace
+
+//------------------------------------------------------------------------------
+
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+#define MINIGAME_MSG_ACTIVE_GAMES				1001 // client -> Mini Game lobby
+#define MINIGAME_MSG_ACTIVE_GAMES_REPLY			1002 // Mini Game lobby -> client
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+#define MINIGAME_MSG_START_GAME					1003 // client -> server
+#define MINIGAME_MSG_START_GAME_REPLY			1004 // server -> client
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+#define MINIGAME_MSG_PLAY_NEXT_ROUND			1005 // client -> Mini Game lobby
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+#define MINIGAME_MSG_GAME_STATE					1006 // client -> Mini Game lobby
+#define MINIGAME_MSG_GAME_STATE_REPLY			1007 // Mini Game lobby -> client
+#define MINIGAME_MSG_SERVER_RESTARTING			1008 // Mini Game lobby -> client
+#define SIDEGAME_MSG_USER_GAME_MESSAGE_TO_SERVER	1009 // client -> MGLobby
+#define SIDEGAME_MSG_USER_GAME_MESSAGE_TO_PLAYER	1010 // MGLobby -> client
+#define SIDEGAME_MSG_START_GAME						1011 // client -> MGLobby		// TO BE DEPRECATED
+#define SIDEGAME_MSG_START_GAME_REPLY				1012 // MGLobby -> client
+// request state for all current sidegame plays
+#define SIDEGAME_MSG_ACTIVE_GAMES					1013 // client -> MGLobby
+#define SIDEGAME_MSG_ACTIVE_GAMES_REPLY				1014 // MGLobby -> client
+// request state for a specific play
+// also used for push notifications of updates to a specific play
+#define SIDEGAME_MSG_GAME_STATE						1015 // client -> MGLobby
+#define SIDEGAME_MSG_GAME_STATE_REPLY				1016 // MGLobby -> client
+// request details of max games reached limits
+// also used for push notifications when a player hits this limit
+#define SIDEGAME_MSG_MAX_GAMES_REACHED				1017 // client -> MGLobby
+#define SIDEGAME_MSG_MAX_GAMES_REACHED_REPLY		1018 // MGLobby -> client
+// claim a prize when a sidegame is in the prize claimable state
+#define SIDEGAME_MSG_CLAIM_PRIZE					1019 // client -> MGLobby
+#define SIDEGAME_MSG_CLAIM_PRIZE_REPLY				1020 // MGLobby -> client
+// request a snapshot of the game definition publication node
+#define SIDEGAME_MSG_GAME_DEF						1021 // client -> MGLobby
+#define SIDEGAME_MSG_GAME_DEF_REPLY					1022 // MGLobby -> client
+// request state for historic sidegame plays
+#define SIDEGAME_MSG_HISTORIC_GAMES                 1023 // client -> MGLobby
+#define SIDEGAME_MSG_HISTORIC_GAMES_REPLY           1024 // MGLobby -> client
+// forfeit a current sidegame play
+#define SIDEGAME_MSG_FORFEIT						1025 // client -> MGLobby
+#define SIDEGAME_MSG_FORFEIT_REPLY					1026 // MGLobby -> client
+#define SIDEGAME_MSG_TRIGGER_ANIMATION				1027 // MGLobby -> client
+#define MINIGAME_MSG_TICKET_LOOKUP					1028 // client -> MGLobby
+#define MINIGAME_MSG_TICKET_LOOKUP_REPLY			1029 // MGLobby -> client
+#define SIDEGAME_MSG_GET_TICKET_BALANCE				1030 // client -> MGLobby
+#define SIDEGAME_MSG_GET_TICKET_BALANCE_REPLY		1031 // MGLobby -> client
+#define MINIGAME_MSG_GET_TICKETS					1032 // client -> MGLobby
+#define MINIGAME_MSG_GET_TICKETS_REPLY				1033 // MGLobby -> client
+#define SIDEGAME_MSG_GAME_DEF_LOCALIZED				1034 // client -> MGLobby
+#define SIDEGAME_MSG_GAME_DEF_LOCALIZED_REPLY		1035 // MGLobby -> client
+#define SIDEGAME_MSG_START_GAME_NEW					1036 // client -> MGLobby		// TO BE RENAMED SIDEGAME_MSG_START_GAME
+#define SIDEGAME_MSG_GET_STARSREWARDS_BAR			1037 // client -> MGLobby
+#define SIDEGAME_MSG_GET_STARSREWARDS_BAR_REPLY		1038 // MGLobby -> client
+#define SIDEGAME_MSG_SKIP_DELAY						1039 // client -> MGLobby		// no reply necessary
+#define MINIGAME_MSG_GET_STACKED_TICKETS			1040 // client -> MGLobby
+#define MINIGAME_MSG_GET_STACKED_TICKETS_REPLY		1041 // MGLobby -> client
+#define SIDEGAME_MSG_GET_RING_SESSIONID				1042 // client -> MGLobby
+#define SIDEGAME_MSG_GET_RING_SESSIONID_REPLY		1043 // MGLobby -> client
+#define SIDEGAME_MSG_CANCEL_PLAY					1044 // client -> MGLobby
+#define SIDEGAME_MSG_CANCEL_PLAY_REPLY				1045 // MGLobby -> client
+#define SIDEGAME_MSG_START_AUTOPLAY					1046 // client -> MGLobby
+#define SIDEGAME_MSG_START_AUTOPLAY_REPLY			1047 // MGLobby -> client
+#define SIDEGAME_MSG_STOP_AUTOPLAY					1048 // client -> MGLobby
+#define SIDEGAME_MSG_STOP_AUTOPLAY_REPLY			1049 // MGLobby -> client
+#define SIDEGAME_MSG_AUTOPLAY_STATE					1050 // client -> MGLobby
+#define SIDEGAME_MSG_AUTOPLAY_STATE_REPLY			1051 // MGLobby -> client
+#define SIDEGAME_MSG_REPLAY_AUTOPLAY				1052 // client -> MGLobby
+#define SIDEGAME_MSG_REPLAY_AUTOPLAY_REPLY			1053 // MGLobby -> client
+#define SIDEGAME_MSG_CANCEL_REPLAY_AUTOPLAY			1054 // client -> MGLobby
+#define SIDEGAME_MSG_CANCEL_REPLAY_AUTOPLAY_REPLY	1055 // MGLobby -> client
+
+// PYR-120600 
+#define MINIGAME_MSG_REG_TO_FIXED_PRIZE_DRAW		1058 // LobbyEtc -> MGLobby
+#define MINIGAME_MSG_REG_TO_FIXED_PRIZE_DRAW_REPLY	1059 // MGLobby -> LobbyEtc
+
+//------------------------------------------------------------------------------
+
+enum TheDealStates
+{
+	TheDealState_Done       = 0, // game instance is finished, prizes have been paid (if applicable)
+	TheDealState_InProgress = 1, // game instance result has been determined, prizes not yet paid
+};
+
+//------------------------------------------------------------------------------
+
+enum RandomDrawGameStates
+{
+	RandomDrawGameState_Done       = 0, // game instance is finished
+	RandomDrawGameState_InProgress = 1, // game instance is in progress
+	RandomDrawGameState_Pending    = 2, // game instance is waiting for players
+};
+
+enum TheDealJackpotStates
+{
+	TheDealJackpotState_Done       = RandomDrawGameState_Done,       // game instance is finished, prizes have been paid
+	TheDealJackpotState_InProgress = RandomDrawGameState_InProgress, // result determined, prizes not yet paid
+	TheDealJackpotState_Pending    = RandomDrawGameState_Pending,    // waiting for players (client show countdown timer), result not yet determined
+};
+
+enum FixedPrizeDrawStates
+{
+	FixedPrizeDrawState_Done       = RandomDrawGameState_Done,       // game instance is finished, prizes have been paid
+	FixedPrizeDrawState_InProgress = RandomDrawGameState_InProgress, // draw was done, result determined, prizes are assigned but not yet paid
+	FixedPrizeDrawState_Pending    = RandomDrawGameState_Pending,    // waiting for the draw time, accepting new players
+};
+
+//------------------------------------------------------------------------------
+
+enum CardMatchHandStates
+{
+	CardMatchHand_Eligible     = 0, // card match hand eligible
+	CardMatchHand_InEligible   = 1,	// card match hand ineligble
+	CardMatchHand_NonQualified = 2,	// card match hand non-qualified
+};
+
+//------------------------------------------------------------------------------
+
+
+enum ChestGameStates
+{
+	ChestGameState_Done       = 0, // game instance is finished, prizes have been paid (if applicable)
+	ChestGameState_InProgress = 1, // game instance result has been determined, prizes not yet paid
+};
+
+//------------------------------------------------------------------------------
+
+enum PokerSideGameHandStates
+{
+	PokerSideGameHand_Eligible     = 0, // card match hand eligible
+	PokerSideGameHand_InEligible   = 1,	// card match hand ineligble
+	PokerSideGameHand_NonQualified = 2,	// card match hand non-qualified
+};
+
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+
+MsgBodyStruct NameValuePair
+{
+	PString name;
+	PString value;
+};
+
+MsgBodyStruct MiniGamePrize @move_only_no_copy
+{
+	INT32 prizeType; // see enum PrizeType
+	I18nPString prizeName; // human readable
+	PString currency;
+	INT64 amount;
+	bool isTopPrize parseEndOptB4Me; // potential special client behaviour for "top prize" prize(s)
+	I18nPString prizeDescription parseEndOptB4Me;
+	PString imageURLPrefix; // URL prefix for client resources associated with this prize
+	PString assetName parseEndOptB4Me; // key for client to lookup image/animation asset in local library
+	vector<NameValuePair> prizeProperties parseEndOptB4Me; //vector of prize properties from MG_CATALOG_PRIZE_PROPERTIES, only applicable to catalog prizes
+	PString clickToLaunchURL parseEndOptB4Me; // destination URL for action button
+	I18nPString clickToLaunchButtonText; // description of the C2L button behaviour
+};
+
+MsgBodyStruct MiniGamePrizeLocalized @move_only_no_copy
+{
+	INT32 prizeType; // see enum PrizeType
+	PString prizeName; // human readable
+	PString currency;
+	INT64 amount;
+	bool isTopPrize; // potential special client behaviour for "top prize" prize(s)
+	PString prizeDescription;
+	PString imageURLPrefix; // URL prefix for client resources associated with this prize
+	PString assetName parseEndOptB4Me; // key for client to lookup image/animation asset in local library
+	vector<NameValuePair> prizeProperties parseEndOptB4Me; //vector of prize properties from MG_CATALOG_PRIZE_PROPERTIES, only applicable to catalog prizes
+	PString clickToLaunchURL parseEndOptB4Me; // destination URL for action button
+	PString clickToLaunchButtonText; // description of the C2L button behaviour
+};
+
+//------------------------------------------------------------------------------
+
+MsgBodyStruct MiniGamePrizeBucket @move_only_no_copy
+{
+	I18nPString prizeBucketName; // human readable
+	CommMsgBody { vector< MiniGamePrize > prizes; };
+	INT32 bucketOdds default 0 parseEndOptB4Me;       // in hundredths of a percent, i.e. 10000 is 100%. populated if game definition specifies that this should be published, else all zeroes.
+};
+
+MsgBodyStruct MiniGamePrizeBucketLocalized @move_only_no_copy
+{
+	PString prizeBucketName; // human readable
+	CommMsgBody { vector< MiniGamePrizeLocalized > prizes; };
+	INT32 bucketOdds;       // in hundredths of a percent, i.e. 10000 is 100%. populated if game definition specifies that this should be published, else all zeroes.
+};
+
+//------------------------------------------------------------------------------
+
+MsgBodyStruct MiniGameBuyIn @move_only_no_copy
+{
+	INT32 buyInType; // see enum BuyInType
+	PString currency;
+	INT64 amount;
+};
+
+//------------------------------------------------------------------------------
+
+MsgBodyStruct MiniGameDefinition @move_only_no_copy
+{
+	INT32 gameType; // see enum GameType
+	INT32 delayToPayout;
+	INT32 delayToPayoutAutoplay;
+	MiniGameBuyIn buyIn;
+	CommMsgBody { vector< MiniGamePrizeBucket > prizeTable; };
+};
+
+MsgBodyStruct MiniGameDefinitionLocalized @move_only_no_copy
+{
+	INT32 gameType; // see enum GameType
+	INT32 delayToPayout;
+	INT32 delayToPayoutAutoplay;
+	MiniGameBuyIn buyIn;
+	CommMsgBody { vector< MiniGamePrizeBucketLocalized > prizeTable; };
+	MsgBodyWithJSON gameDefMsgBody parseEndOptB4Me; // contains additional game-specific definition
+};
+
+//------------------------------------------------------------------------------
+
+MsgBodyStruct MiniGameVisibility @move_only_no_copy
+{
+	UINT32 brand; // visibility mask
+	UINT32 site; // visibility mask - deprecated. Replaced with siteMaskEx 
+	CommMsgBody
+	{
+		bool excludeCountries;
+		vector< PString > countries; // country inlcusion/exclusion list
+	};
+	PString criteria; // criteria name to look up in Help Support Portal
+	PString tableCriteria parseEndOptB4Me; // table criteria name to look up in Help Support Portal
+	PSiteMask siteMaskEx parseEndOptB4Me; // visibility mask
+
+	@Override void parseAnonymousMsgBody0( CommMsgParser& _parser )
+	{
+		CommMsgBody msgBody;
+		_parser.parseMsgBody( msgBody );
+
+		CommMsgParser parser( msgBody );
+		parser.parseBOOL( excludeCountries );
+
+		UINT32 size;
+		parser.parseUINT32( size );
+		if( size )
+		{
+			countries.resize( size );
+			for( UINT32 i = 0; i < size; ++i )
+			{
+				parser.parseStringP( countries[ i ] );
+				countries[ i ].toUpper();
+			}
+
+			std::sort( countries.begin(), countries.end(), PStringCmp() );
+		}
+		else
+		{
+			countries.clear();
+		}
+	}
+};
+
+//------------------------------------------------------------------------------
+
+MsgBodyStruct MiniGameMetaData 
+{
+	vector< INT32 > metaData;
+};
+
+//------------------------------------------------------------------------------
+
+MsgBodyStruct MiniGameRound 
+{
+	INT32 timestamp; // what timestamp is this (candidates: Start, End, Last Transition) - int representation of time_t since ATF does not support time_t
+	vector< INT32 > decisions; // decisions made in the round
+	vector< INT32 > results; // results of the decisions made in the round
+	INT32 prizeBucket; // index of the prize bucket won, or -1 if game is in progress
+	CommMsgBody 
+	{ 
+		INT32 state; // current state (interpretation is game specific)
+		vector< MiniGameMetaData > metaData; // A way to pass game specific round information to the client (eg: prizes left on a card by card basis in the deal)
+	}; 
+};
+
+//------------------------------------------------------------------------------
+
+MsgBodyStruct MiniGameState @move_only_no_copy
+{
+	UINT64 minigamePlayId;
+	UINT32 minigameId;
+	CommMsgBody { vector< MiniGameRound > rounds; };
+};
+
+//------------------------------------------------------------------------------
+
+MsgBodyStruct MGConnInfo @move_only_no_copy
+{
+	PString address;    // address of MGLobby instance to connect to
+	PString instance;   // name of MGLobby instance to connect to
+};
+
+
+
+//------------------------------------------------------------------------------
+// 'MiniGame' publication
+//------------------------------------------------------------------------------
+//
+// Node { 0 } - list of mini game types
+//
+
+//------------------------------------------------------------------------------
+// Mini game publication leaf
+//------------------------------------------------------------------------------
+
+Struct MiniGameTypeLeaf @move_only_no_copy // Leaf { 0, n }
+{
+	INT32 gameStatus; // see enum GameStatus
+	UINT32 minigameId; // unique ID, referenced in messages below
+	MiniGameDefinition minigameDef;
+	MiniGameVisibility visibility;
+	PString url parseEndOptB4Me; // URL to navigate to, set if game is intended to be played via an HTML5 client
+	MGConnInfo mgConnInfo; // connection info for MGLobby instance where game is hosted
+	I18nPString clientDisplayName;
+	I18nPString clientDisplayInfo;
+	I18nPString clientDisplayInProgressTag parseEndOptB4Me;
+	PString contentURLPrefix parseEndOptB4Me;
+	I18nPString clientDisplayGameDescription parseEndOptB4Me;
+};
+
+Struct MiniGameDefLocalized @move_only_no_copy
+{
+	INT32 gameStatus; // see enum GameStatus
+	UINT32 minigameId; // unique ID, referenced in messages below
+	MiniGameDefinitionLocalized minigameDef;
+	PString clientDisplayName;
+	PString clientDisplayInfo;
+	PString clientDisplayInProgressTag;
+	PString contentURLPrefix parseEndOptB4Me;
+	PString clientDisplayGameDescription parseEndOptB4Me;
+};
+
+//------------------------------------------------------------------------------
+//
+// Node { 1 } - list of running jackpots
+//
+
+Struct TheDealJackpotLeaf @move_only_no_copy // Leaf { 1, n, 0 }
+{
+	CommMsgBody
+	{
+		PString jackpotCurrency;
+		INT64 jackpotAmount;
+		INT32 jackpotWinnerPercentage; //percentage of the jackpot share that goes to the winner
+		INT32 jackpotShareEligibilityMins; // length of jackpot share eligibility
+	};
+	MiniGameVisibility visibility;
+};
+
+Struct TheDealJackpotSpinLeaf @move_only_no_copy // Leaf { 1, n, 1 } - active or last Jackpot spin
+{
+	bool active; // true if Jackpot spin is now in progress	
+	INT32 timestamp; //When the Jackpot started, or will start - int representation of time_t since ATF does not support time_t
+	PString playerId;
+	BrandProt${ATF_THIN_NAMESPACE_SUFFIX}::BrandImageList playerBrandImages;
+	INT64  jackpotAmountInCents;
+	INT32  winnerShareAmount;
+	INT32  playerShareAmount;
+	MiniGameState jackpotState;
+};
+
+//------------------------------------------------------------------------------
+
+MsgBodyStruct GameTicketWithMiniGame
+{
+	UINT64 gameTicketId;
+	UINT32 gameTicketTypeId;
+	SrvTime whenStarted;
+	SrvTime expiration;
+	INT32 playsInitial;
+	INT32 playsSpent;
+	UINT32 gameTicketBrandMask;
+	UINT32 minigameId;
+	UINT32 minigameType;
+	PString minigameClientDisplayName;
+	PString minigameClientDisplayInfo;
+	UINT32 minigameBrandMask;
+	UINT32 minigameSiteMask;	// deprecated. Replaced by minigameSiteMaskEx 
+	INT32 status parseEndOptB4Me;
+	INT32 costFpp1 parseEndOptB4Me;
+	PSiteMask minigameSiteMaskEx parseEndOptB4Me;
+};
+
+//------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// Enumerate active mini games
+//------------------------------------------------------------------------------
+
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+Message MINIGAME_MSG_ACTIVE_GAMES
+{
+	INT64 requestId;
+};
+
+Message MINIGAME_MSG_ACTIVE_GAMES_REPLY
+{
+	INT64 requestId; // return value received in MINIGAME_MSG_ACTIVE_GAMES
+	INT16 errCode;
+	if( errCode )
+	{
+		PString errStr;
+	}
+	else
+	{
+		CommMsgBody { vector< MiniGameState > states; };
+	}
+};
+
+//------------------------------------------------------------------------------
+// MiniGame: start new game
+//------------------------------------------------------------------------------
+
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+Message MINIGAME_MSG_START_GAME
+{
+	INT64 requestId;
+	UINT32 minigameId; // see MiniGameTypeLeaf
+	CommMsgBody { vector< INT32 > initialDecisions maxsize 2; }; // apply these decisions to round 0
+	bool autoPlay;
+	bool useGameTicket default false parseEndOptB4Me; // useGameTicket is not used anymore and is ignored by MGLobby
+	INT8 minigameEntryMode default sidegame::eSideGameEntryMode_Normal parseEndOptB4Me min sidegame::eSideGameEntryMode_Normal max sidegame::eSideGameEntryMode_Max; // see SideGameEntryMode enum
+	UINT64 minigameEntryRefId default 0; // depends on minigameEntryMode
+};
+
+Message MINIGAME_MSG_START_GAME_REPLY @move_only_no_copy
+{
+	INT64 requestId; // return value received in MINIGAME_MSG_START_GAME
+	INT16 errCode;
+	if( errCode )
+	{
+		PString errStr;
+	}
+	else
+	{
+		MiniGameState state;
+		
+	}
+	vector< GameTicketWithMiniGame > ticketsWithMinigames parseEndOptB4Me;
+	INT32 playsRemaining default 0 parseEndOptB4Me;
+};
+
+//------------------------------------------------------------------------------
+// Play next game round, game progress update
+//------------------------------------------------------------------------------
+
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+Message MINIGAME_MSG_PLAY_NEXT_ROUND
+{
+	INT64 requestId;
+	UINT64 minigamePlayId;
+	INT32 round min 0 max 0; // this message isn't used at the moment so max size is 0
+	CommMsgBody { vector< INT32 > decisions maxsize 0; }; // this message isn't used at the moment so max size is 0
+};
+
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+Message MINIGAME_MSG_GAME_STATE
+{
+	INT64 requestId;
+	UINT64 minigamePlayId;
+};
+
+Message MINIGAME_MSG_GAME_STATE_REPLY @move_only_no_copy
+{
+	INT64 requestId; // return value received in MINIGAME_MSG_PLAY_NEXT_ROUND or MINIGAME_MSG_GAME_STATE, or 0 for push notifications
+	INT16 errCode;
+	if( errCode )
+	{
+		PString errStr;
+	}
+	else
+	{
+		MiniGameState state;
+	}
+};
+
+//------------------------------------------------------------------------------
+// Control messages
+//------------------------------------------------------------------------------
+
+Message MINIGAME_MSG_SERVER_RESTARTING
+{
+	//empty
+};
+
+//------------------------------------------------------------------------------
+// Lookup minigame by ticket and ticket type
+//------------------------------------------------------------------------------
+
+Message MINIGAME_MSG_TICKET_LOOKUP
+{
+	INT64 requestId;
+	UINT64 ticketId;
+	UINT32 ticketTypeId;
+};
+
+Message MINIGAME_MSG_TICKET_LOOKUP_REPLY
+{
+	INT64 requestId; // return value received in MINIGAME_MSG_TICKET_LOOKUP
+	INT16 errCode;
+	if( errCode )
+	{
+		PString errStr;
+	}
+	else
+	{
+		UINT32 minigameId;
+		UINT32 minigameType parseEndOptB4Me; // enum GameType
+		// PYR-112602
+		UINT32 minigameBrandMask parseEndOptB4Me;
+		PSiteMask minigameSiteMaskEx parseEndOptB4Me;
+	}
+};
+
+//------------------------------------------------------------------------------
+// Get the player's available game tickets and associated minigame
+//------------------------------------------------------------------------------
+
+Message MINIGAME_MSG_GET_TICKETS
+{
+	INT64 requestId;
+};
+
+Message MINIGAME_MSG_GET_TICKETS_REPLY
+{
+	INT64 requestId;
+	INT16 errCode;
+	if( errCode )
+	{
+		PString errStr;
+	}
+	else
+	{
+		vector< GameTicketWithMiniGame > ticketsWithMinigames;
+	}
+};
+
+//-------------------------------------------------------------------------------
+// Get the number of plays for tickets filtered by minigameId or gameTicketTypeId
+//-------------------------------------------------------------------------------
+
+Message MINIGAME_MSG_GET_STACKED_TICKETS
+{
+	INT64 requestId;
+	UINT32 minigameId;       // minigameId for which to stack game ticket plays
+	UINT32 gameTicketTypeId; // gameTicketTypeId for which to stack game ticket plays
+};
+
+Message MINIGAME_MSG_GET_STACKED_TICKETS_REPLY
+{
+	INT64 requestId;
+	INT16 errCode;
+	if( errCode )
+	{
+		PString errStr;
+	}
+	else
+	{
+		INT32 playsRemaining;
+	}
+};
+
+//------------------------------------------------------------------------------
+// Sidegame messages
+//------------------------------------------------------------------------------
+
+namespace client    // between native client and MGLobby through msgbody format. MGLobby is the client access point.
+{
+	enum SideGameStatus
+	{
+		eSGS_None         = -1,
+		eSGS_ProgressMin  = 0,
+		eSGS_ProgressMax  = 100,
+		eSGS_Completed    = 300,
+		eSGS_Failed       = 400,
+	};
+	
+	enum SuitRacePosition
+	{
+		eSuitRace_Unknown  = -1,
+		eSuitRace_Starting = 0,
+		eSuitRace_First    = 1,
+		eSuitRace_Second   = 2,
+		eSuitRace_Third    = 3,
+		eSuitRace_Fourth   = 4,
+		eSuitRace_Winner   = 5,
+		eSuitRace_Loss     = 6,
+		eSuitRace_DailyMax = 7,
+	};
+	
+	enum SuitRaceSuit
+	{
+		eSuitRaceSuit_None     = 0,
+		eSuitRaceSuit_Spades   = 115, //'s'
+		eSuitRaceSuit_Hearts   = 104, //'h'
+		eSuitRaceSuit_Diamonds = 100, //'d'
+		eSuitRaceSuit_Clubs    = 99,  //'c'
+	};
+
+	enum SideBetStatus
+	{
+		eSBS_NoBet        = 0, // no bet has been created
+		eSBS_BetPending   = 1, // a bet has been made and is waiting resolution
+		eSBS_BetResolved  = 2, // a bet has been resolved
+		eSBS_BetError     = 3, // an error occurred creating or resolving a bet, or an auto-bet has been stopped prematurely
+	};
+
+	Message SIDEGAME_MSG_USER_GAME_MESSAGE_TO_SERVER  @move_only_no_copy  // C->S
+	{
+		UINT64 clientCtx; // value submitted by client and used for routing reply to appropriate html5 client instance (could be TableId for CardMatch at a ring game table, but exact details are up to client).
+		UINT32 gameMsgId;
+		MsgBodyWithJSON gameMsgBody maxsize 1048576;    // the concrete game message is transparent to the MGLobby (maxsize=1Mb)
+	};
+
+	Message SIDEGAME_MSG_USER_GAME_MESSAGE_TO_PLAYER  @move_only_no_copy  // S->C
+	{
+		UINT64 clientCtx; // echo of clientCtx on inbound message for synchronous replies, or stored clientCtx from start request for async updates
+		UINT32 gameMsgId;
+		MsgBodyWithJSON gameMsgBody maxsize 1048576;    // the concrete game message, MGLobby wraps the JSON string into msgbody (maxsize=1Mb)
+		MsgBodyWithJSON gameStateMetaDataMsgBody maxsize 1048576; // GameStateMetaData (maxsize=1Mb)
+	};
+
+	MsgBodyStruct PokerSideBetGameStateMetaData
+	{
+		INT32 gameStatus default eSBS_NoBet; // see enum SideBetStatus
+		INT64 betAmount default 0;          // total amount bet for the hand
+		INT64 winAmount default 0;          // amount won for the latest bet to resolve
+		INT8  numAutoPlaysRemainingToDisplay default 0; // number of autoPlays remaining to display on the client (-1 means this was a single bet)
+	};
+
+	struct GameStateMetaData
+	{
+		INT32 gameState default eSGS_None parseEndOptB4Me; // eSGS_*
+		BYTE chosenSuit default eSuitRaceSuit_None parseEndOptB4Me; //one of 'schd' or 0 For non-suit race
+		INT32 position default eSuitRace_Unknown parseEndOptB4Me;  //see eSuitRacePosition
+		MsgBodyWithJSON stateMsgBody parseEndOptB4Me; // game specific information
+	};
+
+	enum SideGameAnimType
+	{
+		eSGAnimType_None          = 0,
+		eSGAnimType_PossibleMatch = 1,
+		eSGAnimType_Match         = 2,
+		eSGAnimType_SideBetWin_HoleCards = 3,
+		eSGAnimType_SideBetWin_FlopCards = 4,
+	};
+
+	enum SideGameAnimLocation
+	{
+		eSGAnimLoc_None                            = -1,
+		eSGAnimLoc_HoleCard_First                  = 0,   // second hole card is HoleCard_First + 1, etc
+		eSGAnimLoc_CommunityCard_FirstBoard_First  = 100, // first community card on first board (board 0). second card is eSGAnimLoc_CommunityCard_FirstBoard_First + 1, etc.
+		eSGAnimLoc_CommunityCard_SecondBoard_First = 200, // for run it twice - first community card on second board (board 1)
+	};
+
+	MsgBodyStruct SideGameAnim
+	{
+		INT32 animType; // eSGAnimType_*
+		INT32 location; // eSGAnimLoc_*
+		CommMsgBody animMsgBody parseEndOptB4Me; // structure depends on SideGameAnimType
+	};
+
+	// animMsgBody for eSGAnimType_SideBetWin_HoleCards and eSGAnimType_SideBetWin_FlopCards
+	struct SideBetWinAnimMsgBody
+	{
+		INT32 amount;	// deprecated. use amount64 instead
+		PString currency;
+		bool isPlayMoney;
+		PString betType;
+		INT64 amount64 parseEndOptB4Me;
+	};
+
+	Message SIDEGAME_MSG_TRIGGER_ANIMATION  @move_only_no_copy  // S->C
+	{
+		UINT64 handId;
+		vector< SideGameAnim > anims;
+	};
+};
+
+namespace sidegame     // between html5 client and MGLobby server through JSON format
+{
+	// for poker side bets
+	MsgBodyStruct SGCard
+	{
+		BYTE rank;    // 2 - 14
+		BYTE suit;    // 'c', 'd', 'h', 's'
+	};
+
+	// for CardMatch
+	MsgBodyStruct MCard
+	{
+		BYTE rank;    // 2 - 14
+		BYTE suit;    // 'c', 'd', 'h', 's'
+		bool matched; // true if this card has been matched
+		bool possibleMatch default false parseEndOptB4Me; // true if this card is not yet matched but matches a currently dealt card and is pending other match condition(s) 
+	};
+	
+	MsgBodyStruct PokerSideGameState @move_only_no_copy
+	{
+		INT32 timestamp; // game start time - int representation of time_t since ATF does not support time_t
+		INT32 handsTotal; // total number of hands which player has to match [mds] maybe redundant with game definition?
+		INT32 handsRemaining; // hands remaining [mds] is this inclusive of current hand? or exclusive?
+		INT32 handsRequiredToForfeit; // forfeit after this many hands have elapsed (compare to handsTotal - handsRemaining)
+		INT32 lifeCycleState; // pending, active, prize claimable, end
+		INT32 currentHandState; // eligible, ineligible, non-qualified
+		MiniGamePrize prize; // prize. only valid in "prize claimable" and "end" states.
+	};
+	
+	// [mds] first pass at this structure, representation may need to change slightly to reflect all possible client states
+	MsgBodyStruct CardMatchGameState @move_only_no_copy
+	{
+		vector< MCard > cards;
+		INT32 timestamp; // game start time - int representation of time_t since ATF does not support time_t
+		INT32 handsTotal; // total number of hands which player has to match [mds] maybe redundant with game definition?
+		INT32 handsRemaining; // hands remaining [mds] is this inclusive of current hand? or exclusive?
+		INT32 handsRequiredToForfeit; // forfeit after this many hands have elapsed (compare to handsTotal - handsRemaining)
+		INT32 lifeCycleState; // pending, active, prize claimable, end
+		INT32 currentHandState; // eligible, ineligible, non-qualified
+		MiniGamePrize prize; // prize. only valid in "prize claimable" and "end" states.
+	};
+	
+	MsgBodyStruct RandomDrawGameState
+	{
+		INT32 timestamp; // game start time - int representation of time_t since ATF does not support time_t
+		INT32 lifeCycleState; // in progress or done
+		INT32 prizeIndex; // index into the prizetable for this game that was selected
+		INT32 animationSeed; // random number generated to seed variation in animation display
+	};
+
+	MsgBodyStruct PickAnObjectGameState
+	{
+		INT32 timestamp; // game start time - int representation of time_t since ATF does not support time_t
+		INT32 lifeCycleState; // in progress or done
+		INT32 animationSeed; // random number generated to seed variation in animation display
+		vector<INT32> prizeObjectIndices; // vector of prizeBucketIndices indicating the position of each prize object that the client will display
+		INT8 prizeObjectPicked; // position of prize object selected by player - prize awarded is this position in the prizeObjectIndices vector
+	};
+
+	MsgBodyStruct ChestGameState
+	{
+		INT32 lifeCycleState; // in progress or done
+		vector<MiniGamePrizeLocalized> prizes;
+		INT32 animationLevel;
+		vector<CvlClientUserBarNotification> cvlBarUpdates;
+		vector<CvlConfigParams> cvlConfigParams parseEndOptB4Me;
+	};
+	
+	MsgBodyStruct SuitRacePlayerProgress
+	{
+		BYTE suit;
+		INT32 progress;
+		INT8 lastProgressType;
+	};
+	
+	MsgBodyStruct SuitRaceGameState @move_only_no_copy
+	{
+		vector< SuitRacePlayerProgress > playerProgress;
+		BYTE chosenSuit;
+		INT32 totalProgressRequired;
+		PokerSideGameState sideGameState;
+	};
+
+	MsgBodyStruct SideGameState
+	{
+		UINT64 minigamePlayId;
+		UINT32 minigameId;
+		INT8   gameType; // 0: Table, 1: Zoom
+		UINT64 gameId;	// TableId or BlitzId
+		UINT32 entryId; // for Zoom
+		MsgBodyWithJSON stateMsgBody; // game-specific structure, interpreted based on minigameId. For CardMatch, this is a CardMatchGameState.
+		UINT64 ringSessionId parseEndOptB4Me; // for ring games
+		UINT64 subGameId parseEndOptB4Me; // id of a child object of gameId, e.g., tableId of table in a tournament
+	};
+	
+	MsgBodyStruct MaxGamesReachedEntry
+	{
+		UINT32 minigameId; // minigameId for which max games are reached
+		INT32 expirationTime; // time_t at which max games reached state resets
+	};
+
+	MsgBodyStruct GameTicketState
+	{
+		UINT64 gameTicketId default 0; // ticket instance id used for play, if applicable (else 0)
+		INT32 playsRemaining default 0; // remaining plays on ticket if instanceid != 0
+	};
+
+	enum ePokerSideBetType
+	{
+		ePokerSideBetType_Undefined = 0,
+		ePokerSideBetType_HoleCards = 1,  // bet where payouts are determined by hole cards dealt to player
+		ePokerSideBetType_FlopCards = 2,  // bet where payouts are determined by flop cards
+		ePokerSideBetType_Max = ePokerSideBetType_FlopCards // must be kept up-to-date
+	};
+
+	enum PokerSideBetAvailabilityFlags
+	{
+		ePokerSideBetAvailabilityFlags_Seated    = 0x01,     // if set, this bet is available for seated players
+		ePokerSideBetAvailabilityFlags_Observer  = 0x02,     // if set, this bet is available for observer players
+	};
+
+	MsgBodyStruct PokerSideBetResultPayout
+	{
+		INT16 betResult; // value in ePokerSideBetResult_ for the bet type that this payout table corresponds to (i.e. ePokerSideBetResult_HoleCards for a hole cards bet)
+		INT32 payoutMultiplier;
+	};
+
+	MsgBodyStruct PokerSideBetAvailableBet
+	{
+		INT16 betType; // enum ePokerSideBetType
+		PString betName; // localized
+		PString betDescription; // localized - includes payout table?
+		vector<PokerSideBetResultPayout> oddsTable;
+		UINT8 availabilityflags; // see PokerSideBetAvailabilityFlags
+	};
+
+	MsgBodyStruct PokerSideBetGameDefBody
+	{
+		vector<PokerSideBetAvailableBet> availableBets;
+		vector<INT64> allowedBetAmounts;
+		vector<INT16> allowedNumberOfAutoBets; // either allowedNumberOfAutoBets or allowedBetIncrements will be populated
+		vector<INT64> allowedBetIncrements;    // either allowedNumberOfAutoBets or allowedBetIncrements will be populated
+		INT64 maxBuyIn;
+	};
+	
+	MsgBodyStruct PokerSideBetGameState @move_only_no_copy
+	{
+		INT16 betType; // ePokerSideBetType_
+		INT64 betAmount;
+		INT32 timestamp; // game start time - int representation of time_t since ATF does not support time_t
+		INT32 lifeCycleState; // pending, active, end
+		INT16 betResult;
+		vector<SGCard> cards;
+		MiniGamePrize prize; // prize. only valid in "end" states.
+	};
+
+	// we will deprecate this message soon. please use the message and format SIDEGAME_MSG_START_GAME_NEW
+	Message SIDEGAME_MSG_START_GAME    // GC->GS
+	{
+		INT64  requestId;
+		UINT32 minigameId; // instance of sidegame definition to request
+		INT8   gameType min MiniGameCommon::EntryType_NotApplicable max MiniGameCommon::EntryType_Max; // 0: Table, 1: Zoom
+		UINT64 gameId;	// TableId or BlitzId
+		UINT32 entryId; // for Zoom
+		bool useGameTicket default false parseEndOptB4Me;
+		UINT64 gameTicketId; // only if useTicket is set
+		bool autoPlay default false parseEndOptB4Me;
+	};
+
+	Message SIDEGAME_MSG_START_GAME_REPLY   // GS->GC
+	{
+		INT64 requestId; // return value received in MINIGAME_MSG_START_GAME
+		INT16 errCode;  // 1: not a player, 2: not applicable to this table, 3: already started
+		if(errCode)
+		{
+			PString errString;    // hopefully localized error string
+		}
+		else
+		{
+			SideGameState state;
+			GameTicketState gameTicketState parseEndOptB4Me;
+		}
+		INT32 playsRemaining default 0 parseEndOptB4Me;
+	};
+
+	enum SideGameEntryMode
+	{
+		eSideGameEntryMode_Normal                  = 0,
+		eSideGameEntryMode_GameTicket              = 1,	// player is using a gameticket to play this game. minigameEntryRefId is gameTicketId
+		eSideGameEntryMode_CVLBar                  = 2,	// player is using a cross-vertical-loyalty bar to open a chest. minigameEntryRefId is barId
+		eSideGameEntryMode_GameTicketStackedByGame = 3,	// player is using a gameticket chosen by MGLobby to play this game. minigameEntryRefId is 0 since minigameId is in start game message
+		eSideGameEntryMode_GameTicketStackedByType = 4,	// player is using a gameticket chosen by MGLobby to play this game. minigameEntryRefId is gameTicketTypeId
+
+		eSideGameEntryMode_Max                     = eSideGameEntryMode_GameTicketStackedByType // must be kept up-to-date
+	};
+	
+	MsgBodyStruct SuitRaceEntryMetaData
+	{
+		BYTE chosenSuit;
+	};
+
+	MsgBodyStruct PickAnObjectEntryMetaData
+	{
+		INT8 prizeIndexPicked;
+	};
+
+	MsgBodyStruct PokerSideBetEntryMetaData
+	{
+		INT16 betType; // ePokerSideBetType_
+		INT64 betAmount;
+	};
+
+	Message SIDEGAME_MSG_START_GAME_NEW		// GC->GS
+	{
+		INT64  requestId;
+		UINT32 minigameId; // instance of sidegame definition to request
+		INT8   gameType min MiniGameCommon::EntryType_NotApplicable max MiniGameCommon::EntryType_Max; // 0: Table, 1: Zoom
+		UINT64 gameId;	// TableId or BlitzId
+		UINT32 entryId; // for Zoom
+		INT8 minigameEntryMode min sidegame::eSideGameEntryMode_Normal max sidegame::eSideGameEntryMode_Max; // see SideGameEntryMode enum
+		UINT64 minigameEntryRefId;	// depends on minigameEntryMode
+		bool autoPlay;
+		MsgBodyWithJSON sideGameEntryMetaData maxsize 1048576 parseEndOptB4Me; // (maxsize=1Mb)
+		UINT64 ringSessionId parseEndOptB4Me;
+		UINT64 subGameId parseEndOptB4Me; // id of a child object of gameId, e.g., tableId of table in a tournament
+	};
+
+	Message SIDEGAME_MSG_ACTIVE_GAMES
+	{
+		INT64 requestId;
+		BYTE useEntryFilter min 0 max 1; // if set, server will filter to games for a specific table or blitz entry
+		if( useEntryFilter)
+		{
+			INT8   gameType min MiniGameCommon::EntryType_NotApplicable max MiniGameCommon::EntryType_Max; // 0: Table, 1: Zoom
+			UINT64 gameId;	// TableId or BlitzId
+			UINT32 entryId; // for Zoom
+			UINT64 ringSessionId parseEndOptB4Me;
+			UINT64 subGameId parseEndOptB4Me; // id of a child object of gameId, e.g., tableId of table in a tournament
+		}
+	};
+
+	Message SIDEGAME_MSG_ACTIVE_GAMES_REPLY
+	{
+		INT64 requestId; // return value received in MINIGAME_MSG_ACTIVE_GAMES
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+		else
+		{
+			CommMsgBody { vector< SideGameState > states; };
+			CommMsgBody { vector< MaxGamesReachedEntry > maxGamesReached; };
+			bool hasHistoricGames default false parseEndOptB4Me; // only populated if useEntryFilter was set in request
+		}
+	};
+	
+	Message SIDEGAME_MSG_GAME_STATE
+	{
+		INT64 requestId;
+		UINT64 minigamePlayId;
+	};
+
+	Message SIDEGAME_MSG_GAME_STATE_REPLY
+	{
+		INT64 requestId; // return value received in MINIGAME_MSG_PLAY_NEXT_ROUND or MINIGAME_MSG_GAME_STATE, or 0 for push notifications
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+		else
+		{
+			SideGameState state;
+			bool hasHistoricGames default false parseEndOptB4Me;
+		}
+	};
+
+	Message SIDEGAME_MSG_MAX_GAMES_REACHED
+	{
+		INT64 requestId;
+	};
+
+	Message SIDEGAME_MSG_MAX_GAMES_REACHED_REPLY
+	{
+		INT64 requestId; // return value received in SIDEGAME_MSG_MAX_GAMES_REACHED, or 0 for push notifications
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+		else
+		{
+			vector< MaxGamesReachedEntry > maxGamesReached;
+		}
+	};	
+	
+	Message SIDEGAME_MSG_CLAIM_PRIZE   // GC->GS
+	{
+		INT64 requestId;
+		UINT64 minigamePlayId;
+		INT32 prizeIndex min 0 max 0; // future flexibility for prize choice within a prize bucket (use 0 for games without prize choice ie: CardMatch)
+	};
+
+	Message SIDEGAME_MSG_CLAIM_PRIZE_REPLY  // GS->GC
+	{
+		INT64 requestId; // return value received in SIDEGAME_MSG_CLAIM_PRIZE
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+		else
+		{
+			SideGameState state; // prize is a part of the SideGameState structure
+			bool hasHistoricGames default false parseEndOptB4Me;
+		}
+	};
+
+	Message SIDEGAME_MSG_GAME_DEF   // GC->GS
+	{
+		INT64 requestId;
+		UINT32 minigameId; // either minigameId or gameTicketTypeId should be specified, other should be set to 0
+		UINT32 gameTicketTypeId default 0 parseEndOptB4Me;
+	};
+
+	Message SIDEGAME_MSG_GAME_DEF_REPLY @move_only_no_copy  // GS->GC
+	{
+		INT64 requestId; // return value received in SIDEGAME_MSG_CLAIM_PRIZE
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+		else
+		{
+			MiniGameTypeLeaf def; // definition leaf for this minigameId
+		}
+	};
+
+	Message SIDEGAME_MSG_GAME_DEF_LOCALIZED   // GC->GS
+	{
+		INT64 requestId;
+		UINT32 minigameId; // either minigameId or gameTicketTypeId or gameType should be specified, others should be set to 0
+		UINT32 gameTicketTypeId default 0 parseEndOptB4Me;
+		INT32 gameType default 0 parseEndOptB4Me;
+	};
+
+	Message SIDEGAME_MSG_GAME_DEF_LOCALIZED_REPLY @move_only_no_copy // GS->GC
+	{
+		INT64 requestId; // return value received in SIDEGAME_MSG_GAME_DEF_LOCALIZED
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+		else
+		{
+			MiniGameDefLocalized def; // definition leaf for this minigameId
+		}
+	};
+
+	Message SIDEGAME_MSG_HISTORIC_GAMES
+	{
+		INT64 requestId;
+		BYTE   maxHistoricPlays min 0 max 10; // max number of plays to request
+		BYTE   useEntryFilter min 0 max 1; // if set, server will filter to games for a specific table or blitz entry
+		if( useEntryFilter )
+		{
+			INT8   gameType min MiniGameCommon::EntryType_NotApplicable max MiniGameCommon::EntryType_Max; // 0: Table, 1: Zoom
+			UINT64 gameId;       // TableId or BlitzId
+			UINT32 entryId; // for Zoom
+		}
+		UINT64 gameTicketTypeId parseEndOptB4Me; // if set, filters for games entered using this gameTicketTypeId
+		UINT64 ringSessionId parseEndOptB4Me; // only valid if useEntryFilter != 0
+		UINT64 subGameId parseEndOptB4Me; // only valid if useEntryFilter != 0: id of a child object of gameId, e.g., tableId of table in a tournament 
+	};
+
+	Message SIDEGAME_MSG_HISTORIC_GAMES_REPLY
+	{
+		INT64 requestId; // return value received in SIDEGAME_MSG_HISTORIC_GAMES
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+		else
+		{
+			CommMsgBody { vector< SideGameState > historicGames; };
+		}
+	};
+
+	Message SIDEGAME_MSG_FORFEIT   // GC->GS
+	{
+		INT64 requestId;
+		UINT64 minigamePlayId;
+	};
+
+	Message SIDEGAME_MSG_FORFEIT_REPLY  // GS->GC
+	{
+		INT64 requestId; // return value received in SIDEGAME_MSG_FORFEIT
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+		else
+		{
+			SideGameState state; // this will be the end state of the forfeited card
+			bool hasHistoricGames default false parseEndOptB4Me;
+		}
+	};
+
+	Message SIDEGAME_MSG_GET_TICKET_BALANCE	// GC->GS
+	{
+		INT64 requestId;
+		UINT64 gameTicketId;
+	};
+
+	Message SIDEGAME_MSG_GET_TICKET_BALANCE_REPLY // GS->GC
+	{
+		INT64 requestId;
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+		else
+		{
+			INT32 playsRemaining;
+		}
+	};
+
+	MsgBodyStruct MultiPurposeChestMetaData
+	{
+		PString logoName;
+		BYTE chestSkin;
+		PString customSkin;
+	};
+
+	MsgBodyStruct StarsRewardsChestMetaData
+	{
+		INT32 version;
+	};
+
+	Message SIDEGAME_MSG_GET_STARSREWARDS_BAR
+	{
+		INT64 requestId;
+		UINT64 barId parseEndOptB4Me;
+	};
+
+	Message SIDEGAME_MSG_GET_STARSREWARDS_BAR_REPLY
+	{
+		INT64 requestId;
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+		else
+		{
+			UINT64 barId;
+			INT32 barTier;
+			INT8 barType parseEndOptB4Me; //from BarTypes enum in minigamescommonprot.h
+			MsgBodyWithJSON metaData parseEndOptB4Me;
+
+			vector<ChestAsset> assets parseEndOptB4Me; // PYR-123328
+		}
+	};
+
+	Message SIDEGAME_MSG_SKIP_DELAY
+	{
+		INT64 requestId;
+		INT64 minigamePlayId;
+	};
+
+	Message SIDEGAME_MSG_GET_RING_SESSIONID
+	{
+		INT64 requestId;
+		UINT64 tableId;
+	};
+
+	Message SIDEGAME_MSG_GET_RING_SESSIONID_REPLY
+	{
+		INT64 requestId;
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+		else
+		{
+			UINT64 ringSessionId;
+		}
+	};
+
+	Message SIDEGAME_MSG_CANCEL_PLAY   // GC->GS
+	{
+		INT64 requestId;
+		UINT64 minigamePlayId;
+	};
+
+	Message SIDEGAME_MSG_CANCEL_PLAY_REPLY  // GS->GC
+	{
+		INT64 requestId;
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+		else
+		{
+			SideGameState state; // this will be the end state of the play
+			bool hasHistoricGames;
+		}
+	};
+
+	MsgBodyStruct SideGameContext
+	{
+		UINT32 minigameId; // instance of sidegame definition we're interested in
+		INT8   gameType min MiniGameCommon::EntryType_NotApplicable max MiniGameCommon::EntryType_Max; // see enum MiniGameCommon::EntryType
+		UINT64 gameId;	// TableId or BlitzId or TournamentId
+		UINT32 entryId; // for Zoom
+		UINT64 ringSessionId; // for table merge
+		UINT64 subGameId parseEndOptB4Me; // id of a child object of gameId, e.g., tableId of table in a tournament
+	};
+
+	enum SideGameAutoPlayFlags
+	{
+		eSideGameAutoPlay_SinglePlay      	= 0x0001, // if set, the autoPlay context should be interpreted as a single play
+		eSideGameAutoPlay_Resolved        	= 0x0002, // if set, the plays for this autoplay have started and cannot be canceled
+		eSideGameAutoPlay_Error           	= 0x0004, // if set, autoPlay context was stopped prematurely by the system due to an error
+		eSideGameAutoPlay_Complete        	= 0x0008, // if set, this autoPlay context and all its minigame plays have completed
+		eSideGameAutoPlay_Canceled        	= 0x0010, // if set, autoPlay context was stopped because of a non-error reason, e.g., player request, minigame play timeout, player not dealt in, etc.
+		eSideGameAutoPlay_IsReplay        	= 0x0020, // if set, autoPlay context has made a replay request
+		eSideGameAutoPlay_WinLimitExceeded	= 0x0040, // if set, autoPlay context was stopped because win limit was exceeded
+		eSideGameAutoPlay_LossLimitExceeded	= 0x0080, // if set, autoPlay context was stopped because loss limit was exceeded
+		eSideGameAutoPlay_PlayerLeft		= 0x0100, // if set, autoPlay context was stopped because player left the table/tournament
+	};
+
+	MsgBodyStruct AutoPlayContextData
+	{
+		INT8   numAutoPlaysRemainingToDisplay;	// number of autoPlays remaining to display on the client for this autoPlay context
+		INT8   numAutoPlays;		        // original numAutoPlays set by SIDEGAME_MSG_START_AUTOPLAY
+		INT64  singleWinThreshold;	        // original singleWinThreshold set by SIDEGAME_MSG_START_AUTOPLAY
+		INT64  totalLossesThreshold; 	        // original totalLossesThreshold set by SIDEGAME_MSG_START_AUTOPLAY
+		UINT32 flags; 			        // see enum SideGameAutoPlayFlags
+		vector<MsgBodyWithJSON> sideGameEntryMetaData; // original sideGameEntryMetaData set by SIDEGAME_MSG_START_AUTOPLAY
+		vector<UINT64> pendingMGPlays;    	// vector of plays for future hands that haven't started yet
+		vector<UINT64> startedMGPlays;    	// vector of plays that have started but have not yet been resolved
+		vector<UINT64> resolvedMGPlays;   	// vector of plays that have been resolved (this is cleared after the end ends)
+
+	};
+
+	Message SIDEGAME_MSG_START_AUTOPLAY	// GC->GS
+	{
+		INT64  requestId;
+		SideGameContext sideGameContext;
+		INT8   minigameEntryMode min sidegame::eSideGameEntryMode_Normal max sidegame::eSideGameEntryMode_Max; // see SideGameEntryMode enum
+		UINT64 minigameEntryRefId;	// depends on minigameEntryMode
+		INT8   numAutoPlays;
+		INT64  singleWinThreshold;
+		INT64  totalLossesThreshold;
+		UINT32 flags; // see enum SideGameAutoPlayFlags
+		vector<MsgBodyWithJSON> sideGameEntryMetaData maxsize 1024;
+	};
+
+	Message SIDEGAME_MSG_START_AUTOPLAY_REPLY	// GS->GC
+	{
+		INT64 requestId;
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+		else
+		{
+			AutoPlayContextData autoPlayContextData;
+			AutoPlayContextData orphanedAutoPlayContextData parseEndOptB4Me; // previously created autoPlayContextData that is active on the current hand but has been deleted by the new autoPlayContextData which is effective from the next hand
+		}
+
+	};
+
+	Message SIDEGAME_MSG_STOP_AUTOPLAY	// GC->GS
+	{
+		INT64 requestId;
+		SideGameContext sideGameContext;
+	};
+
+	Message SIDEGAME_MSG_STOP_AUTOPLAY_REPLY	// GS->GC
+	{
+		INT64 requestId;
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+		else
+		{
+			INT8 numPendingGamesCanceled;	// number of pending minigames canceled by this request
+		}
+	};
+
+	Message SIDEGAME_MSG_AUTOPLAY_STATE	// GC->GS
+	{
+		INT64 requestId;
+		SideGameContext sideGameContext;
+	};
+
+	Message SIDEGAME_MSG_AUTOPLAY_STATE_REPLY	// GS->GC
+	{
+		INT64 requestId; // return value received in SIDEGAME_MSG_START_AUTOPLAY or SIDEGAME_MSG_AUTOPLAY_STATE, or 0 for push notifications
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+		else
+		{
+			AutoPlayContextData autoPlayContextData;
+			AutoPlayContextData orphanedAutoPlayContextData parseEndOptB4Me; // previously created autoPlayContextData that is active on the current hand but has been deleted by the new autoPlayContextData which is effective from the next hand
+		}
+	};
+
+	Message SIDEGAME_MSG_REPLAY_AUTOPLAY	// GC->GS
+	{
+		INT64 requestId;
+		SideGameContext sideGameContext;
+	};
+
+	Message SIDEGAME_MSG_REPLAY_AUTOPLAY_REPLY	// GS->GC
+	{
+		INT64 requestId;
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+	};
+
+	Message SIDEGAME_MSG_CANCEL_REPLAY_AUTOPLAY	// GC->GS
+	{
+		INT64 requestId;
+		SideGameContext sideGameContext;
+	};
+
+	Message SIDEGAME_MSG_CANCEL_REPLAY_AUTOPLAY_REPLY	// GS->GC
+	{
+		INT64 requestId;
+		INT16 errCode;
+		if( errCode )
+		{
+			PString errStr;
+		}
+	};
+};
+
+// PYR-120600 
+Message MINIGAME_MSG_REG_TO_FIXED_PRIZE_DRAW
+{
+	INT64 requestId;		// for compatibility 
+	UINT32 userIntId;		// user to register
+	UINT32 brandId;			// brand id
+	UINT32 clientSiteId;	// clientSiteId id
+	UINT32 minigameId;		// game id to register into
+	UINT64 ticketId;		// ticket id to register with
+	PString headerImageURL;	// ticket's headerImageURL
+	PString ticketTypeName;	// ticket's ticketTypeName
+	INT32 playsAvailable;	// how many time to register
+};
+
+// PYR-120600 
+Message MINIGAME_MSG_REG_TO_FIXED_PRIZE_DRAW_REPLY
+{
+	INT64 requestId;
+	INT16 errCode;
+	if( errCode )
+	{
+		PString errStr;
+	}
+	else
+	{
+		UINT32 minigameId;		// game id
+		SrvTime drawTime;		// fixed prize draw time
+		PString userId;			// userId for registered user
+		UINT32 userTimeZone;	// registered user preferred time zone
+		UINT32 userLocale;		// registered user locale
+		INT32 playsAvailable;	// how many time the user was registered
+	}
+};

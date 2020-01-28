@@ -1,0 +1,122 @@
+#include "pplib.h"
+#include "chipsdbm.h"
+
+#define TOP_LEVEL_NAMESPACE ChipsDbm
+
+namespace cli_mobile
+{
+	Message CHIPSDBM_Q_APPLE_STORE_PURCHASE
+	{
+		PString receipt maxlen 10000;
+		bool useNewPaywall parseEndOptB4Me;
+	};
+	
+	Message CHIPSDBM_A_APPLE_STORE_PURCHASE
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			UINT64 purchaseToken;
+		}
+	};
+
+	Message CHIPSDBM_Q_GOOGLE_PLAY_PURCHASE
+	{
+		PString notUsedStr maxlen 10000;
+		PString orderJson maxlen 10000;
+		PString signature maxlen 10000;
+		bool useNewPaywall parseEndOptB4Me;
+	};
+	
+	Message CHIPSDBM_A_GOOGLE_PLAY_PURCHASE
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			UINT64 purchaseToken;
+		}
+	};
+	
+	Message CHIPSDBM_Q_GET_CHIPS_TRANS
+	{
+		UINT32 purchaseId; // Represents id, no need to limit
+	};
+
+	Message CHIPSDBM_A_GET_CHIPS_TRANS
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			UINT32 purchaseId;
+			UINT32 parentId;
+			UINT64 amount;
+			UINT64 playChipsAmount;
+			PString gateway;
+			PString status;
+			PString errCodeChipsInfo;
+			PString errInfo;
+			PString extRefId;
+			CommSrvTime started;
+			CommSrvTime completed;
+			PString userId;
+			UINT64 auditId;
+			UINT32 userIntId;
+			UINT32 paywallId;
+			INT16 paywallVersionId;
+			UINT32 segmentId;
+			INT16 segmentVersionId;
+			UINT32 bundleId;
+			INT16 bundleVersionId;
+		}
+	};
+	
+	Message CHIPSDBM_Q_GET_STORE_AVAILABLE_PLAYCHIPSCONFIG
+	{
+		UINT32 storeId; // Represents id, no need to limit
+	};
+
+	MsgBodyStruct PlayChipsConfigStore
+	{
+		UINT32 configId;
+		UINT32 storeId;
+		PString productId;
+	};
+	MsgBodyStruct PlayChipsConfig
+	{
+		UINT32 configId;
+		INT64 amount;
+		INT64 playChipsAmount;
+		UINT32 payTier;
+		CommSrvTime whenCreated;
+		UINT32 createdBy;
+		CommSrvTime whenObsoleted;
+		UINT32 obsoletedBy;
+		UINT32 platform;
+		UINT16 popular;
+		vector<PlayChipsConfigStore> storeConfigs;
+	};
+	Message CHIPSDBM_A_GET_STORE_AVAILABLE_PLAYCHIPSCONFIG
+	{
+		INT16 errCode;
+		if (errCode)
+		{
+			PString errDescr;
+		}
+		else
+		{
+			vector<PlayChipsConfig> playChipsConfig;
+		}
+	};
+};

@@ -1,0 +1,35 @@
+#include "UserDefStructs.h"
+
+#include "pokerduel/pokerduel.h"
+
+#define TOP_LEVEL_NAMESPACE pduelServer
+
+namespace friendServer
+{
+	Struct FriendChallengeInfo
+	{		
+		INT32 numRMChallengesTo;		//	num real money challenges 'To' friend
+		INT32 numRMChallengesFrom;		//	num real money challenges 'From' friend
+
+		INT32 numPMChallengesTo;		//	num play money challenges 'To' friend
+		INT32 numPMChallengesFrom;		//	num play money challenges 'From' friend
+	};	
+
+	Message MSG_DUEL_FRIEND_GET_PENDING_CHALLENGES
+	{
+		PString userId;
+		vector< PString > friendUserIds;
+	};
+	Message MSG_DUEL_FRIEND_GET_PENDING_CHALLENGES_REPLY
+	{
+		INT16 errCode;				
+		if (errCode != 0)
+		{
+			PString errMsg;
+		}
+		else
+		{
+			vector<FriendChallengeInfo> friendChallengeInfo;
+		}
+	};
+};

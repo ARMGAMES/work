@@ -1,0 +1,17 @@
+#include "sitemasks.h"
+
+#define TOP_LEVEL_NAMESPACE TournClient${ATF_THIN_NAMESPACE_SUFFIX}
+
+struct FppFactor
+{
+	UINT16 fppFactor;
+	UINT32 sites;
+	SrvTime endT;// PYR-24398
+};
+
+MsgBodyStruct FppFactorEx
+{
+	UINT16 fppFactor;
+	PSiteMask sites;
+	SrvTime endT;// PYR-24398
+};

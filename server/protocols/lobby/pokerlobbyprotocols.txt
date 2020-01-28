@@ -1,0 +1,20 @@
+#include "lobby.h"
+
+#define TOP_LEVEL_NAMESPACE PokerLobbyMsgs
+
+namespace PokerLobbyServerData
+{
+	Struct TableCaps // Leaf { 0, 0 }
+	{
+		INT32 tableCapTotal;
+		INT32 tableCapZoom;
+	};
+
+	Struct PlayerStats // Leaf { 1, 0 }
+	{
+		UINT32 numTables;
+		UINT32 numPlayers;
+		UINT32 numTourn;
+		UINT32 numBlitz;
+	};
+};

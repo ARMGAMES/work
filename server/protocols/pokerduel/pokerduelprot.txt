@@ -1,0 +1,1756 @@
+#include "UserDefStructs.h"
+#include "PokerDuel.h"
+#include "ice/IceLobbyMsg.h"
+#include "dbmmsg.h"
+#include "i18n.strmap.h"
+
+#define TOP_LEVEL_NAMESPACE pokerduel
+
+struct P_I18NLangStringPair
+{
+    UINT32 locale;
+    PString msg;
+};
+
+struct P_I18nPString
+{
+    vector<P_I18NLangStringPair> v;
+	
+	@Override UINT32 size() const
+	{
+		return v.size();
+	}
+		
+	@Override const char* getPString(UINT32 locale = LOCALE_DEFAULT) const
+	{
+		for(vector<P_I18NLangStringPair>::const_iterator cit = v.begin(); cit != v.end(); ++cit)
+		{
+			if(cit->locale == locale)
+			{
+				return cit->msg;
+			}
+		}
+
+		if(locale != LOCALE_DEFAULT)
+		{
+			return getPString(LOCALE_DEFAULT);
+		}
+		else
+		{
+			return "";
+		}
+	}
+
+	@Override void appendPString(const char* msg, UINT32 locale = LOCALE_DEFAULT)
+	{
+		for(vector<P_I18NLangStringPair>::iterator it = v.begin(); it != v.end(); ++it)
+		{
+			if(it->locale == locale)
+			{
+				it->msg.append(msg);
+				return;
+			}
+		}
+
+		P_I18NLangStringPair p;
+		p.locale = locale;
+		p.msg = msg;
+		v.push_back(p);
+	}
+};
+ 
+
+struct XINT64   // use HEX string format in json 
+{
+	INT64 value;
+	
+	@Override const char *toTraceString(PString& _buf) const
+	{
+		return _buf.append("0x").appendHexInt64(value);
+	}
+
+	@Override const char *toJSONString(PString& _buf) const
+	{
+		return _buf.append("\"0x").appendHexInt64(value).append('\"');
+	}
+
+	@Override void fromJSONString(const PString& _jsonString)
+	{
+		if(_jsonString.startsWith("0x") || _jsonString.startsWith("0X"))
+		{
+			value = p_atohex64(_jsonString.c_str() + 2);
+		}
+		else
+		{
+			value = p_atohex64(_jsonString);
+		}
+	}
+
+	//@Override void parseMsg(Atf::MsgParserWithJSON& _parser)  // @no_thin_version
+	//{
+	//	PASSERT(false);   // not supported
+	//}
+
+	@Override operator INT64() const
+	{
+		return value;
+	}
+
+	@Override operator UINT64() const
+	{
+		return (UINT64)value;
+	}
+
+	@Override pokerduel::XINT64& operator=(INT64 v)
+	{
+		value = v;
+		return *this;
+	}
+
+	@Override pokerduel::XINT64& operator=(UINT64 v)
+	{
+		value = (INT64)v;
+		return *this;
+	}
+};
+
+
+struct DuelTypeProperty
+{
+	INT32 id;
+	PString value;
+};
+ 
+MsgBodyStruct DuelType
+{
+	UINT32 duelTypeId;
+	P_I18nPString name;
+	UINT32 siteMask;
+	BYTE status;					//	enum DuelTypeStatus
+	INT32 matchType;				//	enum DuelMatchType
+	INT32 numHands;
+	INT32 smallBlind;
+	INT32 bigBlind;
+	INT32 startingChips;
+	INT32 timeToAct_Deprecated;		// 
+	INT32 timerBank;    			// in minutes
+	INT64 buyIn;
+	INT64 rake;
+	bool isPlayMoney;
+	PString currency;    			// for RM only, empty for PM game
+	BYTE game;						//	enum HandType from dbm.h
+	BYTE structure;					//	enum PotStruct from NotifyMessageDefs.h
+	BYTE speedDisplay;	 			//	enum SpeedDisplayOptions from lobby.h
+	UINT32 tournFlags;				//	TOURSCRIPT_ flags from tourndef.h.  Currently only TOURSCRIPT_FLAG_USETICKETORBUYIN is used.
+	vector< PString > admissions;
+	INT32 destroyDelay_Deprecated;				//	deprecated (PYR-39339)
+	vector< DuelTypeProperty > properties;		//	for PROP_TYPE_VPP_MULTIPLIERS
+	CommSrvTime	fromDate;
+	CommSrvTime toDate;
+	INT32 timeBankIncrement;
+	INT32 timeoutTimeBankIncrement;
+	INT32 randomMatchTimeout;			//	PYR-37120. Timeout in minutes for a 'Random Match'
+	INT32 pendingChallengeTimeout;		//	PYR-37120. Timeout in minutes for a pending player-to-player direct challenge (either sent by the player or received by the player)
+};
+
+MsgBodyStruct DuelPlayer
+{
+	PString userId;
+	UINT32 userIntId;
+	UINT32 licenseId;
+	INT32 timeBankInSec;
+	UINT32 imageId;
+	UINT32 playerFlag;		//	enum eDuelUserFlags
+	INT32 myLastOrdinalId;
+};
+                
+MsgBodyStruct RunningDuel
+{
+	UINT64 duelId;
+	DuelPlayer player1;
+	DuelPlayer player2;
+	INT32 dbmId;
+	UINT64 tableId;
+	UINT32 duelTypeId;
+	CommSrvTime	startTime;		//	when duel started
+	CommSrvTime whenClosed;
+	BYTE status;				//	enum DuelStatus
+	INT32 lastChatOrdinal;
+	PString vppMultipliers;
+	bool ticketUsed1;		//	PYR-36881. Ticket was used for buy in for player 1.
+	bool ticketUsed2;		//	PYR-36881. Ticket was used for buy in for player 2.
+};
+
+MsgBodyStruct DuelChallenge
+{
+	UINT64	challengeId;		//	key
+	INT32   dbmId;
+	PString player1;			//	challenger
+	UINT32 player1ImageId;
+	PString player2;			//	challengee
+	UINT32 player2ImageId;
+	UINT32 duelTypeId;
+	INT32 response;				//	enum ChallengeResponse
+	CommSrvTime	whenOffered;	//	when challenge was offered
+	CommSrvTime	whenResponse;	//	when response received
+	INT64 buyInPlusRake;
+	PString currency;
+	bool isPlayMoney;
+	UINT32 ticketId1;			//	PYR-36881
+	INT32 challengeType;		//	PYR-41822, enum DuelMatchType
+};
+
+Struct IceDuelsAchievement
+{
+	INT32	achievementId;
+	vector<INT64> levels;
+	PString title;
+	PString descr;
+	PString descr2;
+	PString descr3;
+	PString infoMsg;
+};
+
+Struct IceDuelUserStats
+{
+	INT32 userIntId;
+	INT32 duelsWon;
+	INT32 duelsLost;
+	INT32 duelsDraw;
+	INT64 totalEarnedChips;
+	INT64 totalStartChips;
+	INT32 handsWon;
+	INT32 handsPlayed;
+	INT32 winStreak;
+	XINT64 bestFive;
+};
+
+Struct IceDuelUserPVPStats
+{
+	INT32 userIntId1;
+	INT32 userIntId2;
+	INT32 duelsWon;
+	INT32 duelsLost;
+	INT32 duelsDraw;
+};
+
+Struct IceDuelsUserAchievement
+{
+	INT32 achievementId;
+	XINT64 counter1;
+	//INT32 level;
+	//INT32 numLevels;
+	//INT64 nextLevelCounter1;
+};
+
+namespace dbm
+{
+	Struct DbmInfo
+	{
+		INT32 dbmId;
+		PString dbmAddressRO;
+		PString dbmInstanceRO;
+		PString dbmAddressRW;
+		PString dbmInstanceRW;
+	};
+
+	Message DBM_Q_PDUEL_GET_INIT_DATA    // DLobby -> DBM
+	{
+		// empty message body
+	};
+
+	Message DBM_A_PDUEL_GET_INIT_DATA   // DBM -> DLobby
+	{
+		INT16 errCode;
+				
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+		else
+		{
+			vector<DbmInfo> dbmList;
+			vector<DuelType> duelTypes; 
+			vector<RunningDuel> runningDuels;
+			vector<DuelChallenge> challenges;
+		}
+	};
+
+	struct RunningState
+	{
+		UINT32 stateSeq;
+		PString state;
+		BYTE algorId;     // returned from encryptor server
+		UINT32 flags;     // whether it's compressed, encrypted, etc
+	};
+	
+	struct CreatedDuelInfo		//	Dbm -> DLobby
+	{
+		UINT64 duelId;
+		UINT64 tableId;
+		vector<UINT64> handIds;
+		DuelPlayer player1;
+		DuelPlayer player2;
+		PString vppMultipliers;
+	};
+
+	Message DBM_Q_PDUEL_SAVE_RUNNING_STATE
+	{
+		UINT64 duelId;
+		RunningState runningState;
+	};
+
+	Message DBM_A_PDUEL_SAVE_RUNNING_STATE
+	{
+		INT16 errCode;
+
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+	};
+
+	Struct SingleStateUpdate
+	{
+		UINT32 userIntId;
+		INT32 stateKey;
+		PString stateValue;
+ 	};
+
+	Message DBM_Q_PDUEL_UPDATE_RUNNING_STATE    // DServer -> DBM
+	{
+		UINT64 duelId;
+		vector<SingleStateUpdate> states;
+	};
+
+	Message DBM_A_PDUEL_UPDATE_RUNNING_STATE    // DBM -> DServer
+	{
+		INT16 errCode;
+
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+	};
+
+
+	Message DBM_Q_PDUEL_GET_RUNNING_STATE    // DServer -> DBM
+	{
+		UINT64 duelId;
+	};
+
+	Message DBM_A_PDUEL_GET_RUNNING_STATE    // DBM -> DServer
+	{
+		INT16 errCode;
+
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+		else
+		{
+			UINT64 duelId;
+			vector<RunningState> runningStates;
+			vector<SingleStateUpdate> runningStates2 parseEndOptB4Me;
+		}
+	};
+	
+	Message DBM_Q_PDUEL_ADD_DUEL_TYPES			//	DLobby -> DBM
+	{
+		vector<DuelType> newDuelTypes;
+		PString adminUserId;
+	};
+
+	Message DBM_A_PDUEL_ADD_DUEL_TYPES			//	DBM -> DLobby
+	{
+		INT16 errCode;
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+		else
+		{
+			vector<UINT32> duelTypeIds;
+		}
+	};
+	
+	Message DBM_Q_PDUEL_CANCEL_DUEL_TYPE		//	DLobby -> DBM
+	{
+		UINT32 duelTypeId;
+		PString adminUserId;
+	};
+	Message DBM_A_PDUEL_CANCEL_DUEL_TYPE		//	DBM -> DLobby
+	{
+		INT16 errCode;
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+	};
+	Message DBM_Q_PDUEL_UPDATE_DUELTYPE_STATUS		//	DLobby -> DBM
+	{
+		UINT32 duelTypeId;
+		INT32 newStatus;
+		PString adminUserId;
+	};
+	Message DBM_A_PDUEL_UPDATE_DUELTYPE_STATUS		//	DBM -> DLobby
+	{
+		INT16 errCode;
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+	};
+	
+	Message DBM_Q_PDUEL_UPDATE_DUEL_STATUS			//	DLobby -> DBM
+	{
+		UINT64 duelId;
+		INT32 newStatus;		//	enum DuelStatus
+		PString adminId;
+		CommSrvTime	when;
+	};
+
+	Message DBM_A_PDUEL_UPDATE_DUEL_STATUS    		// DBM -> DLobby
+	{
+		INT16 errCode;
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+	};
+
+	Message DBM_Q_PDUEL_CREATE_CHALLENGE	//	DLobby -> dbm
+	{
+		PString userId1;
+		UINT32 userIntId1;
+		PString userId2;
+		UINT32 userIntId2;
+		UINT32	 duelTypeId;
+		CommSrvTime whenOffered;
+		INT64 buyInPlusRake;
+		PString currency;
+		bool isPlayMoney;
+		UINT32 ticketId1;
+		INT32 challengeType;		//	PYR-41822
+	};
+
+	Message DBM_A_PDUEL_CREATE_CHALLENGE	//	dbm -> DLobby
+	{
+		INT16 errCode;
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+		else
+		{
+			UINT64 challengeID;
+			bool ticketUsed;
+		}
+	};
+
+	Message DBM_Q_PDUEL_ACCEPT_CHALLENGE		//	DLobby -> dbm
+	{
+		UINT64 challengeID;
+		CommSrvTime whenResponded;
+		INT32 timeBankInSeconds;
+		UINT32 siteMask;
+		INT32 numHands;
+		PString vppMultipliers;
+		UINT32 ticketIdPlayer2;
+		PString player2;			//	PYR-41822. For random pool only.
+		UINT32 userIntId2;			//	PYR-41822. For random pool only.
+	};
+
+	Message DBM_A_PDUEL_ACCEPT_CHALLENGE		//	dbm -> DLobby
+	{
+		INT16 errCode;
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+		else
+		{
+			CreatedDuelInfo	newDuelInfo;
+			bool player2TicketUsed;
+		}
+	};
+
+	Message DBM_Q_PDUEL_CANCEL_CHALLENGE		//	DLobby -> dbm
+	{
+		UINT64 challengeID;
+		INT32 challengeResponse;		//	enum ChallengeResponse
+		CommSrvTime whenResponded;
+		PString adminUserId;			//	valid for challengeResponse == ChallengeResponse_DuelTypeCancelled, or ChallengeResponse_CancelledByAdmin
+		UINT32 adminUserIntId;
+	};
+
+	Message DBM_A_PDUEL_CANCEL_CHALLENGE		//	dbm -> DLobby
+	{
+		INT16 errCode;
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+	};
+
+	Message DBM_Q_PDUEL_SAVE_DUEL_RESULT
+	{
+		UINT64 duelId;
+		PString playerUserId;
+		INT32 playerScore;
+		bool isPlaymoney;
+		PString currency;
+		INT64 award;
+		INT64 fppReward;
+		bool isLastUser;
+	};
+
+	Message DBM_A_PDUEL_SAVE_DUEL_RESULT
+	{
+		INT16 errCode;
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+	};
+
+	Struct PlayerTimeBank
+	{
+		PString userId;
+		INT32 timeBankInSec;
+	};
+
+	Message DBM_Q_PDUEL_UPDATE_PLAYER_TIMEBANK
+	{
+		UINT64 duelId;
+		vector<PlayerTimeBank> players;
+	};
+
+	Message DBM_A_PDUEL_UPDATE_PLAYER_TIMEBANK
+	{
+		INT16 errCode;
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+	};
+	
+	Message DBM_Q_PDUEL_CANCEL_DUEL
+	{
+		UINT64 duelId;
+		UINT32 duelTypeId;
+		PString adminUserId;
+		UINT32 adminUserIntId;
+		CommSrvTime when;
+		INT32 dbmId;
+	};
+	Message DBM_A_PDUEL_CANCEL_DUEL
+	{
+		INT16 errCode;
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+	};
+	
+	Message DBM_A_ALLOWED_AT_PLAY
+	{
+		INT16 errCode;
+		if(errCode != 0)
+		{
+			PString errString;
+			INT64 availChips;
+			bool enoughOnAllAccounts;
+		}
+		else
+		{
+			UINT32 ticketId;
+		}
+		
+		UINT32 userIntId;
+		UINT32 imageId;
+	};
+
+	Message DBM_Q_UPDATE_DUEL_LOGLOCATION
+	{
+		UINT64 duelId;
+		PString logLocation;
+	};
+
+	Message DBM_A_UPDATE_DUEL_LOGLOCATION
+	{
+		INT16 errCode;
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+	};
+	
+	Message DBM_Q_PDUEL_UNPUBLISH_DUEL
+	{
+		UINT64 duelId;
+	};
+
+	Message DBM_A_PDUEL_UNPUBLISH_DUEL
+	{
+		INT16 errCode;
+		if (errCode != 0)
+		{
+			PString errString;
+		}
+	};
+
+	Message DBM_Q_PDUEL_GET_LASTCHATORDINAL
+	{
+		UINT64 duelId;
+	};
+
+	Message DBM_A_PDUEL_GET_LASTCHATORDINAL
+	{
+		INT16 errCode;    // if no such record found, please do not return error, just set lastChatOrdinal = 0
+
+		if(errCode)
+		{
+			PString errString;
+		}
+		else
+		{
+			UINT64 duelId;
+			INT32 lastChatOrdinal;
+		}
+	};
+	
+
+	Message DBM_Q_PDUEL_LOAD_CHAT_ITEMS
+	{
+		UINT64 duelId;
+		UINT64 tableId;
+		INT32 from;    // start chat ordinal (inclusive)
+		INT32 to;      // end chat ordinal (exclusive), could be -1
+	};
+
+	Struct DuelChatItem
+	{
+		INT32 ordinal;
+		PString userId;
+		CommSrvTime when;
+		PString content;
+	};
+
+	Message DBM_A_PDUEL_LOAD_CHAT_ITEMS
+	{
+		INT16 errCode;
+
+		if(errCode)
+		{
+			PString errString;
+		}
+		else
+		{
+			UINT64 duelId;
+			vector< DuelChatItem > chats;
+		}
+	};
+
+	Message DBM_Q_PDUEL_UPDATE_CLIENTCHATORDINAL
+	{
+		UINT64 duelId;
+		PString userId;
+		UINT32 clientChatLastOrdinal;
+	};
+
+	Message DBM_A_PDUEL_UPDATE_CLIENTCHATORDINAL
+	{
+		INT16 errCode;
+
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+	};
+	
+	Message DBM_Q_PDUEL_UPDATE_DUELTYPE
+	{
+		UINT32 duelTypeId;
+		UINT32 tournFlags;
+		vector<PString> admissions;
+		PString adminUserId;
+	};
+	Message DBM_A_PDUEL_UPDATE_DUELTYPE
+	{
+		INT16 errCode;
+
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+	};
+
+};
+
+
+namespace dserver
+{
+	struct DServerInitMsg
+	{
+		PString dlobbyAddress;
+		PString dlobbyInstance;
+	};
+
+	Message MSG_DUEL_SERVER_CONNECTED    // DServer -> DLobby
+	{
+	};
+
+	Message MSG_DUEL_SERVER_CONNECTED_REPLY    // DLobby -> DServer
+	{
+		// empty body
+	};
+     
+	Message MSG_DUEL_SERVER_CREATE_REQUEST   // DLobby -> DServer
+	{
+		UINT64 duelId;
+		UINT64 tableId;
+		
+		PString dbmAddress;
+		PString dbmInstance;
+		PString entropyAddress;
+		PString entropyInstance;
+		PString encryptorAddress;
+		PString encryptorInstance;
+		
+		bool isPlayMoney;
+		INT32 numHands;
+		INT32 smallBlind;
+		INT32 bigBlind;
+		INT32 startingChips;
+		//INT32 timeToActSecs;
+		INT32 initTimeBankSecs;
+		INT32 timeBankIncrementSecs;
+		INT32 timeOutTimeBankIncrementSecs;
+		INT32 handResultShowSecs;
+
+		UINT32 duelTypeId;
+		INT64 buyIn;
+		INT64 rake;
+		UINT64 challengeId;
+		bool areFriends;
+		PString currency;
+		UINT32 siteMask;
+
+		vector<UINT64> handIds;
+		
+		DuelPlayer player1;
+		DuelPlayer player2;
+	};
+                
+	Message MSG_DUEL_SERVER_CREATE_REPLY    // DServer -> DLobby
+	{
+		INT16 errCode;
+		PString errString;
+		UINT64 duelId;
+	};
+
+	Message MSG_DUEL_SERVER_CREATE_REPLY_ACK    // DLobby -> DServer 
+	{
+		// empty body
+	};
+                
+	Message MSG_DUEL_DSERVER_RESTORE_REQUEST    // DLobby -> DServer
+	{
+		UINT64 duelId;
+		
+		PString dbmAddress;
+		PString dbmInstance;
+		PString entropyAddress;
+		PString entropyInstance;
+		PString encryptorAddress;
+		PString encryptorInstance;
+		INT32 handResultShowSecs;
+		INT32 status;				//	enum DuelStatus
+		
+		DuelPlayer player1;
+		DuelPlayer player2;
+	};
+
+	Message MSG_DUEL_DSERVER_RESTORE_REPLY   // DServer -> DLobby
+	{
+		INT16 errCode;
+		PString errString;
+		UINT64 duelId;
+	};
+
+	Message MSG_DUEL_DSERVER_RESTORE_REPLY_ACK   // DLobby -> DServer 
+	{
+		// empty body
+	};
+
+	Message MSG_DUEL_DLOBBY_DUEL_AWARD_WINNERS_REQUEST  // DServer -> DLobby
+	{
+		UINT64 duelId;
+		PString player1;
+		INT32 player1Score;
+		PString player2;
+		INT32 player2Score;
+	};
+
+	Message MSG_DUEL_DLOBBY_DUEL_AWARD_WINNERS_REPLY  // DLobby-> DServer
+	{
+		INT16 errCode;
+		PString errString;
+		UINT64 duelId;
+	};
+
+	Message MSG_DUEL_DLOBBY_DUEL_COMPLETE_REQUEST   // DServer -> DLobby
+	{
+		UINT64 duelId;
+		INT32 secondsAfterDuelResultReported;
+	};
+
+	Message MSG_DUEL_DLOBBY_DUEL_COMPLETE_REPLY    // DLobby -> DServer
+	{
+		INT16 errCode;
+		PString errString;
+		UINT64 duelId;
+	};
+
+	Message MSG_DUEL_DLOBBY_UPDATE_DUEL_STATUS_REQUEST		//	DLobby -> DServer
+	{
+		UINT64 duelId;
+		INT32 newStatus;		//	enum DuelStatus
+	};
+
+	Message MSG_DUEL_DLOBBY_UPDATE_DUEL_STATUS_REPLY		//	DServer -> DLobby
+	{
+		INT16 errCode;
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+		else
+		{
+			UINT64 duelId;
+		}	
+	};
+
+	Message MSG_DUEL_DLOBBY_UPDATE_DUEL_STATUS_REPLY_ACK		//	DLobby -> DServer
+	{
+		//	empty body
+	};
+
+	Message MSG_DUEL_DLOBBY_PENDING_GAME_ACTION_ADDED		// 	DServer -> DLobby
+	{
+		UINT64 duelId;
+		PString userId;
+		UINT32 pendingActionType; // eDuelNotifType_YourTurn or eDuelNotifType_YourTurnReminder
+		UINT64 startTime;         // server local time, game action request start time.
+		UINT64 expiryTime;        // server local time, game action expiry time.
+		INT32 timeRemainingMins;
+		bool isRestoredNotif;     // true only when this pending action was already sent before system restart
+	};
+
+	Message MSG_DUEL_DLOBBY_PENDING_GAME_ACTION_ADDED_REPLY		// 	DLobby -> DServer
+	{
+		INT16 errCode;
+		PString errString;
+		bool isPlayerOnline;
+	};
+
+	Message MSG_DUEL_DLOBBY_PENDING_GAME_ACTION_REMOVED		// 	DServer -> DLobby
+	{
+		UINT64 duelId;
+		PString userId;
+	};
+
+	Message MSG_DUEL_DLOBBY_PENDING_GAME_ACTION_REMOVED_REPLY	// 	DLobby -> DServer
+	{
+	};
+
+
+	Message MSG_DUEL_DLOBBY_UPDATE_PLAYER_SCORES_REQUEST		// 	DServer -> DLObby
+	{
+		UINT64 duelId;
+		PString userId;
+		INT32 myScore;
+		INT32 opponentScore;
+		INT32 myRealScore;
+		INT32 opponentRealScore;
+		INT32 numHandsRemaining;
+	};
+
+	Message MSG_DUEL_DLOBBY_UPDATE_PLAYER_SCORES_REPLY		// 	DLObby -> DServer
+	{
+	};
+
+	Message MSG_DUEL_DLOBBY_UPDATE_PLAYER_ACTION_TIME_REQUEST	// 	DServer -> DLObby
+	{
+		UINT64 duelId;
+		PString userId;
+		CommSrvTime actionTime;
+	};
+
+	Message MSG_DUEL_DLOBBY_UPDATE_PLAYER_ACTION_TIME_REPLY		// 	DLObby -> DServer
+	{
+	};
+
+	Message MSG_DUEL_LOBBY_DSERVER_SHUTDOWN_REQUEST			//	DL -> DS
+	{
+	};
+
+	Message MSG_DUEL_LOBBY_DSERVER_SHUTDOWN_REQUEST_REPLY		//	DS -> DL
+	{
+		INT16 errCode;
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+	};
+
+	Message MSG_DUEL_LOBBY_DSERVER_SHUTDOWN_REQUEST_REPLY_ACK	//	DL -> DS
+	{
+	};
+
+
+	Message MSG_DUEL_DSERVER_CREATE_FINISHEDDUEL_FOR_REPLAY_REQUEST	// DL -> DS
+	{
+		UINT64 duelId;
+		INT32 maxReplayWaitSecs;
+		CommMsgBody duelHistory;	//	duel history as composed by DBM_Q_PDUEL_GET_HISTORY_BY_DUELID
+	};
+
+	Message MSG_DUEL_DSERVER_CREATE_FINISHEDDUEL_FOR_REPLAY_REPLY	// DS -> DL
+	{
+		INT16 errCode;
+		PString errString;
+		UINT64 duelId;
+	};
+
+	Message MSG_DUEL_DSERVER_CREATE_FINISHEDDUEL_FOR_REPLAY_REPLY_ACK  // DL -> DS
+	{
+		// empty msg
+	};
+
+	Message MSG_DLOBBY_FINISHEDDUEL_REPLAY_DONE_REQUEST		// DS -> DL
+	{
+		UINT64 duelId;
+	};
+
+	Message MSG_DLOBBY_FINISHEDDUEL_REPLAY_DONE_REPLY		// DL -> DS
+	{
+		// empty msg
+	};
+
+	Message MSG_DUEL_DSERVER_CLOSE_DUEL_REQUEST					//	DL -> DS
+	{
+		UINT64 duelId;
+	};
+	Message MSG_DUEL_DSERVER_CLOSE_DUEL_REQUEST_REPLY			//	DS -> DL
+	{
+		INT16 errCode;
+		if (errCode != 0)
+		{
+			PString errString;
+		}
+	};
+	Message MSG_DUEL_DSERVER_CLOSE_DUEL_REQUEST_REPLY_ACK		//	DL -> DS
+	{
+	};
+	
+	Message MSG_DUEL_DSERVER_PLAYER_LAST_REVEAL					//	DS -> DL
+	{
+		UINT64 duelId;
+		PString userId;
+	};
+	Message MSG_DUEL_DSERVER_PLAYER_LAST_REVEAL_REPLY			//	DL -> DS
+	{
+	};
+
+	//Message MSG_DUEL_DSERVER_BETTING_COMPLETE			//	DS -> DL
+	//{
+	//	UINT64 duelId;
+	//};
+
+	//Message MSG_DUEL_DSERVER_BETTING_COMPLETE_REPLY			//	DL -> DS
+	//{
+	//};
+
+	Message MSG_DUEL_DSERVER_GAME_MESSAGE_TO_PLAYER    // DS -> DL
+	{
+		UINT64 duelId;
+		PString userId;
+		UINT32 gameMsgId;
+		PString gameJSON;
+	};
+	
+	Message MSG_DUEL_DSERVER_GAME_MESSAGE_TO_PLAYER_REPLY	//	DL -> DS
+	{
+		INT16 errCode;
+		PString errString;
+		PString userId;
+	};
+	
+	Message MSG_DUEL_DSERVER_GAME_MESSAGE_FROM_PLAYER    // DL -> DS
+	{
+		UINT64 duelId;
+		PString userId;
+		UINT32 gameMsgId;
+		CommMsgBody gameMsgBody;
+	};
+	
+
+};
+
+
+namespace dchat
+{
+	Message MSG_DUEL_DLOBBY_DCHAT_CONNECTED			// DLobby -> DChat
+	{
+		vector< dbm::DbmInfo > dbmList;
+	};
+
+	Message MSG_DUEL_DLOBBY_DCHAT_CONNECTED_REPLY		// DChat -> DLobby
+	{
+	};
+
+	Message MSG_DUEL_DLOBBY_DCHAT_GET_DUELINFO_REQUEST        // DChat -> DLobby
+	{
+		UINT64 duelId;
+	};
+
+	Message MSG_DUEL_DLOBBY_DCHAT_GET_DUELINFO_REPLY          // DLobby -> DChat
+	{
+		UINT64 duelId;
+		UINT64 tableId;
+		INT32 dbmId;
+		PString player1;
+		PString player2;
+		INT32 lastChatOrdinal;
+		bool isPlayMoney;
+		CommSrvTime duelCloseTime;
+	};
+
+	Message MSG_DUEL_DLOBBY_DCHAT_GET_DUELINFO_REPLY_ACK      // DChat -> DLobby   (GConnection ack)
+	{
+	};
+
+	Message MSG_DUEL_DLOBBY_DCHAT_UPDATE_DUELCLOSETIME		//	DLobby -> DChat
+	{
+		UINT64 duelId;
+		CommSrvTime duelCloseTime;
+	};
+
+	Message MSG_DUEL_DLOBBY_DCHAT_UPDATE_DUELCLOSETIME_REPLY		//	DChat -> DLobby
+	{
+	};
+};
+
+
+
+namespace client
+{
+	enum PlayerSnapshotStatus
+	{
+		PlayerSnapshotStatus_ActionRequired = 1,
+		PlayerSnapshotStatus_WaitingForOpponent = 2,
+	};
+
+	MsgBodyStruct ClientRandomPool
+	{
+		UINT32 duelTypeId;
+		CommSrvTime whenJoined;
+		bool ticketUsed;
+	};
+
+	//enum ClientDuelFlags		//	PYR-40604
+	//{
+	//	ClientDuelFlags_None = 0,
+	//	ClientDuelFlags_BetsCompleted = 1 << 0, // 1
+	//};
+	MsgBodyStruct ClientRunningDuel
+	{
+		UINT64 duelId;
+		DuelPlayer player1;
+		DuelPlayer player2;
+		UINT64 tableId;
+		UINT32 duelTypeId;
+		CommSrvTime	startTime;		//	when duel started
+		BYTE duelStatus;			//	enum DuelStatus
+		INT32 playerStatus;		//	enum PlayerSnapshotStatus
+		CommSrvTime expiryTime;	//	Action required expiry time. Applicable to the player who's action it is.
+		INT32 myScore;
+		INT32 opponentScore;
+		INT32 lastChatOrdinal;
+		//UINT32 clientDuelFlags;		//	ClientDuelFlags
+	};
+	
+	struct ClientDuelChallengePlayer	//	TODO: remove as soon as older clients are gone
+	{
+		PString userId;
+		UINT32 imageId;
+		bool	isOnline;
+	};
+	
+	MsgBodyStruct ClientDuelChallenge	//	TODO: remove as soon as older clients are gone
+	{
+		UINT64	challengeId;		//	key
+		ClientDuelChallengePlayer player1;		//	challenger
+		ClientDuelChallengePlayer player2;		//	challengee
+		UINT32 duelTypeId;
+		INT32 response;				//	enum ChallengeResponse
+		CommSrvTime	whenOffered;	//	when challenge was offered
+		CommSrvTime	whenResponse;	//	when response received
+		CommSrvTime whenExpires;	//	when challenge expires
+	};
+
+	MsgBodyStruct ClientDuelChallengePlayer2
+	{
+		PString userId;
+		UINT32 imageId;
+		UINT32 playerFlag;		//	enum eDuelUserFlags
+	};
+	
+	MsgBodyStruct ClientDuelChallenge2
+	{
+		UINT64	challengeId;		//	key
+		ClientDuelChallengePlayer2 player1;		//	challenger
+		ClientDuelChallengePlayer2 player2;		//	challengee
+		UINT32 duelTypeId;
+		INT32 response;				//	enum ChallengeResponse
+		CommSrvTime	whenOffered;	//	when challenge was offered
+		CommSrvTime	whenResponse;	//	when response received
+		CommSrvTime whenExpires;	//	when challenge expires
+		bool player1UsedTicket;
+	};
+	
+	
+	Message MSG_DUEL_USER_GAME_MESSAGE_TO_SERVER   // C->S:  HTML5 -> Native Client Host -> DLobby
+	{
+		UINT64 duelId;
+		PString userId;
+		UINT32 gameMsgId;
+		MsgBodyWithJSON gameMsg;  // the concrete game message is transparent to the DLobby
+	};
+
+	Message MSG_DUEL_DLOBBY_POST_TO_PLAYER    // S->C:   DLobby -> Native Client Host -> HTML5
+	{
+		UINT64 duelId;
+		PString userId;
+		UINT32 gameMsgId;
+		MsgBodyWithJSON gameMsg;  // the concrete game message
+	};
+	
+
+    //	TODO: remove as soon as older clients are gone
+	Message MSG_POKERDUEL_GET_RUNNING_DUELS		//	C -> DLobby
+	{
+		// empty message body
+	};
+	//	TODO: remove as soon as older clients are gone
+	Message MSG_POKERDUEL_GET_RUNNING_DUELS_REPLY	//	DLobby -> C
+	{
+		INT16 errCode;
+
+		if(errCode != 0)
+		{
+			PString errString;
+		}
+		else
+		{
+			vector< ClientRunningDuel > runningDuels;
+			vector< ClientDuelChallenge > challenges;
+			vector< ClientRandomPool > randomPoolEntries;
+			vector < DuelType > duelTypes;		//	Duel types relevant for this snapshot only. This is NOT the complete duel type list.
+		}	
+	};
+
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_POKERDUEL_GET_RUNNING_DUELS2		//	C -> DLobby
+	{
+		// empty message body
+	};
+	Message MSG_POKERDUEL_GET_RUNNING_DUELS2_REPLY	//	DLobby -> C
+	{
+		INT16 errCode;
+
+		if(errCode != 0)
+		{
+			PString errString;
+			PString errTitle;
+		}
+		else
+		{
+			vector< ClientRunningDuel > runningDuels;
+			vector< ClientDuelChallenge2 > challenges;
+			vector< ClientRandomPool > randomPoolEntries;
+			vector < DuelType > duelTypes;		//	Duel types relevant for this snapshot only. This is NOT the complete duel type list.
+		}	
+	};
+
+	
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_POKERDUEL_GET_DUELTYPES		//	C -> DLobby
+	{
+		// empty message body	
+	};
+	
+	Message MSG_POKERDUEL_GET_DUELTYPES_REPLY		//	DLobby -> C
+	{
+		INT16 errCode;
+
+		if (errCode != 0)
+		{
+			PString errString;
+			PString errTitle;
+		}
+		else
+		{
+			vector< DuelType > duelTypes;
+		}
+	};
+	
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_POKERDUEL_CHALLENGE_REQUEST						//	Client -> DLobby
+	{
+		PString opponentUserId;
+		UINT32 duelTypeId;
+	};
+	
+	Message MSG_POKERDUEL_CHALLENGE_REQUEST_REPLY				//	DLobby -> Client
+	{
+		INT16 errCode;		//	enum PDuelErrorCodes
+		if (errCode != 0)
+		{
+			PString errString;
+			PString errTitle;
+		}
+		else
+		{
+			UINT64 challengeId;
+		}
+	};
+
+	//	DLobby -> Client. DLobby forwards challenge request.
+	Message MSG_POKERDUEL_CHALLENGE_OFFER						//	DLobby -> Client
+	{
+		PString challengerUserId;
+		UINT32 challengerImageId;
+		UINT64 challengeId;
+		UINT32 duelTypeId;
+	};
+	
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_POKERDUEL_CHALLENGE_OFFER_RESPONSE				//	Client -> DLobby
+	{
+		UINT64 challengeId;
+		INT32 answer;			//	enum ChallengeResponse
+	};
+
+	Message MSG_POKERDUEL_CHALLENGE_OFFER_RESPONSE_REPLY		//	DLobby -> Client
+	{
+		INT16 errCode;		//	enum PDuelErrorCodes
+		if (errCode != 0)
+		{
+			PString errString;
+			PString errTitle;
+		}
+		else
+		{
+			UINT64 duelId;
+		}
+	};
+
+	Message MSG_POKERDUEL_CHALLENGE_REQUEST_RESPONSE			//	DLobby -> Client
+	{
+		UINT64 challengeId;
+		UINT64 duelId;			//	0 if challenge refused
+		INT32 answer;			//	enum ChallengeResponse
+	};
+	
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_POKERDUEL_START_RANDOM_DUEL						//	Client -> DLobby
+	{
+		UINT32 duelTypeId;
+	};
+	
+	Message MSG_POKERDUEL_START_RANDOM_DUEL_REPLY				//	DLobby -> Client
+	{
+		INT16 errCode;		//	enum PDuelErrorCodes
+		if (errCode != 0)
+		{
+			PString errString;
+			PString errTitle;
+		}
+		else
+		{
+			UINT64 duelId;				//	0 if no opponent available
+			PString opponentUserId;		//	blank if no opponent available
+		}
+	};
+
+	Message MSG_POKERDUEL_RANDOM_OPPONENT_FOUND				//	DLobby -> Client
+	{
+		UINT32 duelTypeId;
+		UINT64 duelId;
+		PString opponentUserId;
+	};
+	
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_POKERDUEL_CANCEL_CHALLENGE					//	Client -> DLobby
+	{
+		UINT64 challengeId;
+	};
+	
+	Message MSG_POKERDUEL_CANCEL_CHALLENGE_REPLY			//	DLobby -> Client
+	{
+		INT16 errCode;
+		if(errCode != 0)
+		{
+			PString errString;
+			PString errTitle;
+		}
+	};	
+
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_POKERDUEL_LEAVE_RANDOM_POOL				//	Client -> DLobby
+	{
+		UINT32 duelTypeId;
+	};
+	Message MSG_POKERDUEL_LEAVE_RANDOM_POOL_REPLY		//	DLobby -> Client
+	{
+		INT16 errCode;
+		if (errCode != 0)
+		{
+			PString errString;
+			PString errTitle;
+		}
+	};
+
+	Message MSG_POKERDUEL_DUEL_STATUS_CHANGE_BY_ADMIN		//	DLobby -> Client
+	{
+		UINT64 duelId;
+		INT32 newStatus;	//	enum DuelStatus
+	};
+	
+	Message MSG_POKERDUEL_SERVER_RESTARTING				//	DLobby -> Client
+	{
+	};
+
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_POKERDUEL_PROFILE_REQUEST				//	Client -> DLobby
+	{
+		PString userId;
+	};
+
+	enum ProfileDataType
+	{
+		ProfileDataType_userInfo = 0,			//	Image id, country, pending challenges, etc.
+		ProfileDataType_friendData,
+		ProfileDataType_statsPlayer,			//	personal player stats
+		ProfileDataType_statsPVP,				//	player vs player stats
+		ProfileDataType_achievements
+	};
+	
+	struct ProfileResponse_userInfo		//	ProfileDataType_userInfo
+	{
+		UINT32 imageId;
+		PString country;
+		bool isOnline;							//	deprecated - use playerFlag below
+		INT32 numChallengesFromMeToFriend;		//	deprecated - use challengeIdsFromMeToFriend.size()
+		INT32 numChallengesFromFriendToMe;		//	deprecated - use challengeIdsFromFriendToMe.size()
+		
+		UINT32 playerFlag;		//	enum eDuelUserFlags
+		vector< UINT64 > challengeIdsFromMeToFriend;			//	For friend profile only.
+		vector< UINT64 > challengeIdsFromFriendToMe;			//	For friend profile only.
+	};
+	struct ProfileResponse_Friend
+	{
+		INT32 numFriends;
+		
+		//	If requesting another userId's profile
+		bool isOnline;			//	deprecated - use playerFlag below
+		UINT32 frdRelation;
+		
+		UINT32 playerFlag;		//	enum eDuelUserFlags
+	};
+	struct IceUserAchievementsVector
+	{
+		vector<IceDuelsUserAchievement> userAchievements;
+	};
+	Message MSG_POKERDUEL_PROFILE_RESPONSE			//	DLobby -> Client
+	{
+		PString userId;
+		INT32 profileDataType;		//	enum ProfileDataType
+		
+		MsgBodyWithJSON	data;			//	content depends on profileDataType, see below
+
+		//	ProfileDataType_userInfo 		: 	ProfileResponse_userInfo
+		//	ProfileDataType_friendData		:	ProfileResponse_Friend
+		//	ProfileDataType_statsPlayer		:	IceDuelUserStats
+		//	ProfileDataType_statsPVP		:	IceDuelUserPVPStats
+		//	ProfileDataType_achievements	:	IceUserAchievementsVector
+
+	};
+
+	Message MSG_POKERDUEL_GET_ALL_ACHIEVEMENTS
+	{
+	};
+	
+	Struct AllAchievements
+	{
+		vector<IceDuelsAchievement> achievements;
+	};
+	Message MSG_POKERDUEL_GET_ALL_ACHIEVEMENTS_REPLY	//	Client -> DLobby
+	{
+		INT16 errCode;
+		if (errCode != 0)
+		{
+			PString errString;
+			PString errTitle;
+		}
+		else
+		{
+			MsgBodyWithJSON	allAchievements;	//	content == Struct AllAchievements
+		}
+	};
+
+	enum DuelResult
+	{
+		DuelResult_Won = 1,
+		DuelResult_Lost,
+		DuelResult_Draw,
+		DuelResult_DuelCancelled
+	};
+	MsgBodyStruct CompletedDuel
+	{
+		UINT64 duelId;
+		UINT32 duelTypeId;
+		CommSrvTime whenClosed;
+		PString opponentUserId;
+		INT32 result;			//	enum DuelResult
+		bool isPlayMoney;
+		PString currency;
+		INT64 amountWonLost;
+		UINT32 siteMask;
+		UINT32 opponentImageId;
+		UINT32 opponentPlayerFlag;		//	enum eDuelUserFlags
+		INT32 lastChatOrdinal;
+		INT32 myLastOrdinalId;
+		bool ticketUsedForBuyin;		//	PYR-36881
+	};
+	MsgBodyStruct CancelledChallenge
+	{
+		UINT64 challengeId;
+		UINT32 duelTypeId;
+		PString opponentUserId;
+		INT32 challengeResponse;	//	enum ChallengeResponse
+		CommSrvTime	whenResponse;
+		bool isPlayMoney;
+		PString currency;
+		INT64 amountRefunded;
+		UINT32 siteMask;
+		INT64 ticketAmount;	//	PYR-36881
+	};
+	
+	enum CancelledRandomPoolReason
+	{
+		CancelledRandomPoolReason_Timeout,
+		CancelledRandomPoolReason_UserCancelled,
+		CancelledRandomPoolReason_AdminCancelled,
+	};
+	MsgBodyStruct CancelledRandomPoolEntry
+	{
+		UINT32 duelTypeId;
+		CommSrvTime whenCancelled;
+		INT32 reason;		//	enum CancelledRandomPoolReason
+		bool isPlayMoney;
+		PString currency;
+		INT64 amountRefunded;
+		UINT32 siteMask;
+		INT64 ticketAmount;	//	PYR-36881
+	};
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_POKERDUEL_GETHISTORY
+	{
+		INT32 numEvents;		//	last number of events to retrieve
+	};
+	Message MSG_POKERDUEL_GETHISTORY_REPLY
+	{
+		INT16 errCode;
+		if (errCode != 0)
+		{
+			PString errString;
+			PString errTitle;
+		}
+		else
+		{
+			bool moreEventsAvailable;
+			vector< CompletedDuel > duels;
+			vector< CancelledChallenge > cancelledChallenges;
+			vector< CancelledRandomPoolEntry > cancelledRandomPoolEntries;
+		}	
+	};
+	
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_POKERDUEL_REPLAY_DUEL
+	{
+		UINT64 duelId;
+	};
+	Message MSG_POKERDUEL_REPLAY_DUEL_REPLY
+	{
+		INT16 errCode;
+		if (errCode != 0)
+		{
+			PString errString;
+			PString errTitle;
+		}
+		else
+		{
+			INT32 lastChatOrdinal_deprecated;
+		}
+	};
+	
+	//	PYR-42718
+	enum PreconfirmationCheckContext
+	{
+		PreconfirmationCheckContext_Unknown,					//	older clients
+		PreconfirmationCheckContext_FriendChallengePlayer1,		//	Player offering challenge
+		PreconfirmationCheckContext_FriendChallengePlayer2,		//	Player accepting challenge
+		PreconfirmationCheckContext_RandomPool,
+	};
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_POKERDUEL_PRECONFIRMATION_CHECK
+	{
+		UINT32 duelTypeId;
+		INT32 matchType_deprecated;			//	enum DuelMatchType (friend challenge or random) - deprecated, use 'context'
+		INT32 context parseEndOptB4Me; 		//	enum PreconfirmationCheckContext
+	};
+	Message MSG_POKERDUEL_PRECONFIRMATION_CHECK_REPLY
+	{
+		INT16 errCode;		//	enum PDuelErrorCodes
+		if (errCode != 0)
+		{
+			PString errString;
+			MsgBodyWithJSON extraErrorInfo;
+			
+			//	Client should parse extraErrorInfo as follows:
+			//
+			//	INT64 availableBalance;
+			//	bool haveEnoughOnAllAcounts;		//	Composed for both PM/RM, but valid only for RM
+			//	CommMsgParser parser( exraErrorInfo );
+			//
+			//	switch ( errCode )
+			//	{
+			//	case PDuelErr_Not_Enough_Chips:
+			//		parser.parseINT64( availableBalance ).parseBOOL( haveEnoughOnAllAcounts );
+			//		break;
+			//
+			//	case PDuelErr_Account_Not_Found:
+			//		parser.parseBOOL( haveEnoughOnAllAcounts );
+			//		break;
+			//	}
+			
+			PString errTitle;
+		}
+	};
+	
+	Message MSG_POKERDUEL_NOTIFY_CHALLENGE_REVOKED	//	DLobby -> Client, unsolicited connection. Sent to challengee (player 2)
+	{
+		UINT64 challengeId;
+		INT32 reason;			//	enum ChallengeResponse
+	};
+
+
+	//  for Duel Open Chat
+	Struct DuelClientChatItem
+	{
+		INT32 ordinal;   // sequential number starting from 1, unique in the scope of one duel
+		PString userId;   // user who spoke the chat content
+		UINT64 time;      // chat time (server local time)
+		PString chat;     // chat content, up to 250 bytes
+	};
+
+	Message MSG_DUEL_CHAT_REQUEST      // Client -> DLobby -> DChat 
+	{
+		UINT64 duelId;
+		PString userId;
+		PString chat;
+	};
+
+	Message MSG_DUEL_CHAT_BROADCAST      // DChat -> DLobby -> Client, this message is the reply of the MSG_DUEL_CHAT_REQUEST msg, but DLobby should broadcast this message to both players.
+	{
+		UINT64 duelId;
+		INT32 lastChatOrdinal;
+		DuelClientChatItem chat;
+	};
+
+	Message MSG_DUEL_CHAT_SYNC_REQUEST      // Client -> DLobby -> DChat 
+	{
+		UINT64 duelId;
+		INT32 start;      // start ordinal id, any positive integer or 0 or -1
+		INT32 size;       // positive value: from start and beyond, negative value: from start and backward, also could be zero 
+	};
+
+	Message MSG_DUEL_CHAT_SYNC_REPLY      // DChat -> DLobby -> Client
+	{
+		UINT64 duelId;
+		INT32 lastChatOrdinal;
+		vector< DuelClientChatItem > chats;
+	};
+
+
+	Message MSG_DUEL_CHAT_REPORT_CURR_MAXORDINALID		// Client -> DLobby
+	{
+		UINT64 duelId;
+		INT32 myLastOrdinalId;
+	};
+
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+	Message MSG_POKERDUEL_GET_PENDING_CHALLENGE_INFO			//	Client -> DLobby
+	{
+		PString userId;
+	};
+	Message MSG_POKERDUEL_GET_PENDING_CHALLENGE_INFO_REPLY		//	DLobby -> Client
+	{
+		INT16 errCode;
+		if (errCode != 0)
+		{
+			PString errString;
+			PString errTitle;
+		}
+		else
+		{
+			vector<UINT64> toFriendChallenges;
+			vector<UINT64> fromFriendChallenges;
+		}		
+	};
+	
+	Message MSG_POKERDUEL_RANDOM_ENTRY_REVOKED			//	DLobby -> Client
+	{
+		UINT32 duelTypeId;
+	};
+
+	Message MSG_POKERDUEL_GET_ICE_CHALLENGES			//	Client -> Dlobby
+	{
+	};
+	Message MSG_POKERDUEL_GET_ICE_CHALLENGES_REPLY				// DLobby -> Client
+	{
+		INT16 errCode;
+		if (errCode != 0)
+		{
+			PString errString;
+			PString errTitle;
+		}
+		else
+		{
+			INT32 numAvailableIceChallenges;
+		}		
+	};
+	
+	Message MSG_POKERDUEL_GET_DUEL_INFO		//	Client -> DLobby
+	{
+		UINT64 duelId;
+	};
+	Message MSG_POKERDUEL_GET_DUEL_INFO_REPLY		//	DLobby -> Client
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errString;
+			PString errTitle;
+		}
+		else
+		{
+			bool isRunningNotCompleted;
+			MsgBodyWithJSON duelInfo;
+			
+			//	Client should parse duelInfo as follows:
+			//
+			//	CommMsgParser parser( duelInfo );
+			//
+			//	if ( isRunningNotCompleted )
+			//	{
+			//		pokerduel::client::ClientRunningDuel rd;
+			//		rd.parse( parser );
+			//	}
+			//	else
+			//	{
+			//		pokerduel::client::CompletedDuel cd;
+			//		cd.parse( parser );
+			//	}
+		}
+	};
+	
+	Message MSG_POKERDUEL_GET_RANDOM_POOL_INFO	//	Client -> DLobby
+	{
+		//	empty
+	};
+	Message MSG_POKERDUEL_GET_RANDOM_POOL_INFO_REPLY	//	DLobby -> Client
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errString;
+			PString errTitle;
+		}
+		else
+		{
+			vector< ClientRandomPool > randomPoolEntries;		
+		}
+	};
+
+	Message MSG_POKERDUEL_GET_CHALLENGE_INFO		//	Client -> DLobby
+	{
+		UINT64 challengeId;
+		bool supportsConvertedToDuel parseEndOptB4Me;
+	};
+	enum ChallengeType
+	{
+		ChallengeType_Pending,
+		ChallengeType_Cancelled,
+		ChallengeType_ConvertedToDuel,
+	};
+	Message MSG_POKERDUEL_GET_CHALLENGE_INFO_REPLY		//	DLobby -> Client
+	{
+		INT16 errCode;
+		if ( errCode != 0 )
+		{
+			PString errString;
+			PString errTitle;
+		}
+		else
+		{
+			bool isPendingNotCancelled_deprecated;		//	Deprecated - use challengeType
+			MsgBodyWithJSON challengeInfo;
+			INT32 challengeType;						//	enum ChallengeType
+
+			//	Client should parse challengeInfo as follows:
+			//
+			//	CommMsgParser parser( challengeInfo );
+			//
+			//	switch ( challengeType )
+			//	{
+			//		case ChallengeType_Pending:
+			//		{
+			//			pokerduel::client::ClientDuelChallenge2 pendingChallenge;
+			//			pendingChallenge.parse( parser );
+			//			break;
+			//		}
+			//
+			//		case ChallengeType_Cancelled:
+			//		{
+			//			pokerduel::client::CancelledChallenge cancelledChallenge;
+			//			cancelledChallenge.parse( parser );
+			//			break;
+			//		}
+			//
+			//		case ChallengeType_ConvertedToDuel:
+			//		{
+			//			UINT64 duelId;
+			//			parser.parseUINT64( duelId );
+			//			break;
+			//		}
+			// 	}	
+		}
+	};
+
+};
+

@@ -1,0 +1,249 @@
+//------------------------------------------------------------------------------
+//	LobbyEtc Lobby <-> Client Protocol
+//------------------------------------------------------------------------------
+//
+//	Copyright (c) 2001-2017 PYR Software Ltd. All rights reserved. This document
+//	is for the use of licensed users only and is subject to the terms and
+//	conditions of the accompanying and/or applicable license between you and
+//	PYR Software Ltd, including without limitation those terms and conditions
+//	prohibiting unauthorized translation, reverse engineering, decompilation,
+//	disassembly, and other inappropriate use of any software provided. Any
+//	unauthorized use, copying, modification, distribution, publication or
+//	disclosure of information is a violation of copyright laws. No reproduction
+//	in whole or in part of this document may be made without express written
+//	consent of PYR Software Ltd.
+//
+//
+//------------------------------------------------------------------------------
+
+#include "UserDefStructs.h"
+#include "LobbyEtc.h"
+
+// PYR-77216, PYR-79304
+enum eCvlUserStateFlags
+{
+	eCvlUserStateFlags_CVL2					= 1 << 0,	// 1 - CVL2 configuration
+	eCvlUserStateFlags_TierUpPopUp			= 1 << 1,	// 2 - pending tier up notification
+	eCvlUserStateFlags_TierDownPopUp		= 1 << 2,	// 4 - pending tier down notification
+	eCvlUserStateFlags_TierDownExchagePopUp = 1 << 3,	// 8- pending tier down and credited exchange bar notification
+	eCvlUserStateFlags_goingToTierUp		= 1 << 4,	// 16 - going to tierup. Not persistant flag
+	eCvlUserStateFlags_goingToTierDown		= 1 << 5,	// 32 - going to tierdown. Not persistant flag
+	eCvlUserStateFlags_canExchange			= 1 << 6,	// 64 - all conditions for bar exchage are met. Not persistant flag
+
+	eCvlUserStateFlags_PopUp = (eCvlUserStateFlags_TierUpPopUp | eCvlUserStateFlags_TierDownPopUp | eCvlUserStateFlags_TierDownExchagePopUp) // any pop up
+};
+
+enum CvlClientUserBarFlags
+{
+	CvlClientUserBarFlags_tierUpIndicator		= 1 << 0,	// 1 - going to tier up
+	CvlClientUserBarFlags_notOptedIn			= 1 << 1, 	// 2 - user not opted in
+	CvlClientUserBarFlags_OptInNotification		= 1 << 2, 	// 4 - opt in notification is active
+	CvlClientUserBarFlags_excludedUser			= 1 << 3, 	// 8 - hide SR interface
+	CvlClientUserBarFlags_CVL2					= 1 << 4, 	// 16 - the CVL2 version PYR-79304
+	CvlClientUserBarFlags_excludedFromSR		= 1 << 5, 	// 32 - user was excluded from SR	
+	CvlClientUserBarFlags_goingToTierUp			= 1 << 6,	// 64 - going to tierup state for the bar
+	CvlClientUserBarFlags_goingToTierDown		= 1 << 7,	// 128 - going to tierdown state for the bar
+};
+
+// PYR-123328
+enum eChestAssetType
+{
+	eChestAssetType_Invalid				= 0,
+	eChestAssetType_Podium				= 1,
+	eChestAssetType_Background			= 2,
+	eChestAssetType_ChestSkin			= 3,
+	eChestAssetType_Logo				= 4,
+	eChestAssetType_NotificationHeader	= 5,
+};
+
+// PYR-123328
+MsgBodyStruct  ChestAsset
+{
+	INT32 id;			// uniqie asset id
+	INT32 type;			// asset type: podium, background, etc. See eChestAssetType enum
+	PString uriHint;	// asset value
+
+	@Override ChestAsset( const INT32 id_, const INT32 type_,  const PString& uriHint_ )
+	{
+		id		= id_;
+		type	= type_;
+		uriHint = uriHint_;
+	}
+};
+
+// PYR-77216
+// CVL2 configuration parameters
+MsgBodyStruct CvlConfigParams 
+{
+	UINT32 stateFlags;			// eCvlUserStateFlags_CVL2 for CVL2. See eCvlUserStateFlags
+	INT32 daysToExpire;			// Number of days after which the current bar should expire
+	INT32 tierUpDays;			// Number of days over which to evaluate tierUp candidacy
+	INT32 tierUpBars;			// Number of completed bars needed for tierUp candidacy
+	INT32 exchangePercent;		// Percent of progress bar required to be eligible for exchange (100% means this bar cannot be exchanged)
+	bool boostEnabled;			// Boost is enabled
+	UINT32 currentBarDueTime;	// time_t. Due time when the current bar must be complited. If 0 - the bar will never expired.
+	UINT32 recentBarCounter;	// bars of the current tier
+	INT32 tierDownDays;			// Show the tierdown warning if the user has less than this paramater days to complete current progress bar
+	UINT32 currentBarStartTime;	// time_t. When the current bar was started
+	INT32 totalDoneBarCount;	// total done bar counter
+	INT32 preferredTimeZone parseEndOptB4Me;	// user preferred TimeZone eTimeZone. PYR-92226
+};
+
+MsgBodyStruct CvlClientUserBar
+{
+	UINT32 tierId;
+	UINT32 flags;					// see CvlClientUserBarFlags above
+	INT32 currentBoostRemaining;
+	UINT32 nextBoostTime;		// time_t
+	INT32 barProgress; 
+	INT32 barTarget; 
+	INT32 doneBarCount;			// done bar counter for current reported bar
+	UINT32 tierUpEnd;			// time_t
+	INT32 starCoinBalance;
+};
+
+MsgBodyStruct CvlClientUserBarNotification
+{
+	vector<CvlClientUserBar> properties;
+};
+
+Message MSG_LOBBYETC_CLI_NOTIFY_CVL_STATE
+{
+	UINT32 clientReqId;
+	CvlClientUserBarNotification notify;
+	CvlConfigParams cvlConfig parseEndOptB4Me;	// PYR-77216
+};
+
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+Message MSG_LOBBYETC_GET_CVL_STATE_FOR_USER
+{
+};
+
+Message MSG_LOBBYETC_GET_CVL_STATE_FOR_USER_REPLY
+{
+	INT16 errCode;
+	if(errCode)
+	{
+		PString errString;
+	}
+	else
+	{
+		CvlClientUserBar bar;
+		CvlConfigParams cvlConfig parseEndOptB4Me;	// PYR-77216
+	}
+};
+
+// !!! WARNING !!! If you modify this message, please let testautomation team know.
+Message MSG_LOBBYETC_CVL_OPTED_IN
+{
+	bool optedIn;
+};
+	
+Message MSG_LOBBYETC_CVL_OPTED_IN_REPLY
+{
+	INT16 errCode;
+	if(errCode)
+	{
+		PString errString;
+	}
+};
+
+enum SkinType
+{
+	SkinType_normal		= 0,
+	SkinType_special	= 1,
+};
+
+enum eLockType
+{
+	eLockType_TimeLocked	= 0,
+	eLockType_IceLocked		= 1,
+};
+
+MsgBodyStruct ClientChestData
+{
+	PString logoName;
+	UINT32 availableUntil;	// time_t
+	BYTE skinType parseEndOptB4Me; // SkinType
+	PString chestText;
+	PString chestDescription;
+	UINT64 chestId; // PYR-70023
+	INT32 lockType parseEndOptB4Me; // eLockType PYR-77110
+	PString icePromo parseEndOptB4Me; // PYR-77110
+	PString customSkin parseEndOptB4Me; // PYR-95428
+
+	vector<ChestAsset> assets parseEndOptB4Me; // PYR-123328
+};
+
+Message MSG_LOBBYETC_CLI_NOTIFY_MPC_ISSUED
+{
+	UINT32 clientReqId;
+	bool isUserOptedIn;
+	UINT32 chestCount;
+	ClientChestData chestToShow;
+	UINT32 lockedChestCount parseEndOptB4Me;
+	ClientChestData lockedChestToShow;
+	UINT32 stateFlags; // AQA-19374
+};
+
+enum ChestType
+{
+	ChestType_starsRewards		= 0,
+	ChestFlags_multiPurpose		= 1,
+	ChestType_starsRewardsCVL2	= 2,
+};
+
+MsgBodyStruct ClientChestDataEx 
+{
+	ClientChestData commonData;
+
+	// used only by the chest page
+	UINT64 chestId;
+	UINT32 tierId;
+	BYTE chestType;			// ChestType
+	UINT32 availableAfter;	// time_t
+};
+
+
+Message MSG_LOBBYETC_GET_USER_BARS
+{
+};
+
+Message MSG_LOBBYETC_GET_USER_BARS_REPLY
+{
+	INT16 errCode;
+	if(errCode)
+	{
+		PString errString;
+	}
+	else
+	{
+		vector<ClientChestDataEx> availableChests;
+		vector<ClientChestDataEx> lockedChests;
+		UINT32 stateFlags; // AQA-19374
+	}
+};
+
+Message MSG_LOBBYETC_GET_USER_BARS_NOTIFICATION
+{
+	UINT32 clientReqId;
+	vector<ClientChestDataEx> availableChests;
+	vector<ClientChestDataEx> lockedChests;
+	UINT32 stateFlags; // AQA-19374
+};
+
+// PYR-79304
+Message MSG_LOBBYETC_EXCHANGE_CURRENT_CVL_BAR
+{
+	// no parameters
+};
+	
+// PYR-79304
+Message MSG_LOBBYETC_EXCHANGE_CURRENT_CVL_BAR_REPLY
+{
+	INT16 errCode;
+	if(errCode)
+	{
+		PString errString;
+	}
+};

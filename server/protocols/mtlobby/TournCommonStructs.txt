@@ -1,0 +1,59 @@
+
+#define TOP_LEVEL_NAMESPACE TournCommon${ATF_THIN_NAMESPACE_SUFFIX}
+
+
+struct P_Event
+{
+	UINT16 startNum;
+	UINT16 stopNum;
+};
+
+struct Error_InsufficientFunds32 // obsolete
+{
+	INT32 minBuyIn;
+	bool enoughMoneyInOtherCurrency;
+	BYTE clientServiceFlag;
+	INT32 availableChips;
+	PString gameCurrency;
+	bool isAutoConversionOn;
+	CommMsgBody clientCurrencyContext;
+	CommMsgBody
+	{
+		INT64 tournFlags2 parseEndOptB4Me;
+		UINT32 bounty;
+		BYTE handType;
+		BYTE structure;
+		bool isHiLo;
+		PString name;
+	};
+};
+
+struct Error_InsufficientFunds
+{
+	INT64 minBuyIn;
+	bool enoughMoneyInOtherCurrency;
+	BYTE clientServiceFlag;
+	INT64 availableChips;
+	PString gameCurrency;
+	bool isAutoConversionOn;
+	CommMsgBody clientCurrencyContext;
+	CommMsgBody
+	{
+		INT64 tournFlags2 parseEndOptB4Me;
+		INT64 bounty;
+		BYTE handType;
+		BYTE structure;
+		bool isHiLo;
+		PString name;
+	};
+};
+
+MsgBodyStruct TournSpendLimit
+{
+	bool limitImposed;
+	if( limitImposed )
+	{
+		INT32 spendAmount;
+		INT32 spendLimit;
+	}
+};

@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets">
+    <Import Project="_PyrBase.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros">
+    <PyrSslLibDir Condition="'$(PlatformToolsetVersion)' == '141'">commlib2a\openssl\windows\vs2017\$(PlatformTarget)\lib.debug</PyrSslLibDir>
+    <PyrSslLibDir Condition="'$(PlatformToolsetVersion)' == '110'">commlib2a\openssl\windows\vs2012\$(PlatformTarget)\lib.debug</PyrSslLibDir>
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>WIN32;_CONSOLE;PASSERTLVL=5;PTRACELVL=5;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <Optimization>Disabled</Optimization>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+	</ClCompile>
+	<Link>
+	  <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>..\$(PyrSslLibDir);..\..\$(PyrSslLibDir);..\..\..\$(PyrSslLibDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+	</Link>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>
