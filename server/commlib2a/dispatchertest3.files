@@ -1,0 +1,6 @@
+patch=dispatchertest3start.h
+
+file=dispatchertest3main.cpp
+dir=../plib
+file=../plib/_ppabort.cpp
+file=../plib/_ppvc6heap.cpp

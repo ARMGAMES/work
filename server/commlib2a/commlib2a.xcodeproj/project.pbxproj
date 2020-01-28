@@ -1,0 +1,850 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 42;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		742050270E0AAB7A0047CF6A /* commsslthrow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 742050260E0AAB7A0047CF6A /* commsslthrow.cpp */; };
+		748FF1E80B6158B8007BF0C9 /* commmailnormalize.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 748FF1E40B6158B8007BF0C9 /* commmailnormalize.cpp */; };
+		748FF1EA0B6158B8007BF0C9 /* commsgml.h in Headers */ = {isa = PBXBuildFile; fileRef = 748FF1E60B6158B8007BF0C9 /* commsgml.h */; };
+		748FF1EB0B6158B8007BF0C9 /* commsgmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 748FF1E70B6158B8007BF0C9 /* commsgmlparser.cpp */; };
+		74A405110CF74F5900AC959E /* commsslentropymac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74A405100CF74F5900AC959E /* commsslentropymac.cpp */; };
+		74FBA0CA0B9F18B10074EBBD /* i18ncommhtml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 74FBA0C90B9F18B10074EBBD /* i18ncommhtml.cpp */; };
+		C91B45C70A2F2A8E0032595B /* commtmmac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C91B45C50A2F2A8E0032595B /* commtmmac.cpp */; };
+		C91B45C80A2F2A8E0032595B /* commtmmac.h in Headers */ = {isa = PBXBuildFile; fileRef = C91B45C60A2F2A8E0032595B /* commtmmac.h */; };
+		C95C4A260A2CEFDF00CE8E05 /* _huff.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A130A2CEFDF00CE8E05 /* _huff.h */; };
+		C95C4A270A2CEFDF00CE8E05 /* _lz.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A140A2CEFDF00CE8E05 /* _lz.h */; };
+		C95C4A280A2CEFDF00CE8E05 /* _lzhl.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A150A2CEFDF00CE8E05 /* _lzhl.h */; };
+		C95C4A290A2CEFDF00CE8E05 /* Huff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A1A0A2CEFDF00CE8E05 /* Huff.cpp */; };
+		C95C4A2A0A2CEFDF00CE8E05 /* Lz.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A1B0A2CEFDF00CE8E05 /* Lz.cpp */; };
+		C95C4A2B0A2CEFDF00CE8E05 /* _huff1.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A1D0A2CEFDF00CE8E05 /* _huff1.h */; };
+		C95C4A2C0A2CEFDF00CE8E05 /* _lz1.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A1E0A2CEFDF00CE8E05 /* _lz1.h */; };
+		C95C4A2D0A2CEFDF00CE8E05 /* _lzhl1.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A1F0A2CEFDF00CE8E05 /* _lzhl1.h */; };
+		C95C4A2E0A2CEFDF00CE8E05 /* Huff1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A240A2CEFDF00CE8E05 /* Huff1.cpp */; };
+		C95C4A2F0A2CEFDF00CE8E05 /* Lz1.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A250A2CEFDF00CE8E05 /* Lz1.cpp */; };
+		C95C4A3A0A2CF09700CE8E05 /* _commcomm.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A300A2CF09700CE8E05 /* _commcomm.h */; };
+		C95C4A3B0A2CF09700CE8E05 /* _commcomp.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A310A2CF09700CE8E05 /* _commcomp.h */; };
+		C95C4A3C0A2CF09700CE8E05 /* _commmime.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A320A2CF09700CE8E05 /* _commmime.h */; };
+		C95C4A3D0A2CF09700CE8E05 /* _commssl.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A330A2CF09700CE8E05 /* _commssl.h */; };
+		C95C4A3E0A2CF09700CE8E05 /* _commtcp0.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A340A2CF09700CE8E05 /* _commtcp0.h */; };
+		C95C4A3F0A2CF09700CE8E05 /* _commtmlm.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A350A2CF09700CE8E05 /* _commtmlm.h */; };
+		C95C4A400A2CF09700CE8E05 /* _commtmrw.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A360A2CF09700CE8E05 /* _commtmrw.h */; };
+		C95C4A410A2CF09700CE8E05 /* _commtmrwp.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A370A2CF09700CE8E05 /* _commtmrwp.h */; };
+		C95C4A420A2CF09700CE8E05 /* _commtmrwpc.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A380A2CF09700CE8E05 /* _commtmrwpc.h */; };
+		C95C4A430A2CF09700CE8E05 /* _commtmsimple.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A390A2CF09700CE8E05 /* _commtmsimple.h */; };
+		C95C4ABF0A2CF14300CE8E05 /* commappfactory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A440A2CF14300CE8E05 /* commappfactory.cpp */; };
+		C95C4AC00A2CF14300CE8E05 /* commappfactory.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A450A2CF14300CE8E05 /* commappfactory.h */; };
+		C95C4AC10A2CF14300CE8E05 /* commappfactoryinterface.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A460A2CF14300CE8E05 /* commappfactoryinterface.h */; };
+		C95C4AC20A2CF14300CE8E05 /* commcgi.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A470A2CF14300CE8E05 /* commcgi.cpp */; };
+		C95C4AC30A2CF14300CE8E05 /* commcgi.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A480A2CF14300CE8E05 /* commcgi.h */; };
+		C95C4AC40A2CF14300CE8E05 /* commcli.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A490A2CF14300CE8E05 /* commcli.h */; };
+		C95C4AC50A2CF14300CE8E05 /* commcliconn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A4A0A2CF14300CE8E05 /* commcliconn.cpp */; };
+		C95C4AC60A2CF14300CE8E05 /* commcligconn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A4B0A2CF14300CE8E05 /* commcligconn.cpp */; };
+		C95C4AC70A2CF14300CE8E05 /* commclisubscr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A4C0A2CF14300CE8E05 /* commclisubscr.cpp */; };
+		C95C4AC90A2CF14300CE8E05 /* commconcli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A4E0A2CF14300CE8E05 /* commconcli.cpp */; };
+		C95C4ACA0A2CF14300CE8E05 /* commconcli.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A4F0A2CF14300CE8E05 /* commconcli.h */; };
+		C95C4ACB0A2CF14300CE8E05 /* commconn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A500A2CF14300CE8E05 /* commconn.cpp */; };
+		C95C4ACC0A2CF14300CE8E05 /* commconn.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A510A2CF14300CE8E05 /* commconn.h */; };
+		C95C4ACD0A2CF14300CE8E05 /* commdispatcher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A520A2CF14300CE8E05 /* commdispatcher.cpp */; };
+		C95C4ACE0A2CF14300CE8E05 /* commdispatcher.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A530A2CF14300CE8E05 /* commdispatcher.h */; };
+		C95C4ACF0A2CF14300CE8E05 /* commdispatchercommon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A540A2CF14300CE8E05 /* commdispatchercommon.cpp */; };
+		C95C4AD00A2CF14300CE8E05 /* commgrdnull.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A550A2CF14300CE8E05 /* commgrdnull.h */; };
+		C95C4AD10A2CF14300CE8E05 /* commgrdnullcli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A560A2CF14300CE8E05 /* commgrdnullcli.cpp */; };
+		C95C4AD20A2CF14300CE8E05 /* commgrdnullsrv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A570A2CF14300CE8E05 /* commgrdnullsrv.cpp */; };
+		C95C4AD30A2CF14300CE8E05 /* commgrdppwd.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A580A2CF14300CE8E05 /* commgrdppwd.h */; };
+		C95C4AD40A2CF14300CE8E05 /* commgrdppwdcli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A590A2CF14300CE8E05 /* commgrdppwdcli.cpp */; };
+		C95C4AD50A2CF14300CE8E05 /* commgrdppwdroot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A5A0A2CF14300CE8E05 /* commgrdppwdroot.cpp */; };
+		C95C4AD60A2CF14300CE8E05 /* commgrdppwdsid.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A5B0A2CF14300CE8E05 /* commgrdppwdsid.h */; };
+		C95C4AD70A2CF14300CE8E05 /* commgrdppwdsidcli.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A5C0A2CF14300CE8E05 /* commgrdppwdsidcli.cpp */; };
+		C95C4AD80A2CF14300CE8E05 /* commgrdppwdsidroot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A5D0A2CF14300CE8E05 /* commgrdppwdsidroot.cpp */; };
+		C95C4AD90A2CF14300CE8E05 /* commgrdppwdsidsrv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A5E0A2CF14300CE8E05 /* commgrdppwdsidsrv.cpp */; };
+		C95C4ADA0A2CF14300CE8E05 /* commgrdppwdsrv.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A5F0A2CF14300CE8E05 /* commgrdppwdsrv.cpp */; };
+		C95C4ADB0A2CF14300CE8E05 /* commhercules.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A600A2CF14300CE8E05 /* commhercules.h */; };
+		C95C4ADC0A2CF14300CE8E05 /* commhtml.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A610A2CF14300CE8E05 /* commhtml.cpp */; };
+		C95C4ADD0A2CF14300CE8E05 /* commhtml.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A620A2CF14300CE8E05 /* commhtml.h */; };
+		C95C4ADE0A2CF14300CE8E05 /* commhtmlparser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A630A2CF14300CE8E05 /* commhtmlparser.cpp */; };
+		C95C4ADF0A2CF14300CE8E05 /* commhttp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A640A2CF14300CE8E05 /* commhttp.cpp */; };
+		C95C4AE00A2CF14300CE8E05 /* commhttp.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A650A2CF14300CE8E05 /* commhttp.h */; };
+		C95C4AE10A2CF14300CE8E05 /* commhttpserver.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A660A2CF14300CE8E05 /* commhttpserver.cpp */; };
+		C95C4AE20A2CF14300CE8E05 /* commidmap.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A670A2CF14300CE8E05 /* commidmap.h */; };
+		C95C4AE30A2CF14300CE8E05 /* commlib.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A680A2CF14300CE8E05 /* commlib.h */; };
+		C95C4AE40A2CF14300CE8E05 /* commlocalapp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A690A2CF14300CE8E05 /* commlocalapp.cpp */; };
+		C95C4AE50A2CF14300CE8E05 /* commlocalapp.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A6A0A2CF14300CE8E05 /* commlocalapp.h */; };
+		C95C4AE60A2CF14300CE8E05 /* commlocalshared.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A6B0A2CF14300CE8E05 /* commlocalshared.cpp */; };
+		C95C4AE70A2CF14300CE8E05 /* commlocalssl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A6C0A2CF14300CE8E05 /* commlocalssl.cpp */; };
+		C95C4AE80A2CF14300CE8E05 /* commlocalsslclient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A6D0A2CF14300CE8E05 /* commlocalsslclient.cpp */; };
+		C95C4AE90A2CF14300CE8E05 /* commlzhl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A6E0A2CF14300CE8E05 /* commlzhl.cpp */; };
+		C95C4AEA0A2CF14300CE8E05 /* commlzhl.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A6F0A2CF14300CE8E05 /* commlzhl.h */; };
+		C95C4AEB0A2CF14300CE8E05 /* commmail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A700A2CF14300CE8E05 /* commmail.cpp */; };
+		C95C4AEC0A2CF14300CE8E05 /* commmail.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A710A2CF14300CE8E05 /* commmail.h */; };
+		C95C4AED0A2CF14300CE8E05 /* commmailload.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A720A2CF14300CE8E05 /* commmailload.cpp */; };
+		C95C4AF00A2CF14300CE8E05 /* commmime.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A750A2CF14300CE8E05 /* commmime.cpp */; };
+		C95C4AF10A2CF14300CE8E05 /* commmonitorlogger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A760A2CF14300CE8E05 /* commmonitorlogger.cpp */; };
+		C95C4AF20A2CF14300CE8E05 /* commmonitorlogger.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A770A2CF14300CE8E05 /* commmonitorlogger.h */; };
+		C95C4AF30A2CF14300CE8E05 /* commmsgbody.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A780A2CF14300CE8E05 /* commmsgbody.cpp */; };
+		C95C4AF40A2CF14300CE8E05 /* commmsgbody.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A790A2CF14300CE8E05 /* commmsgbody.h */; };
+		C95C4AF50A2CF14300CE8E05 /* commphyslocal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A7A0A2CF14300CE8E05 /* commphyslocal.cpp */; };
+		C95C4AF60A2CF14300CE8E05 /* commpop3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A7B0A2CF14300CE8E05 /* commpop3.cpp */; };
+		C95C4AF70A2CF14300CE8E05 /* commpop3.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A7C0A2CF14300CE8E05 /* commpop3.h */; };
+		C95C4AF80A2CF14300CE8E05 /* commproto.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A7D0A2CF14300CE8E05 /* commproto.h */; };
+		C95C4AF90A2CF14300CE8E05 /* commqueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A7E0A2CF14300CE8E05 /* commqueue.cpp */; };
+		C95C4AFA0A2CF14300CE8E05 /* commqueue.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A7F0A2CF14300CE8E05 /* commqueue.h */; };
+		C95C4AFB0A2CF14300CE8E05 /* commredundant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A800A2CF14300CE8E05 /* commredundant.cpp */; };
+		C95C4AFC0A2CF14300CE8E05 /* commredundant.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A810A2CF14300CE8E05 /* commredundant.h */; };
+		C95C4AFD0A2CF14300CE8E05 /* commrtable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A820A2CF14300CE8E05 /* commrtable.cpp */; };
+		C95C4AFE0A2CF14300CE8E05 /* commrtable.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A830A2CF14300CE8E05 /* commrtable.h */; };
+		C95C4AFF0A2CF14300CE8E05 /* commsharedmem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A840A2CF14300CE8E05 /* commsharedmem.cpp */; };
+		C95C4B000A2CF14300CE8E05 /* commsharedmem.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A850A2CF14300CE8E05 /* commsharedmem.h */; };
+		C95C4B010A2CF14300CE8E05 /* commsmtp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A860A2CF14300CE8E05 /* commsmtp.cpp */; };
+		C95C4B020A2CF14300CE8E05 /* commsmtp.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A870A2CF14300CE8E05 /* commsmtp.h */; };
+		C95C4B030A2CF14300CE8E05 /* commsrv.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A880A2CF14300CE8E05 /* commsrv.h */; };
+		C95C4B040A2CF14300CE8E05 /* commsrvcomposite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A890A2CF14300CE8E05 /* commsrvcomposite.cpp */; };
+		C95C4B050A2CF14300CE8E05 /* commsrvcomposite.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A8A0A2CF14300CE8E05 /* commsrvcomposite.h */; };
+		C95C4B060A2CF14300CE8E05 /* commsrvconn.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A8B0A2CF14300CE8E05 /* commsrvconn.cpp */; };
+		C95C4B070A2CF14300CE8E05 /* commsrvobj.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A8C0A2CF14300CE8E05 /* commsrvobj.cpp */; };
+		C95C4B080A2CF14300CE8E05 /* commsrvsubscr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A8D0A2CF14300CE8E05 /* commsrvsubscr.cpp */; };
+		C95C4B0A0A2CF14300CE8E05 /* commssl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A8F0A2CF14300CE8E05 /* commssl.cpp */; };
+		C95C4B0B0A2CF14300CE8E05 /* commssl.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4A900A2CF14300CE8E05 /* commssl.h */; };
+		C95C4B0C0A2CF14300CE8E05 /* commssl0.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A910A2CF14300CE8E05 /* commssl0.cpp */; };
+		C95C4B0D0A2CF14300CE8E05 /* commsslbase64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A920A2CF14300CE8E05 /* commsslbase64.cpp */; };
+		C95C4B0E0A2CF14300CE8E05 /* commsslbio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A930A2CF14300CE8E05 /* commsslbio.cpp */; };
+		C95C4B0F0A2CF14300CE8E05 /* commsslc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A940A2CF14300CE8E05 /* commsslc.cpp */; };
+		C95C4B100A2CF14300CE8E05 /* commsslchksum.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A950A2CF14300CE8E05 /* commsslchksum.cpp */; };
+		C95C4B110A2CF14300CE8E05 /* commsslcipher.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A960A2CF14300CE8E05 /* commsslcipher.cpp */; };
+		C95C4B120A2CF14300CE8E05 /* commsslcipher3.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A970A2CF14300CE8E05 /* commsslcipher3.cpp */; };
+		C95C4B130A2CF14300CE8E05 /* commsslentropy.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A980A2CF14300CE8E05 /* commsslentropy.cpp */; };
+		C95C4B140A2CF14300CE8E05 /* commsslentropys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A990A2CF14300CE8E05 /* commsslentropys.cpp */; };
+		C95C4B150A2CF14300CE8E05 /* commsslentropymac.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A9A0A2CF14300CE8E05 /* commsslentropymac.cpp */; };
+		C95C4B160A2CF14300CE8E05 /* commsslp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A9B0A2CF14300CE8E05 /* commsslp.cpp */; };
+		C95C4B170A2CF14300CE8E05 /* commsslprivkey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A9C0A2CF14300CE8E05 /* commsslprivkey.cpp */; };
+		C95C4B180A2CF14300CE8E05 /* commsslrand.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A9D0A2CF14300CE8E05 /* commsslrand.cpp */; };
+		C95C4B190A2CF14300CE8E05 /* commssls.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A9E0A2CF14300CE8E05 /* commssls.cpp */; };
+		C95C4B1A0A2CF14300CE8E05 /* commsslsign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4A9F0A2CF14300CE8E05 /* commsslsign.cpp */; };
+		C95C4B1B0A2CF14300CE8E05 /* commsslsysinfo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AA00A2CF14300CE8E05 /* commsslsysinfo.cpp */; };
+		C95C4B1C0A2CF14300CE8E05 /* commsslverify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AA10A2CF14300CE8E05 /* commsslverify.cpp */; };
+		C95C4B1D0A2CF14300CE8E05 /* commsubscr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AA20A2CF14300CE8E05 /* commsubscr.cpp */; };
+		C95C4B1E0A2CF14300CE8E05 /* commsubscr.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4AA30A2CF14300CE8E05 /* commsubscr.h */; };
+		C95C4B1F0A2CF14300CE8E05 /* commtcp0.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AA40A2CF14300CE8E05 /* commtcp0.cpp */; };
+		C95C4B200A2CF14300CE8E05 /* commtime.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4AA50A2CF14300CE8E05 /* commtime.h */; };
+		C95C4B210A2CF14300CE8E05 /* commtmcomposite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AA60A2CF14300CE8E05 /* commtmcomposite.cpp */; };
+		C95C4B220A2CF14300CE8E05 /* commtmcomposite.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4AA70A2CF14300CE8E05 /* commtmcomposite.h */; };
+		C95C4B230A2CF14300CE8E05 /* commtmgr.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AA80A2CF14300CE8E05 /* commtmgr.cpp */; };
+		C95C4B240A2CF14300CE8E05 /* commtmlm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AA90A2CF14300CE8E05 /* commtmlm.cpp */; };
+		C95C4B250A2CF14300CE8E05 /* commtmlm.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4AAA0A2CF14300CE8E05 /* commtmlm.h */; };
+		C95C4B260A2CF14300CE8E05 /* commtmlocal.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AAB0A2CF14300CE8E05 /* commtmlocal.cpp */; };
+		C95C4B270A2CF14300CE8E05 /* commtmlocal.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4AAC0A2CF14300CE8E05 /* commtmlocal.h */; };
+		C95C4B280A2CF14300CE8E05 /* commtmrw.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AAD0A2CF14300CE8E05 /* commtmrw.cpp */; };
+		C95C4B290A2CF14300CE8E05 /* commtmrw.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4AAE0A2CF14300CE8E05 /* commtmrw.h */; };
+		C95C4B2A0A2CF14300CE8E05 /* commtmrwp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AAF0A2CF14300CE8E05 /* commtmrwp.cpp */; };
+		C95C4B2B0A2CF14300CE8E05 /* commtmrwp.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4AB00A2CF14300CE8E05 /* commtmrwp.h */; };
+		C95C4B2C0A2CF14300CE8E05 /* commtmrwpc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AB10A2CF14300CE8E05 /* commtmrwpc.cpp */; };
+		C95C4B2D0A2CF14300CE8E05 /* commtmrwplain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AB20A2CF14300CE8E05 /* commtmrwplain.cpp */; };
+		C95C4B2E0A2CF14300CE8E05 /* commtmrwssl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AB30A2CF14300CE8E05 /* commtmrwssl.cpp */; };
+		C95C4B2F0A2CF14300CE8E05 /* commtmsimple.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AB40A2CF14300CE8E05 /* commtmsimple.cpp */; };
+		C95C4B300A2CF14300CE8E05 /* commtmsimple.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4AB50A2CF14300CE8E05 /* commtmsimple.h */; };
+		C95C4B310A2CF14300CE8E05 /* commtmsimpleplain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AB60A2CF14300CE8E05 /* commtmsimpleplain.cpp */; };
+		C95C4B320A2CF14300CE8E05 /* commtmsimplessl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AB70A2CF14300CE8E05 /* commtmsimplessl.cpp */; };
+		C95C4B330A2CF14300CE8E05 /* commtmwin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4AB80A2CF14300CE8E05 /* commtmwin.cpp */; };
+		C95C4B340A2CF14300CE8E05 /* commtmwin.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4AB90A2CF14300CE8E05 /* commtmwin.h */; };
+		C95C4B350A2CF14300CE8E05 /* commtok822.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4ABA0A2CF14300CE8E05 /* commtok822.h */; };
+		C95C4B360A2CF14300CE8E05 /* commtthread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4ABB0A2CF14300CE8E05 /* commtthread.cpp */; };
+		C95C4B370A2CF14300CE8E05 /* commtthread.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4ABC0A2CF14300CE8E05 /* commtthread.h */; };
+		C95C4B380A2CF14300CE8E05 /* commurl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4ABD0A2CF14300CE8E05 /* commurl.cpp */; };
+		C95C4B390A2CF14300CE8E05 /* commurl.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4ABE0A2CF14300CE8E05 /* commurl.h */; };
+		C95C4B3C0A2CF15000CE8E05 /* tok822_parse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95C4B3A0A2CF15000CE8E05 /* tok822_parse.cpp */; };
+		C95C4B3D0A2CF15000CE8E05 /* tok822.h in Headers */ = {isa = PBXBuildFile; fileRef = C95C4B3B0A2CF15000CE8E05 /* tok822.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		742050260E0AAB7A0047CF6A /* commsslthrow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = commsslthrow.cpp; sourceTree = "<group>"; };
+		743724CB0E031EA50018E8B9 /* SharedTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = SharedTarget.xcconfig; path = ../MacDev/SharedTarget.xcconfig; sourceTree = SOURCE_ROOT; };
+		743724CC0E031EAA0018E8B9 /* DebugTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; name = DebugTarget.xcconfig; path = ../MacDev/DebugTarget.xcconfig; sourceTree = SOURCE_ROOT; };
+		7440ADC20C5A352000671185 /* ReleaseTarget.xcconfig */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text.xcconfig; name = ReleaseTarget.xcconfig; path = ../MacDev/ReleaseTarget.xcconfig; sourceTree = SOURCE_ROOT; };
+		748FF1E40B6158B8007BF0C9 /* commmailnormalize.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commmailnormalize.cpp; sourceTree = "<group>"; };
+		748FF1E60B6158B8007BF0C9 /* commsgml.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commsgml.h; sourceTree = "<group>"; };
+		748FF1E70B6158B8007BF0C9 /* commsgmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsgmlparser.cpp; sourceTree = "<group>"; };
+		74A405100CF74F5900AC959E /* commsslentropymac.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslentropymac.cpp; sourceTree = "<group>"; };
+		74FBA0C90B9F18B10074EBBD /* i18ncommhtml.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = i18ncommhtml.cpp; sourceTree = "<group>"; };
+		C91B45C50A2F2A8E0032595B /* commtmmac.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtmmac.cpp; sourceTree = "<group>"; };
+		C91B45C60A2F2A8E0032595B /* commtmmac.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commtmmac.h; sourceTree = "<group>"; };
+		C95C4A130A2CEFDF00CE8E05 /* _huff.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _huff.h; sourceTree = "<group>"; };
+		C95C4A140A2CEFDF00CE8E05 /* _lz.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _lz.h; sourceTree = "<group>"; };
+		C95C4A150A2CEFDF00CE8E05 /* _lzhl.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _lzhl.h; sourceTree = "<group>"; };
+		C95C4A160A2CEFDF00CE8E05 /* Hdec_g.tbl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Hdec_g.tbl; sourceTree = "<group>"; };
+		C95C4A170A2CEFDF00CE8E05 /* Hdec_s.tbl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Hdec_s.tbl; sourceTree = "<group>"; };
+		C95C4A180A2CEFDF00CE8E05 /* Hdisp.tbl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Hdisp.tbl; sourceTree = "<group>"; };
+		C95C4A190A2CEFDF00CE8E05 /* Henc.tbl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Henc.tbl; sourceTree = "<group>"; };
+		C95C4A1A0A2CEFDF00CE8E05 /* Huff.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Huff.cpp; sourceTree = "<group>"; };
+		C95C4A1B0A2CEFDF00CE8E05 /* Lz.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Lz.cpp; sourceTree = "<group>"; };
+		C95C4A1D0A2CEFDF00CE8E05 /* _huff1.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _huff1.h; sourceTree = "<group>"; };
+		C95C4A1E0A2CEFDF00CE8E05 /* _lz1.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _lz1.h; sourceTree = "<group>"; };
+		C95C4A1F0A2CEFDF00CE8E05 /* _lzhl1.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _lzhl1.h; sourceTree = "<group>"; };
+		C95C4A200A2CEFDF00CE8E05 /* Hdec_g.tbl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Hdec_g.tbl; sourceTree = "<group>"; };
+		C95C4A210A2CEFDF00CE8E05 /* Hdec_s.tbl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Hdec_s.tbl; sourceTree = "<group>"; };
+		C95C4A220A2CEFDF00CE8E05 /* Hdisp.tbl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Hdisp.tbl; sourceTree = "<group>"; };
+		C95C4A230A2CEFDF00CE8E05 /* Henc.tbl */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = text; path = Henc.tbl; sourceTree = "<group>"; };
+		C95C4A240A2CEFDF00CE8E05 /* Huff1.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Huff1.cpp; sourceTree = "<group>"; };
+		C95C4A250A2CEFDF00CE8E05 /* Lz1.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = Lz1.cpp; sourceTree = "<group>"; };
+		C95C4A300A2CF09700CE8E05 /* _commcomm.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _commcomm.h; sourceTree = "<group>"; };
+		C95C4A310A2CF09700CE8E05 /* _commcomp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _commcomp.h; sourceTree = "<group>"; };
+		C95C4A320A2CF09700CE8E05 /* _commmime.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _commmime.h; sourceTree = "<group>"; };
+		C95C4A330A2CF09700CE8E05 /* _commssl.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _commssl.h; sourceTree = "<group>"; };
+		C95C4A340A2CF09700CE8E05 /* _commtcp0.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _commtcp0.h; sourceTree = "<group>"; };
+		C95C4A350A2CF09700CE8E05 /* _commtmlm.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _commtmlm.h; sourceTree = "<group>"; };
+		C95C4A360A2CF09700CE8E05 /* _commtmrw.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _commtmrw.h; sourceTree = "<group>"; };
+		C95C4A370A2CF09700CE8E05 /* _commtmrwp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _commtmrwp.h; sourceTree = "<group>"; };
+		C95C4A380A2CF09700CE8E05 /* _commtmrwpc.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _commtmrwpc.h; sourceTree = "<group>"; };
+		C95C4A390A2CF09700CE8E05 /* _commtmsimple.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = _commtmsimple.h; sourceTree = "<group>"; };
+		C95C4A440A2CF14300CE8E05 /* commappfactory.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commappfactory.cpp; sourceTree = "<group>"; };
+		C95C4A450A2CF14300CE8E05 /* commappfactory.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commappfactory.h; sourceTree = "<group>"; };
+		C95C4A460A2CF14300CE8E05 /* commappfactoryinterface.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commappfactoryinterface.h; sourceTree = "<group>"; };
+		C95C4A470A2CF14300CE8E05 /* commcgi.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commcgi.cpp; sourceTree = "<group>"; };
+		C95C4A480A2CF14300CE8E05 /* commcgi.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commcgi.h; sourceTree = "<group>"; };
+		C95C4A490A2CF14300CE8E05 /* commcli.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commcli.h; sourceTree = "<group>"; };
+		C95C4A4A0A2CF14300CE8E05 /* commcliconn.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commcliconn.cpp; sourceTree = "<group>"; };
+		C95C4A4B0A2CF14300CE8E05 /* commcligconn.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commcligconn.cpp; sourceTree = "<group>"; };
+		C95C4A4C0A2CF14300CE8E05 /* commclisubscr.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commclisubscr.cpp; sourceTree = "<group>"; };
+		C95C4A4E0A2CF14300CE8E05 /* commconcli.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commconcli.cpp; sourceTree = "<group>"; };
+		C95C4A4F0A2CF14300CE8E05 /* commconcli.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commconcli.h; sourceTree = "<group>"; };
+		C95C4A500A2CF14300CE8E05 /* commconn.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commconn.cpp; sourceTree = "<group>"; };
+		C95C4A510A2CF14300CE8E05 /* commconn.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commconn.h; sourceTree = "<group>"; };
+		C95C4A520A2CF14300CE8E05 /* commdispatcher.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commdispatcher.cpp; sourceTree = "<group>"; };
+		C95C4A530A2CF14300CE8E05 /* commdispatcher.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commdispatcher.h; sourceTree = "<group>"; };
+		C95C4A540A2CF14300CE8E05 /* commdispatchercommon.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commdispatchercommon.cpp; sourceTree = "<group>"; };
+		C95C4A550A2CF14300CE8E05 /* commgrdnull.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commgrdnull.h; sourceTree = "<group>"; };
+		C95C4A560A2CF14300CE8E05 /* commgrdnullcli.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commgrdnullcli.cpp; sourceTree = "<group>"; };
+		C95C4A570A2CF14300CE8E05 /* commgrdnullsrv.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commgrdnullsrv.cpp; sourceTree = "<group>"; };
+		C95C4A580A2CF14300CE8E05 /* commgrdppwd.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commgrdppwd.h; sourceTree = "<group>"; };
+		C95C4A590A2CF14300CE8E05 /* commgrdppwdcli.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commgrdppwdcli.cpp; sourceTree = "<group>"; };
+		C95C4A5A0A2CF14300CE8E05 /* commgrdppwdroot.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commgrdppwdroot.cpp; sourceTree = "<group>"; };
+		C95C4A5B0A2CF14300CE8E05 /* commgrdppwdsid.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commgrdppwdsid.h; sourceTree = "<group>"; };
+		C95C4A5C0A2CF14300CE8E05 /* commgrdppwdsidcli.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commgrdppwdsidcli.cpp; sourceTree = "<group>"; };
+		C95C4A5D0A2CF14300CE8E05 /* commgrdppwdsidroot.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commgrdppwdsidroot.cpp; sourceTree = "<group>"; };
+		C95C4A5E0A2CF14300CE8E05 /* commgrdppwdsidsrv.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commgrdppwdsidsrv.cpp; sourceTree = "<group>"; };
+		C95C4A5F0A2CF14300CE8E05 /* commgrdppwdsrv.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commgrdppwdsrv.cpp; sourceTree = "<group>"; };
+		C95C4A600A2CF14300CE8E05 /* commhercules.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commhercules.h; sourceTree = "<group>"; };
+		C95C4A610A2CF14300CE8E05 /* commhtml.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commhtml.cpp; sourceTree = "<group>"; };
+		C95C4A620A2CF14300CE8E05 /* commhtml.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commhtml.h; sourceTree = "<group>"; };
+		C95C4A630A2CF14300CE8E05 /* commhtmlparser.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commhtmlparser.cpp; sourceTree = "<group>"; };
+		C95C4A640A2CF14300CE8E05 /* commhttp.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commhttp.cpp; sourceTree = "<group>"; };
+		C95C4A650A2CF14300CE8E05 /* commhttp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commhttp.h; sourceTree = "<group>"; };
+		C95C4A660A2CF14300CE8E05 /* commhttpserver.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commhttpserver.cpp; sourceTree = "<group>"; };
+		C95C4A670A2CF14300CE8E05 /* commidmap.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commidmap.h; sourceTree = "<group>"; };
+		C95C4A680A2CF14300CE8E05 /* commlib.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commlib.h; sourceTree = "<group>"; };
+		C95C4A690A2CF14300CE8E05 /* commlocalapp.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commlocalapp.cpp; sourceTree = "<group>"; };
+		C95C4A6A0A2CF14300CE8E05 /* commlocalapp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commlocalapp.h; sourceTree = "<group>"; };
+		C95C4A6B0A2CF14300CE8E05 /* commlocalshared.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commlocalshared.cpp; sourceTree = "<group>"; };
+		C95C4A6C0A2CF14300CE8E05 /* commlocalssl.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commlocalssl.cpp; sourceTree = "<group>"; };
+		C95C4A6D0A2CF14300CE8E05 /* commlocalsslclient.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commlocalsslclient.cpp; sourceTree = "<group>"; };
+		C95C4A6E0A2CF14300CE8E05 /* commlzhl.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commlzhl.cpp; sourceTree = "<group>"; };
+		C95C4A6F0A2CF14300CE8E05 /* commlzhl.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commlzhl.h; sourceTree = "<group>"; };
+		C95C4A700A2CF14300CE8E05 /* commmail.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commmail.cpp; sourceTree = "<group>"; };
+		C95C4A710A2CF14300CE8E05 /* commmail.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commmail.h; sourceTree = "<group>"; };
+		C95C4A720A2CF14300CE8E05 /* commmailload.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commmailload.cpp; sourceTree = "<group>"; };
+		C95C4A750A2CF14300CE8E05 /* commmime.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commmime.cpp; sourceTree = "<group>"; };
+		C95C4A760A2CF14300CE8E05 /* commmonitorlogger.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commmonitorlogger.cpp; sourceTree = "<group>"; };
+		C95C4A770A2CF14300CE8E05 /* commmonitorlogger.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commmonitorlogger.h; sourceTree = "<group>"; };
+		C95C4A780A2CF14300CE8E05 /* commmsgbody.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commmsgbody.cpp; sourceTree = "<group>"; };
+		C95C4A790A2CF14300CE8E05 /* commmsgbody.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commmsgbody.h; sourceTree = "<group>"; };
+		C95C4A7A0A2CF14300CE8E05 /* commphyslocal.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commphyslocal.cpp; sourceTree = "<group>"; };
+		C95C4A7B0A2CF14300CE8E05 /* commpop3.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commpop3.cpp; sourceTree = "<group>"; };
+		C95C4A7C0A2CF14300CE8E05 /* commpop3.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commpop3.h; sourceTree = "<group>"; };
+		C95C4A7D0A2CF14300CE8E05 /* commproto.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commproto.h; sourceTree = "<group>"; };
+		C95C4A7E0A2CF14300CE8E05 /* commqueue.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commqueue.cpp; sourceTree = "<group>"; };
+		C95C4A7F0A2CF14300CE8E05 /* commqueue.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commqueue.h; sourceTree = "<group>"; };
+		C95C4A800A2CF14300CE8E05 /* commredundant.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commredundant.cpp; sourceTree = "<group>"; };
+		C95C4A810A2CF14300CE8E05 /* commredundant.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commredundant.h; sourceTree = "<group>"; };
+		C95C4A820A2CF14300CE8E05 /* commrtable.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commrtable.cpp; sourceTree = "<group>"; };
+		C95C4A830A2CF14300CE8E05 /* commrtable.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commrtable.h; sourceTree = "<group>"; };
+		C95C4A840A2CF14300CE8E05 /* commsharedmem.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsharedmem.cpp; sourceTree = "<group>"; };
+		C95C4A850A2CF14300CE8E05 /* commsharedmem.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commsharedmem.h; sourceTree = "<group>"; };
+		C95C4A860A2CF14300CE8E05 /* commsmtp.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsmtp.cpp; sourceTree = "<group>"; };
+		C95C4A870A2CF14300CE8E05 /* commsmtp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commsmtp.h; sourceTree = "<group>"; };
+		C95C4A880A2CF14300CE8E05 /* commsrv.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commsrv.h; sourceTree = "<group>"; };
+		C95C4A890A2CF14300CE8E05 /* commsrvcomposite.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsrvcomposite.cpp; sourceTree = "<group>"; };
+		C95C4A8A0A2CF14300CE8E05 /* commsrvcomposite.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commsrvcomposite.h; sourceTree = "<group>"; };
+		C95C4A8B0A2CF14300CE8E05 /* commsrvconn.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsrvconn.cpp; sourceTree = "<group>"; };
+		C95C4A8C0A2CF14300CE8E05 /* commsrvobj.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsrvobj.cpp; sourceTree = "<group>"; };
+		C95C4A8D0A2CF14300CE8E05 /* commsrvsubscr.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsrvsubscr.cpp; sourceTree = "<group>"; };
+		C95C4A8F0A2CF14300CE8E05 /* commssl.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commssl.cpp; sourceTree = "<group>"; };
+		C95C4A900A2CF14300CE8E05 /* commssl.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commssl.h; sourceTree = "<group>"; };
+		C95C4A910A2CF14300CE8E05 /* commssl0.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commssl0.cpp; sourceTree = "<group>"; };
+		C95C4A920A2CF14300CE8E05 /* commsslbase64.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslbase64.cpp; sourceTree = "<group>"; };
+		C95C4A930A2CF14300CE8E05 /* commsslbio.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslbio.cpp; sourceTree = "<group>"; };
+		C95C4A940A2CF14300CE8E05 /* commsslc.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslc.cpp; sourceTree = "<group>"; };
+		C95C4A950A2CF14300CE8E05 /* commsslchksum.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslchksum.cpp; sourceTree = "<group>"; };
+		C95C4A960A2CF14300CE8E05 /* commsslcipher.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslcipher.cpp; sourceTree = "<group>"; };
+		C95C4A970A2CF14300CE8E05 /* commsslcipher3.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslcipher3.cpp; sourceTree = "<group>"; };
+		C95C4A980A2CF14300CE8E05 /* commsslentropy.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslentropy.cpp; sourceTree = "<group>"; };
+		C95C4A990A2CF14300CE8E05 /* commsslentropys.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslentropys.cpp; sourceTree = "<group>"; };
+		C95C4A9A0A2CF14300CE8E05 /* commsslentropymac.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslentropymac.cpp; sourceTree = "<group>"; };
+		C95C4A9B0A2CF14300CE8E05 /* commsslp.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslp.cpp; sourceTree = "<group>"; };
+		C95C4A9C0A2CF14300CE8E05 /* commsslprivkey.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslprivkey.cpp; sourceTree = "<group>"; };
+		C95C4A9D0A2CF14300CE8E05 /* commsslrand.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslrand.cpp; sourceTree = "<group>"; };
+		C95C4A9E0A2CF14300CE8E05 /* commssls.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commssls.cpp; sourceTree = "<group>"; };
+		C95C4A9F0A2CF14300CE8E05 /* commsslsign.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslsign.cpp; sourceTree = "<group>"; };
+		C95C4AA00A2CF14300CE8E05 /* commsslsysinfo.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslsysinfo.cpp; sourceTree = "<group>"; };
+		C95C4AA10A2CF14300CE8E05 /* commsslverify.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsslverify.cpp; sourceTree = "<group>"; };
+		C95C4AA20A2CF14300CE8E05 /* commsubscr.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commsubscr.cpp; sourceTree = "<group>"; };
+		C95C4AA30A2CF14300CE8E05 /* commsubscr.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commsubscr.h; sourceTree = "<group>"; };
+		C95C4AA40A2CF14300CE8E05 /* commtcp0.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtcp0.cpp; sourceTree = "<group>"; };
+		C95C4AA50A2CF14300CE8E05 /* commtime.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commtime.h; sourceTree = "<group>"; };
+		C95C4AA60A2CF14300CE8E05 /* commtmcomposite.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtmcomposite.cpp; sourceTree = "<group>"; };
+		C95C4AA70A2CF14300CE8E05 /* commtmcomposite.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commtmcomposite.h; sourceTree = "<group>"; };
+		C95C4AA80A2CF14300CE8E05 /* commtmgr.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtmgr.cpp; sourceTree = "<group>"; };
+		C95C4AA90A2CF14300CE8E05 /* commtmlm.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtmlm.cpp; sourceTree = "<group>"; };
+		C95C4AAA0A2CF14300CE8E05 /* commtmlm.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commtmlm.h; sourceTree = "<group>"; };
+		C95C4AAB0A2CF14300CE8E05 /* commtmlocal.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtmlocal.cpp; sourceTree = "<group>"; };
+		C95C4AAC0A2CF14300CE8E05 /* commtmlocal.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commtmlocal.h; sourceTree = "<group>"; };
+		C95C4AAD0A2CF14300CE8E05 /* commtmrw.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtmrw.cpp; sourceTree = "<group>"; };
+		C95C4AAE0A2CF14300CE8E05 /* commtmrw.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commtmrw.h; sourceTree = "<group>"; };
+		C95C4AAF0A2CF14300CE8E05 /* commtmrwp.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtmrwp.cpp; sourceTree = "<group>"; };
+		C95C4AB00A2CF14300CE8E05 /* commtmrwp.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commtmrwp.h; sourceTree = "<group>"; };
+		C95C4AB10A2CF14300CE8E05 /* commtmrwpc.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtmrwpc.cpp; sourceTree = "<group>"; };
+		C95C4AB20A2CF14300CE8E05 /* commtmrwplain.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtmrwplain.cpp; sourceTree = "<group>"; };
+		C95C4AB30A2CF14300CE8E05 /* commtmrwssl.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtmrwssl.cpp; sourceTree = "<group>"; };
+		C95C4AB40A2CF14300CE8E05 /* commtmsimple.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtmsimple.cpp; sourceTree = "<group>"; };
+		C95C4AB50A2CF14300CE8E05 /* commtmsimple.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commtmsimple.h; sourceTree = "<group>"; };
+		C95C4AB60A2CF14300CE8E05 /* commtmsimpleplain.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtmsimpleplain.cpp; sourceTree = "<group>"; };
+		C95C4AB70A2CF14300CE8E05 /* commtmsimplessl.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtmsimplessl.cpp; sourceTree = "<group>"; };
+		C95C4AB80A2CF14300CE8E05 /* commtmwin.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtmwin.cpp; sourceTree = "<group>"; };
+		C95C4AB90A2CF14300CE8E05 /* commtmwin.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commtmwin.h; sourceTree = "<group>"; };
+		C95C4ABA0A2CF14300CE8E05 /* commtok822.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commtok822.h; sourceTree = "<group>"; };
+		C95C4ABB0A2CF14300CE8E05 /* commtthread.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commtthread.cpp; sourceTree = "<group>"; };
+		C95C4ABC0A2CF14300CE8E05 /* commtthread.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commtthread.h; sourceTree = "<group>"; };
+		C95C4ABD0A2CF14300CE8E05 /* commurl.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = commurl.cpp; sourceTree = "<group>"; };
+		C95C4ABE0A2CF14300CE8E05 /* commurl.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = commurl.h; sourceTree = "<group>"; };
+		C95C4B3A0A2CF15000CE8E05 /* tok822_parse.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; path = tok822_parse.cpp; sourceTree = "<group>"; };
+		C95C4B3B0A2CF15000CE8E05 /* tok822.h */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.c.h; path = tok822.h; sourceTree = "<group>"; };
+		D2AAC046055464E500DB518D /* libcommlib2a.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libcommlib2a.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D289987405E68DCB004EDB86 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* commlib2a */ = {
+			isa = PBXGroup;
+			children = (
+				743724CB0E031EA50018E8B9 /* SharedTarget.xcconfig */,
+				7440ADC20C5A352000671185 /* ReleaseTarget.xcconfig */,
+				743724CC0E031EAA0018E8B9 /* DebugTarget.xcconfig */,
+				08FB7795FE84155DC02AAC07 /* Source */,
+				C6A0FF2B0290797F04C91782 /* Documentation */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+			);
+			name = commlib2a;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				742050260E0AAB7A0047CF6A /* commsslthrow.cpp */,
+				C95C4A300A2CF09700CE8E05 /* _commcomm.h */,
+				C95C4A310A2CF09700CE8E05 /* _commcomp.h */,
+				C95C4A320A2CF09700CE8E05 /* _commmime.h */,
+				C95C4A330A2CF09700CE8E05 /* _commssl.h */,
+				C95C4A340A2CF09700CE8E05 /* _commtcp0.h */,
+				C95C4A350A2CF09700CE8E05 /* _commtmlm.h */,
+				C95C4A360A2CF09700CE8E05 /* _commtmrw.h */,
+				C95C4A370A2CF09700CE8E05 /* _commtmrwp.h */,
+				C95C4A380A2CF09700CE8E05 /* _commtmrwpc.h */,
+				C95C4A390A2CF09700CE8E05 /* _commtmsimple.h */,
+				C95C4A440A2CF14300CE8E05 /* commappfactory.cpp */,
+				C95C4A450A2CF14300CE8E05 /* commappfactory.h */,
+				C95C4A460A2CF14300CE8E05 /* commappfactoryinterface.h */,
+				C95C4A470A2CF14300CE8E05 /* commcgi.cpp */,
+				C95C4A480A2CF14300CE8E05 /* commcgi.h */,
+				C95C4A490A2CF14300CE8E05 /* commcli.h */,
+				C95C4A4A0A2CF14300CE8E05 /* commcliconn.cpp */,
+				C95C4A4B0A2CF14300CE8E05 /* commcligconn.cpp */,
+				C95C4A4C0A2CF14300CE8E05 /* commclisubscr.cpp */,
+				C95C4A4E0A2CF14300CE8E05 /* commconcli.cpp */,
+				C95C4A4F0A2CF14300CE8E05 /* commconcli.h */,
+				C95C4A500A2CF14300CE8E05 /* commconn.cpp */,
+				C95C4A510A2CF14300CE8E05 /* commconn.h */,
+				C95C4A520A2CF14300CE8E05 /* commdispatcher.cpp */,
+				C95C4A530A2CF14300CE8E05 /* commdispatcher.h */,
+				C95C4A540A2CF14300CE8E05 /* commdispatchercommon.cpp */,
+				C95C4A550A2CF14300CE8E05 /* commgrdnull.h */,
+				C95C4A560A2CF14300CE8E05 /* commgrdnullcli.cpp */,
+				C95C4A570A2CF14300CE8E05 /* commgrdnullsrv.cpp */,
+				C95C4A580A2CF14300CE8E05 /* commgrdppwd.h */,
+				C95C4A590A2CF14300CE8E05 /* commgrdppwdcli.cpp */,
+				C95C4A5A0A2CF14300CE8E05 /* commgrdppwdroot.cpp */,
+				C95C4A5B0A2CF14300CE8E05 /* commgrdppwdsid.h */,
+				C95C4A5C0A2CF14300CE8E05 /* commgrdppwdsidcli.cpp */,
+				C95C4A5D0A2CF14300CE8E05 /* commgrdppwdsidroot.cpp */,
+				C95C4A5E0A2CF14300CE8E05 /* commgrdppwdsidsrv.cpp */,
+				C95C4A5F0A2CF14300CE8E05 /* commgrdppwdsrv.cpp */,
+				C95C4A600A2CF14300CE8E05 /* commhercules.h */,
+				C95C4A610A2CF14300CE8E05 /* commhtml.cpp */,
+				C95C4A620A2CF14300CE8E05 /* commhtml.h */,
+				C95C4A630A2CF14300CE8E05 /* commhtmlparser.cpp */,
+				C95C4A640A2CF14300CE8E05 /* commhttp.cpp */,
+				C95C4A650A2CF14300CE8E05 /* commhttp.h */,
+				C95C4A660A2CF14300CE8E05 /* commhttpserver.cpp */,
+				C95C4A670A2CF14300CE8E05 /* commidmap.h */,
+				C95C4A680A2CF14300CE8E05 /* commlib.h */,
+				C95C4A690A2CF14300CE8E05 /* commlocalapp.cpp */,
+				C95C4A6A0A2CF14300CE8E05 /* commlocalapp.h */,
+				C95C4A6B0A2CF14300CE8E05 /* commlocalshared.cpp */,
+				C95C4A6C0A2CF14300CE8E05 /* commlocalssl.cpp */,
+				C95C4A6D0A2CF14300CE8E05 /* commlocalsslclient.cpp */,
+				C95C4A6E0A2CF14300CE8E05 /* commlzhl.cpp */,
+				C95C4A6F0A2CF14300CE8E05 /* commlzhl.h */,
+				C95C4A700A2CF14300CE8E05 /* commmail.cpp */,
+				C95C4A710A2CF14300CE8E05 /* commmail.h */,
+				C95C4A720A2CF14300CE8E05 /* commmailload.cpp */,
+				748FF1E40B6158B8007BF0C9 /* commmailnormalize.cpp */,
+				C95C4A750A2CF14300CE8E05 /* commmime.cpp */,
+				C95C4A760A2CF14300CE8E05 /* commmonitorlogger.cpp */,
+				C95C4A770A2CF14300CE8E05 /* commmonitorlogger.h */,
+				C95C4A780A2CF14300CE8E05 /* commmsgbody.cpp */,
+				C95C4A790A2CF14300CE8E05 /* commmsgbody.h */,
+				C95C4A7A0A2CF14300CE8E05 /* commphyslocal.cpp */,
+				C95C4A7B0A2CF14300CE8E05 /* commpop3.cpp */,
+				C95C4A7C0A2CF14300CE8E05 /* commpop3.h */,
+				C95C4A7D0A2CF14300CE8E05 /* commproto.h */,
+				C95C4A7E0A2CF14300CE8E05 /* commqueue.cpp */,
+				C95C4A7F0A2CF14300CE8E05 /* commqueue.h */,
+				C95C4A800A2CF14300CE8E05 /* commredundant.cpp */,
+				C95C4A810A2CF14300CE8E05 /* commredundant.h */,
+				C95C4A820A2CF14300CE8E05 /* commrtable.cpp */,
+				C95C4A830A2CF14300CE8E05 /* commrtable.h */,
+				748FF1E60B6158B8007BF0C9 /* commsgml.h */,
+				748FF1E70B6158B8007BF0C9 /* commsgmlparser.cpp */,
+				C95C4A840A2CF14300CE8E05 /* commsharedmem.cpp */,
+				C95C4A850A2CF14300CE8E05 /* commsharedmem.h */,
+				C95C4A860A2CF14300CE8E05 /* commsmtp.cpp */,
+				C95C4A870A2CF14300CE8E05 /* commsmtp.h */,
+				C95C4A880A2CF14300CE8E05 /* commsrv.h */,
+				C95C4A890A2CF14300CE8E05 /* commsrvcomposite.cpp */,
+				C95C4A8A0A2CF14300CE8E05 /* commsrvcomposite.h */,
+				C95C4A8B0A2CF14300CE8E05 /* commsrvconn.cpp */,
+				C95C4A8C0A2CF14300CE8E05 /* commsrvobj.cpp */,
+				C95C4A8D0A2CF14300CE8E05 /* commsrvsubscr.cpp */,
+				C95C4A8F0A2CF14300CE8E05 /* commssl.cpp */,
+				C95C4A900A2CF14300CE8E05 /* commssl.h */,
+				C95C4A910A2CF14300CE8E05 /* commssl0.cpp */,
+				C95C4A920A2CF14300CE8E05 /* commsslbase64.cpp */,
+				C95C4A930A2CF14300CE8E05 /* commsslbio.cpp */,
+				C95C4A940A2CF14300CE8E05 /* commsslc.cpp */,
+				C95C4A950A2CF14300CE8E05 /* commsslchksum.cpp */,
+				C95C4A960A2CF14300CE8E05 /* commsslcipher.cpp */,
+				C95C4A970A2CF14300CE8E05 /* commsslcipher3.cpp */,
+				C95C4A980A2CF14300CE8E05 /* commsslentropy.cpp */,
+				74A405100CF74F5900AC959E /* commsslentropymac.cpp */,
+				C95C4A990A2CF14300CE8E05 /* commsslentropys.cpp */,
+				C95C4A9B0A2CF14300CE8E05 /* commsslp.cpp */,
+				C95C4A9C0A2CF14300CE8E05 /* commsslprivkey.cpp */,
+				C95C4A9D0A2CF14300CE8E05 /* commsslrand.cpp */,
+				C95C4A9E0A2CF14300CE8E05 /* commssls.cpp */,
+				C95C4A9F0A2CF14300CE8E05 /* commsslsign.cpp */,
+				C95C4AA00A2CF14300CE8E05 /* commsslsysinfo.cpp */,
+				C95C4AA10A2CF14300CE8E05 /* commsslverify.cpp */,
+				C95C4AA20A2CF14300CE8E05 /* commsubscr.cpp */,
+				C95C4AA30A2CF14300CE8E05 /* commsubscr.h */,
+				C95C4AA40A2CF14300CE8E05 /* commtcp0.cpp */,
+				C95C4AA50A2CF14300CE8E05 /* commtime.h */,
+				C95C4AA60A2CF14300CE8E05 /* commtmcomposite.cpp */,
+				C95C4AA70A2CF14300CE8E05 /* commtmcomposite.h */,
+				C95C4AA80A2CF14300CE8E05 /* commtmgr.cpp */,
+				C95C4AA90A2CF14300CE8E05 /* commtmlm.cpp */,
+				C95C4AAA0A2CF14300CE8E05 /* commtmlm.h */,
+				C95C4AAB0A2CF14300CE8E05 /* commtmlocal.cpp */,
+				C95C4AAC0A2CF14300CE8E05 /* commtmlocal.h */,
+				C91B45C50A2F2A8E0032595B /* commtmmac.cpp */,
+				C91B45C60A2F2A8E0032595B /* commtmmac.h */,
+				C95C4AAD0A2CF14300CE8E05 /* commtmrw.cpp */,
+				C95C4AAE0A2CF14300CE8E05 /* commtmrw.h */,
+				C95C4AAF0A2CF14300CE8E05 /* commtmrwp.cpp */,
+				C95C4AB00A2CF14300CE8E05 /* commtmrwp.h */,
+				C95C4AB10A2CF14300CE8E05 /* commtmrwpc.cpp */,
+				C95C4AB20A2CF14300CE8E05 /* commtmrwplain.cpp */,
+				C95C4AB30A2CF14300CE8E05 /* commtmrwssl.cpp */,
+				C95C4AB40A2CF14300CE8E05 /* commtmsimple.cpp */,
+				C95C4AB50A2CF14300CE8E05 /* commtmsimple.h */,
+				C95C4AB60A2CF14300CE8E05 /* commtmsimpleplain.cpp */,
+				C95C4AB70A2CF14300CE8E05 /* commtmsimplessl.cpp */,
+				C95C4AB80A2CF14300CE8E05 /* commtmwin.cpp */,
+				C95C4AB90A2CF14300CE8E05 /* commtmwin.h */,
+				C95C4ABA0A2CF14300CE8E05 /* commtok822.h */,
+				C95C4ABB0A2CF14300CE8E05 /* commtthread.cpp */,
+				C95C4ABC0A2CF14300CE8E05 /* commtthread.h */,
+				C95C4ABD0A2CF14300CE8E05 /* commurl.cpp */,
+				C95C4ABE0A2CF14300CE8E05 /* commurl.h */,
+				74FBA0C90B9F18B10074EBBD /* i18ncommhtml.cpp */,
+				C95C4A120A2CEFDF00CE8E05 /* lzhl */,
+				C95C4A1C0A2CEFDF00CE8E05 /* lzhl1 */,
+				C95C4B3B0A2CF15000CE8E05 /* tok822.h */,
+				C95C4B3A0A2CF15000CE8E05 /* tok822_parse.cpp */,
+				C95C4A9A0A2CF14300CE8E05 /* commsslentropymac.cpp */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D2AAC046055464E500DB518D /* libcommlib2a.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C6A0FF2B0290797F04C91782 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Documentation;
+			sourceTree = "<group>";
+		};
+		C95C4A120A2CEFDF00CE8E05 /* lzhl */ = {
+			isa = PBXGroup;
+			children = (
+				C95C4A130A2CEFDF00CE8E05 /* _huff.h */,
+				C95C4A140A2CEFDF00CE8E05 /* _lz.h */,
+				C95C4A150A2CEFDF00CE8E05 /* _lzhl.h */,
+				C95C4A160A2CEFDF00CE8E05 /* Hdec_g.tbl */,
+				C95C4A170A2CEFDF00CE8E05 /* Hdec_s.tbl */,
+				C95C4A180A2CEFDF00CE8E05 /* Hdisp.tbl */,
+				C95C4A190A2CEFDF00CE8E05 /* Henc.tbl */,
+				C95C4A1A0A2CEFDF00CE8E05 /* Huff.cpp */,
+				C95C4A1B0A2CEFDF00CE8E05 /* Lz.cpp */,
+			);
+			path = lzhl;
+			sourceTree = "<group>";
+		};
+		C95C4A1C0A2CEFDF00CE8E05 /* lzhl1 */ = {
+			isa = PBXGroup;
+			children = (
+				C95C4A1D0A2CEFDF00CE8E05 /* _huff1.h */,
+				C95C4A1E0A2CEFDF00CE8E05 /* _lz1.h */,
+				C95C4A1F0A2CEFDF00CE8E05 /* _lzhl1.h */,
+				C95C4A200A2CEFDF00CE8E05 /* Hdec_g.tbl */,
+				C95C4A210A2CEFDF00CE8E05 /* Hdec_s.tbl */,
+				C95C4A220A2CEFDF00CE8E05 /* Hdisp.tbl */,
+				C95C4A230A2CEFDF00CE8E05 /* Henc.tbl */,
+				C95C4A240A2CEFDF00CE8E05 /* Huff1.cpp */,
+				C95C4A250A2CEFDF00CE8E05 /* Lz1.cpp */,
+			);
+			path = lzhl1;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D2AAC043055464E500DB518D /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C95C4A260A2CEFDF00CE8E05 /* _huff.h in Headers */,
+				C95C4A270A2CEFDF00CE8E05 /* _lz.h in Headers */,
+				C95C4A280A2CEFDF00CE8E05 /* _lzhl.h in Headers */,
+				C95C4A2B0A2CEFDF00CE8E05 /* _huff1.h in Headers */,
+				C95C4A2C0A2CEFDF00CE8E05 /* _lz1.h in Headers */,
+				C95C4A2D0A2CEFDF00CE8E05 /* _lzhl1.h in Headers */,
+				C95C4A3A0A2CF09700CE8E05 /* _commcomm.h in Headers */,
+				C95C4A3B0A2CF09700CE8E05 /* _commcomp.h in Headers */,
+				C95C4A3C0A2CF09700CE8E05 /* _commmime.h in Headers */,
+				C95C4A3D0A2CF09700CE8E05 /* _commssl.h in Headers */,
+				C95C4A3E0A2CF09700CE8E05 /* _commtcp0.h in Headers */,
+				C95C4A3F0A2CF09700CE8E05 /* _commtmlm.h in Headers */,
+				C95C4A400A2CF09700CE8E05 /* _commtmrw.h in Headers */,
+				C95C4A410A2CF09700CE8E05 /* _commtmrwp.h in Headers */,
+				C95C4A420A2CF09700CE8E05 /* _commtmrwpc.h in Headers */,
+				C95C4A430A2CF09700CE8E05 /* _commtmsimple.h in Headers */,
+				C95C4AC00A2CF14300CE8E05 /* commappfactory.h in Headers */,
+				C95C4AC10A2CF14300CE8E05 /* commappfactoryinterface.h in Headers */,
+				C95C4AC30A2CF14300CE8E05 /* commcgi.h in Headers */,
+				C95C4AC40A2CF14300CE8E05 /* commcli.h in Headers */,
+				C95C4ACA0A2CF14300CE8E05 /* commconcli.h in Headers */,
+				C95C4ACC0A2CF14300CE8E05 /* commconn.h in Headers */,
+				C95C4ACE0A2CF14300CE8E05 /* commdispatcher.h in Headers */,
+				C95C4AD00A2CF14300CE8E05 /* commgrdnull.h in Headers */,
+				C95C4AD30A2CF14300CE8E05 /* commgrdppwd.h in Headers */,
+				C95C4AD60A2CF14300CE8E05 /* commgrdppwdsid.h in Headers */,
+				C95C4ADB0A2CF14300CE8E05 /* commhercules.h in Headers */,
+				C95C4ADD0A2CF14300CE8E05 /* commhtml.h in Headers */,
+				C95C4AE00A2CF14300CE8E05 /* commhttp.h in Headers */,
+				C95C4AE20A2CF14300CE8E05 /* commidmap.h in Headers */,
+				C95C4AE30A2CF14300CE8E05 /* commlib.h in Headers */,
+				C95C4AE50A2CF14300CE8E05 /* commlocalapp.h in Headers */,
+				C95C4AEA0A2CF14300CE8E05 /* commlzhl.h in Headers */,
+				C95C4AEC0A2CF14300CE8E05 /* commmail.h in Headers */,
+				C95C4AF20A2CF14300CE8E05 /* commmonitorlogger.h in Headers */,
+				C95C4AF40A2CF14300CE8E05 /* commmsgbody.h in Headers */,
+				C95C4AF70A2CF14300CE8E05 /* commpop3.h in Headers */,
+				C95C4AF80A2CF14300CE8E05 /* commproto.h in Headers */,
+				C95C4AFA0A2CF14300CE8E05 /* commqueue.h in Headers */,
+				C95C4AFC0A2CF14300CE8E05 /* commredundant.h in Headers */,
+				C95C4AFE0A2CF14300CE8E05 /* commrtable.h in Headers */,
+				C95C4B000A2CF14300CE8E05 /* commsharedmem.h in Headers */,
+				C95C4B020A2CF14300CE8E05 /* commsmtp.h in Headers */,
+				C95C4B030A2CF14300CE8E05 /* commsrv.h in Headers */,
+				C95C4B050A2CF14300CE8E05 /* commsrvcomposite.h in Headers */,
+				C95C4B0B0A2CF14300CE8E05 /* commssl.h in Headers */,
+				C95C4B1E0A2CF14300CE8E05 /* commsubscr.h in Headers */,
+				C95C4B200A2CF14300CE8E05 /* commtime.h in Headers */,
+				C95C4B220A2CF14300CE8E05 /* commtmcomposite.h in Headers */,
+				C95C4B250A2CF14300CE8E05 /* commtmlm.h in Headers */,
+				C95C4B270A2CF14300CE8E05 /* commtmlocal.h in Headers */,
+				C95C4B290A2CF14300CE8E05 /* commtmrw.h in Headers */,
+				C95C4B2B0A2CF14300CE8E05 /* commtmrwp.h in Headers */,
+				C95C4B300A2CF14300CE8E05 /* commtmsimple.h in Headers */,
+				C95C4B340A2CF14300CE8E05 /* commtmwin.h in Headers */,
+				C95C4B350A2CF14300CE8E05 /* commtok822.h in Headers */,
+				C95C4B370A2CF14300CE8E05 /* commtthread.h in Headers */,
+				C95C4B390A2CF14300CE8E05 /* commurl.h in Headers */,
+				C95C4B3D0A2CF15000CE8E05 /* tok822.h in Headers */,
+				C91B45C80A2F2A8E0032595B /* commtmmac.h in Headers */,
+				748FF1EA0B6158B8007BF0C9 /* commsgml.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D2AAC045055464E500DB518D /* commlib2a */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "commlib2a" */;
+			buildPhases = (
+				D2AAC043055464E500DB518D /* Headers */,
+				D2AAC044055464E500DB518D /* Sources */,
+				D289987405E68DCB004EDB86 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = commlib2a;
+			productName = commlib2a;
+			productReference = D2AAC046055464E500DB518D /* libcommlib2a.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB91EF08733DB70010E9CD /* Build configuration list for PBXProject "commlib2a" */;
+			compatibilityVersion = "Xcode 2.4";
+			hasScannedForEncodings = 1;
+			mainGroup = 08FB7794FE84155DC02AAC07 /* commlib2a */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D2AAC045055464E500DB518D /* commlib2a */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D2AAC044055464E500DB518D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C95C4A290A2CEFDF00CE8E05 /* Huff.cpp in Sources */,
+				C95C4A2A0A2CEFDF00CE8E05 /* Lz.cpp in Sources */,
+				C95C4A2E0A2CEFDF00CE8E05 /* Huff1.cpp in Sources */,
+				C95C4A2F0A2CEFDF00CE8E05 /* Lz1.cpp in Sources */,
+				C95C4ABF0A2CF14300CE8E05 /* commappfactory.cpp in Sources */,
+				C95C4AC20A2CF14300CE8E05 /* commcgi.cpp in Sources */,
+				C95C4AC50A2CF14300CE8E05 /* commcliconn.cpp in Sources */,
+				C95C4AC60A2CF14300CE8E05 /* commcligconn.cpp in Sources */,
+				C95C4AC70A2CF14300CE8E05 /* commclisubscr.cpp in Sources */,
+				C95C4AC90A2CF14300CE8E05 /* commconcli.cpp in Sources */,
+				C95C4ACB0A2CF14300CE8E05 /* commconn.cpp in Sources */,
+				C95C4ACD0A2CF14300CE8E05 /* commdispatcher.cpp in Sources */,
+				C95C4ACF0A2CF14300CE8E05 /* commdispatchercommon.cpp in Sources */,
+				C95C4AD10A2CF14300CE8E05 /* commgrdnullcli.cpp in Sources */,
+				C95C4AD20A2CF14300CE8E05 /* commgrdnullsrv.cpp in Sources */,
+				C95C4AD40A2CF14300CE8E05 /* commgrdppwdcli.cpp in Sources */,
+				C95C4AD50A2CF14300CE8E05 /* commgrdppwdroot.cpp in Sources */,
+				C95C4AD70A2CF14300CE8E05 /* commgrdppwdsidcli.cpp in Sources */,
+				C95C4AD80A2CF14300CE8E05 /* commgrdppwdsidroot.cpp in Sources */,
+				C95C4AD90A2CF14300CE8E05 /* commgrdppwdsidsrv.cpp in Sources */,
+				C95C4ADA0A2CF14300CE8E05 /* commgrdppwdsrv.cpp in Sources */,
+				C95C4ADC0A2CF14300CE8E05 /* commhtml.cpp in Sources */,
+				C95C4ADE0A2CF14300CE8E05 /* commhtmlparser.cpp in Sources */,
+				C95C4ADF0A2CF14300CE8E05 /* commhttp.cpp in Sources */,
+				C95C4AE10A2CF14300CE8E05 /* commhttpserver.cpp in Sources */,
+				C95C4AE40A2CF14300CE8E05 /* commlocalapp.cpp in Sources */,
+				C95C4AE60A2CF14300CE8E05 /* commlocalshared.cpp in Sources */,
+				C95C4AE70A2CF14300CE8E05 /* commlocalssl.cpp in Sources */,
+				C95C4AE80A2CF14300CE8E05 /* commlocalsslclient.cpp in Sources */,
+				C95C4AE90A2CF14300CE8E05 /* commlzhl.cpp in Sources */,
+				C95C4AEB0A2CF14300CE8E05 /* commmail.cpp in Sources */,
+				C95C4AED0A2CF14300CE8E05 /* commmailload.cpp in Sources */,
+				C95C4AF00A2CF14300CE8E05 /* commmime.cpp in Sources */,
+				C95C4AF10A2CF14300CE8E05 /* commmonitorlogger.cpp in Sources */,
+				C95C4AF30A2CF14300CE8E05 /* commmsgbody.cpp in Sources */,
+				C95C4AF50A2CF14300CE8E05 /* commphyslocal.cpp in Sources */,
+				C95C4AF60A2CF14300CE8E05 /* commpop3.cpp in Sources */,
+				C95C4AF90A2CF14300CE8E05 /* commqueue.cpp in Sources */,
+				C95C4AFB0A2CF14300CE8E05 /* commredundant.cpp in Sources */,
+				C95C4AFD0A2CF14300CE8E05 /* commrtable.cpp in Sources */,
+				C95C4AFF0A2CF14300CE8E05 /* commsharedmem.cpp in Sources */,
+				C95C4B010A2CF14300CE8E05 /* commsmtp.cpp in Sources */,
+				C95C4B040A2CF14300CE8E05 /* commsrvcomposite.cpp in Sources */,
+				C95C4B060A2CF14300CE8E05 /* commsrvconn.cpp in Sources */,
+				C95C4B070A2CF14300CE8E05 /* commsrvobj.cpp in Sources */,
+				C95C4B080A2CF14300CE8E05 /* commsrvsubscr.cpp in Sources */,
+				C95C4B0A0A2CF14300CE8E05 /* commssl.cpp in Sources */,
+				C95C4B0C0A2CF14300CE8E05 /* commssl0.cpp in Sources */,
+				C95C4B0D0A2CF14300CE8E05 /* commsslbase64.cpp in Sources */,
+				C95C4B0E0A2CF14300CE8E05 /* commsslbio.cpp in Sources */,
+				C95C4B0F0A2CF14300CE8E05 /* commsslc.cpp in Sources */,
+				C95C4B100A2CF14300CE8E05 /* commsslchksum.cpp in Sources */,
+				C95C4B110A2CF14300CE8E05 /* commsslcipher.cpp in Sources */,
+				C95C4B120A2CF14300CE8E05 /* commsslcipher3.cpp in Sources */,
+				C95C4B130A2CF14300CE8E05 /* commsslentropy.cpp in Sources */,
+				C95C4B140A2CF14300CE8E05 /* commsslentropys.cpp in Sources */,
+				C95C4B150A2CF14300CE8E05 /* commsslentropymac.cpp in Sources */,
+				C95C4B160A2CF14300CE8E05 /* commsslp.cpp in Sources */,
+				C95C4B170A2CF14300CE8E05 /* commsslprivkey.cpp in Sources */,
+				C95C4B180A2CF14300CE8E05 /* commsslrand.cpp in Sources */,
+				C95C4B190A2CF14300CE8E05 /* commssls.cpp in Sources */,
+				C95C4B1A0A2CF14300CE8E05 /* commsslsign.cpp in Sources */,
+				C95C4B1B0A2CF14300CE8E05 /* commsslsysinfo.cpp in Sources */,
+				C95C4B1C0A2CF14300CE8E05 /* commsslverify.cpp in Sources */,
+				C95C4B1D0A2CF14300CE8E05 /* commsubscr.cpp in Sources */,
+				C95C4B1F0A2CF14300CE8E05 /* commtcp0.cpp in Sources */,
+				C95C4B210A2CF14300CE8E05 /* commtmcomposite.cpp in Sources */,
+				C95C4B230A2CF14300CE8E05 /* commtmgr.cpp in Sources */,
+				C95C4B240A2CF14300CE8E05 /* commtmlm.cpp in Sources */,
+				C95C4B260A2CF14300CE8E05 /* commtmlocal.cpp in Sources */,
+				C95C4B280A2CF14300CE8E05 /* commtmrw.cpp in Sources */,
+				C95C4B2A0A2CF14300CE8E05 /* commtmrwp.cpp in Sources */,
+				C95C4B2C0A2CF14300CE8E05 /* commtmrwpc.cpp in Sources */,
+				C95C4B2D0A2CF14300CE8E05 /* commtmrwplain.cpp in Sources */,
+				C95C4B2E0A2CF14300CE8E05 /* commtmrwssl.cpp in Sources */,
+				C95C4B2F0A2CF14300CE8E05 /* commtmsimple.cpp in Sources */,
+				C95C4B310A2CF14300CE8E05 /* commtmsimpleplain.cpp in Sources */,
+				C95C4B320A2CF14300CE8E05 /* commtmsimplessl.cpp in Sources */,
+				C95C4B330A2CF14300CE8E05 /* commtmwin.cpp in Sources */,
+				C95C4B360A2CF14300CE8E05 /* commtthread.cpp in Sources */,
+				C95C4B380A2CF14300CE8E05 /* commurl.cpp in Sources */,
+				C95C4B3C0A2CF15000CE8E05 /* tok822_parse.cpp in Sources */,
+				C91B45C70A2F2A8E0032595B /* commtmmac.cpp in Sources */,
+				748FF1E80B6158B8007BF0C9 /* commmailnormalize.cpp in Sources */,
+				748FF1EB0B6158B8007BF0C9 /* commsgmlparser.cpp in Sources */,
+				74FBA0CA0B9F18B10074EBBD /* i18ncommhtml.cpp in Sources */,
+				74A405110CF74F5900AC959E /* commsslentropymac.cpp in Sources */,
+				742050270E0AAB7A0047CF6A /* commsslthrow.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB91EC08733DB70010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 743724CC0E031EAA0018E8B9 /* DebugTarget.xcconfig */;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				HEADER_SEARCH_PATHS = (
+					openssl,
+					"$(inherited)",
+				);
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = commlib2a;
+				USER_HEADER_SEARCH_PATHS = ../plib;
+				ZERO_LINK = NO;
+			};
+			name = Debug;
+		};
+		1DEB91ED08733DB70010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7440ADC20C5A352000671185 /* ReleaseTarget.xcconfig */;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited)";
+				GCC_SYMBOLS_PRIVATE_EXTERN = YES;
+				HEADER_SEARCH_PATHS = (
+					openssl,
+					"$(inherited)",
+				);
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = commlib2a;
+				USER_HEADER_SEARCH_PATHS = ../plib;
+			};
+			name = Release;
+		};
+		1DEB91F008733DB70010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(NATIVE_ARCH)";
+				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Debug;
+		};
+		1DEB91F108733DB70010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					ppc,
+					i386,
+				);
+				GCC_TREAT_NONCONFORMANT_CODE_ERRORS_AS_WARNINGS = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				PREBINDING = NO;
+				PRECOMPS_INCLUDE_HEADERS_FROM_BUILT_PRODUCTS_DIR = NO;
+				SDKROOT = /Developer/SDKs/MacOSX10.4u.sdk;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB91EB08733DB70010E9CD /* Build configuration list for PBXNativeTarget "commlib2a" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91EC08733DB70010E9CD /* Debug */,
+				1DEB91ED08733DB70010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB91EF08733DB70010E9CD /* Build configuration list for PBXProject "commlib2a" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB91F008733DB70010E9CD /* Debug */,
+				1DEB91F108733DB70010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

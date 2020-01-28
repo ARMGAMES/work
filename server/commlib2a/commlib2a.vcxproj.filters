@@ -1,0 +1,704 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{08efd58e-b275-426f-aebb-7795b184a95e}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{a42b36b7-51a2-49b9-992e-66fbced799e2}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="commappfactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commcgi.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commcliconn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commcligconn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commcligconnex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commclisubscr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commclisubscrlight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commconcli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commconn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commdispatcher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commdispatchercommon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdaesencryptedcli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdaesencryptedroot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdaesencryptedsrv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdnullcli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdnullsrv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdppwdcli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdppwdroot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdppwdsidcli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdppwdsidroot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdppwdsidsrv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdppwdsrv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdrsacli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdrsaroot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdrsasimplecli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdrsasimpleroot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdrsasimplesrv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdrsasrv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdtokencli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdtokenroot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdtokensrv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdwebtokencli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdwebtokenroot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdwebtokensrv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commhtml.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commhtmlex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commhtmlparser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commhttp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commhttpserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commlocalapp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commlocalshared.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commlocalssl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commlocalsslclient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commlzhl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commmail.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commmailload.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commmime.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commmonitorlogger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commmsgbody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commphyslocal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commpop3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commqueue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commredundant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commrtable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsgmlparser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsharedmem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsharedmemloop.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsmtp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsrvcomposite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsrvconn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsrvobj.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsrvsubscr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsrvsubscrlight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commssl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commssl0.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslaes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslbase64.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslbio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslchksum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslcipher.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslcipher3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commssldh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslentropy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslentropys.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslentropywinc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslpasswordhash.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslpasswordhashgenerate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslprivkey.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslrand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslrsa.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commssls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslsign.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslsysinfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslthrow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsslverify.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commstreamencryption.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commsubscr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtcp0.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmandroid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmclient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmclientplain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmclientssl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmclientudp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmclientudpplain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmcomposite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmgr.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmlm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmlocal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmmac.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmrw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmrwmp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmrwp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmrwpc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmrwplain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmrwssl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmrwudp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmrwudpplain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmsimple.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmsimpleplain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmsimplessl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtmwin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtok822.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commtthread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commudp0.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="communix.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commurl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lzhl\Huff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lzhl1\huff1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="i18ncommhtml.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lzhl\Lz.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="lzhl1\lz1.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="tok822_parse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdwebtokenintcli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdwebtokenintroot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdwebtokenintsrv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdpftppwdcli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdpftppwdroot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdpftppwdsrv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdencryptedpwdcli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdencryptedpwdsrv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdencryptedpwdroot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdencryption.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commpasswdencrypt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commwebsocketsslthreadmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commwebsocketthreadmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdextauthsrv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdextauthcli.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commgrdextauthroot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="_commcomm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commcomp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commmime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commssl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commtcp0.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commtmclient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commtmclientudp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commtmlm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commtmrw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commtmrwmp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commtmrwp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commtmrwpc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commtmsimple.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commudp0.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lzhl\_huff.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lzhl1\_huff1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lzhl\_lz.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lzhl1\_lz1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lzhl\_lzhl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="lzhl1\_lzhl1.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commappfactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commappfactoryinterface.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commcgi.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commcli.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commclisubscrlight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commconcli.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commconn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commdispatcher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commgrdaesencrypted.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commgrdnull.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commgrdppwd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commgrdppwdsid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commgrdrsa.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commgrdrsasimple.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commgrdtoken.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commgrdwebtoken.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commhercules.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commhtml.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commhttp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commidmap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commlib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commlocalapp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commlzhl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commmail.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commmonitorlogger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commmsgbody.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commpop3.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commproto.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commqueue.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commredundant.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commrtable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commsgml.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commsharedmem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commsharedmemintrf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commsharedmemloop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commsmtp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commsrv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commsrvcomposite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commsrvsubscrlight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commssl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commstreamencryption.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commstreamencryptionpike.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commsubscr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtime.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtmandroid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtmclient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtmclientudp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtmcomposite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtmlm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtmlocal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtmmac.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtmrw.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtmrwudp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtmsimple.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtmwin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtok822.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtthread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commurl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="tok822.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commoption.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commgrdwebtokenint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commgrdpftppwd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commgrdencryptedpwd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commgrdencryption.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtmrwplain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commwebsocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commtmwebsocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commpasswdencrypt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commtmwebsocket.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commgrdextauth.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

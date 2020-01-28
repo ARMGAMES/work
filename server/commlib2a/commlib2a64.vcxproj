@@ -1,0 +1,293 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>commlib2a</ProjectName>
+    <ProjectGuid>{3B0D651B-1E8F-4866-B1ED-A767B1F56DEA}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="..\protocols\PyrRelease.props" />
+    <Import Project="..\protocols\PYRx64.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="..\protocols\PyrDebug.props" />
+    <Import Project="..\protocols\PYRx64.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.60315.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <BrowseInformation />
+      <AdditionalOptions>/Zc:implicitNoexcept-</AdditionalOptions>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib />
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile />
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib />
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+    <ClCompile />
+    <ClCompile />
+    <ClCompile>
+      <AdditionalOptions>/Zc:implicitNoexcept-</AdditionalOptions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="commappfactory.cpp" />
+    <ClCompile Include="commcgi.cpp" />
+    <ClCompile Include="commcliconn.cpp" />
+    <ClCompile Include="commcligconn.cpp" />
+    <ClCompile Include="commcligconnex.cpp" />
+    <ClCompile Include="commclisubscr.cpp" />
+    <ClCompile Include="commclisubscrlight.cpp" />
+    <ClCompile Include="commconcli.cpp" />
+    <ClCompile Include="commconn.cpp" />
+    <ClCompile Include="commdispatcher.cpp" />
+    <ClCompile Include="commdispatchercommon.cpp" />
+    <ClCompile Include="commgrdaesencryptedcli.cpp" />
+    <ClCompile Include="commgrdaesencryptedroot.cpp" />
+    <ClCompile Include="commgrdaesencryptedsrv.cpp" />
+    <ClCompile Include="commgrdnullcli.cpp" />
+    <ClCompile Include="commgrdnullsrv.cpp" />
+    <ClCompile Include="commgrdppwdcli.cpp" />
+    <ClCompile Include="commgrdppwdroot.cpp" />
+    <ClCompile Include="commgrdppwdsidcli.cpp" />
+    <ClCompile Include="commgrdppwdsidroot.cpp" />
+    <ClCompile Include="commgrdppwdsidsrv.cpp" />
+    <ClCompile Include="commgrdppwdsrv.cpp" />
+    <ClCompile Include="commgrdrsacli.cpp" />
+    <ClCompile Include="commgrdrsaroot.cpp" />
+    <ClCompile Include="commgrdrsasimplecli.cpp" />
+    <ClCompile Include="commgrdrsasimpleroot.cpp" />
+    <ClCompile Include="commgrdrsasimplesrv.cpp" />
+    <ClCompile Include="commgrdrsasrv.cpp" />
+    <ClCompile Include="commgrdtokencli.cpp" />
+    <ClCompile Include="commgrdtokenroot.cpp" />
+    <ClCompile Include="commgrdtokensrv.cpp" />
+    <ClCompile Include="commgrdwebtokencli.cpp" />
+    <ClCompile Include="commgrdwebtokenroot.cpp" />
+    <ClCompile Include="commgrdwebtokensrv.cpp" />
+    <ClCompile Include="commhtml.cpp" />
+    <ClCompile Include="commhtmlex.cpp" />
+    <ClCompile Include="commhtmlparser.cpp" />
+    <ClCompile Include="commhttp.cpp" />
+    <ClCompile Include="commhttpserver.cpp" />
+    <ClCompile Include="commlocalapp.cpp" />
+    <ClCompile Include="commlocalshared.cpp" />
+    <ClCompile Include="commlocalssl.cpp" />
+    <ClCompile Include="commlocalsslclient.cpp" />
+    <ClCompile Include="commlzhl.cpp" />
+    <ClCompile Include="commmail.cpp" />
+    <ClCompile Include="commmailload.cpp" />
+    <ClCompile Include="commmime.cpp" />
+    <ClCompile Include="commmonitorlogger.cpp" />
+    <ClCompile Include="commmsgbody.cpp" />
+    <ClCompile Include="commphyslocal.cpp" />
+    <ClCompile Include="commpop3.cpp" />
+    <ClCompile Include="commqueue.cpp" />
+    <ClCompile Include="commredundant.cpp" />
+    <ClCompile Include="commrtable.cpp" />
+    <ClCompile Include="commsgmlparser.cpp" />
+    <ClCompile Include="commsharedmem.cpp" />
+    <ClCompile Include="commsharedmemloop.cpp" />
+    <ClCompile Include="commsmtp.cpp" />
+    <ClCompile Include="commsrvcomposite.cpp" />
+    <ClCompile Include="commsrvconn.cpp" />
+    <ClCompile Include="commsrvobj.cpp" />
+    <ClCompile Include="commsrvsubscr.cpp" />
+    <ClCompile Include="commsrvsubscrlight.cpp" />
+    <ClCompile Include="commssl.cpp" />
+    <ClCompile Include="commssl0.cpp" />
+    <ClCompile Include="commsslaes.cpp" />
+    <ClCompile Include="commsslbase64.cpp" />
+    <ClCompile Include="commsslbio.cpp" />
+    <ClCompile Include="commsslc.cpp" />
+    <ClCompile Include="commsslchksum.cpp" />
+    <ClCompile Include="commsslcipher.cpp" />
+    <ClCompile Include="commsslcipher3.cpp" />
+    <ClCompile Include="commssldh.cpp" />
+    <ClCompile Include="commsslentropy.cpp" />
+    <ClCompile Include="commsslentropys.cpp" />
+    <ClCompile Include="commsslentropywinc.cpp" />
+    <ClCompile Include="commsslpasswordhash.cpp" />
+    <ClCompile Include="commsslpasswordhashgenerate.cpp" />
+    <ClCompile Include="commsslprivkey.cpp" />
+    <ClCompile Include="commsslrand.cpp" />
+    <ClCompile Include="commsslrsa.cpp" />
+    <ClCompile Include="commssls.cpp" />
+    <ClCompile Include="commsslsign.cpp" />
+    <ClCompile Include="commsslsysinfo.cpp" />
+    <ClCompile Include="commsslthrow.cpp" />
+    <ClCompile Include="commsslverify.cpp" />
+    <ClCompile Include="commstreamencryption.cpp" />
+    <ClCompile Include="commsubscr.cpp" />
+    <ClCompile Include="commtcp0.cpp" />
+    <ClCompile Include="commtmandroid.cpp" />
+    <ClCompile Include="commtmclient.cpp" />
+    <ClCompile Include="commtmclientplain.cpp" />
+    <ClCompile Include="commtmclientssl.cpp" />
+    <ClCompile Include="commtmclientudp.cpp" />
+    <ClCompile Include="commtmclientudpplain.cpp" />
+    <ClCompile Include="commtmcomposite.cpp" />
+    <ClCompile Include="commtmgr.cpp" />
+    <ClCompile Include="commtmlm.cpp" />
+    <ClCompile Include="commtmlocal.cpp" />
+    <ClCompile Include="commtmmac.cpp" />
+    <ClCompile Include="commtmrw.cpp" />
+    <ClCompile Include="commtmrwmp.cpp" />
+    <ClCompile Include="commtmrwp.cpp" />
+    <ClCompile Include="commtmrwpc.cpp" />
+    <ClCompile Include="commtmrwplain.cpp" />
+    <ClCompile Include="commtmrwssl.cpp" />
+    <ClCompile Include="commtmrwudp.cpp" />
+    <ClCompile Include="commtmrwudpplain.cpp" />
+    <ClCompile Include="commtmsimple.cpp" />
+    <ClCompile Include="commtmsimpleplain.cpp" />
+    <ClCompile Include="commtmsimplessl.cpp" />
+    <ClCompile Include="commtmwin.cpp" />
+    <ClCompile Include="commtok822.cpp" />
+    <ClCompile Include="commtthread.cpp" />
+    <ClCompile Include="commudp0.cpp" />
+    <ClCompile Include="communix.cpp" />
+    <ClCompile Include="commurl.cpp" />
+    <ClCompile Include="lzhl\Huff.cpp" />
+    <ClCompile Include="lzhl1\huff1.cpp" />
+    <ClCompile Include="i18ncommhtml.cpp" />
+    <ClCompile Include="lzhl\Lz.cpp" />
+    <ClCompile Include="lzhl1\lz1.cpp" />
+    <ClCompile Include="tok822_parse.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="_commcomm.h" />
+    <ClInclude Include="_commcomp.h" />
+    <ClInclude Include="_commmime.h" />
+    <ClInclude Include="_commssl.h" />
+    <ClInclude Include="_commtcp0.h" />
+    <ClInclude Include="_commtmclient.h" />
+    <ClInclude Include="_commtmclientudp.h" />
+    <ClInclude Include="_commtmlm.h" />
+    <ClInclude Include="_commtmrw.h" />
+    <ClInclude Include="_commtmrwmp.h" />
+    <ClInclude Include="_commtmrwp.h" />
+    <ClInclude Include="_commtmrwpc.h" />
+    <ClInclude Include="_commtmsimple.h" />
+    <ClInclude Include="_commudp0.h" />
+    <ClInclude Include="lzhl\_huff.h" />
+    <ClInclude Include="lzhl1\_huff1.h" />
+    <ClInclude Include="lzhl\_lz.h" />
+    <ClInclude Include="lzhl1\_lz1.h" />
+    <ClInclude Include="lzhl\_lzhl.h" />
+    <ClInclude Include="lzhl1\_lzhl1.h" />
+    <ClInclude Include="commappfactory.h" />
+    <ClInclude Include="commappfactoryinterface.h" />
+    <ClInclude Include="commcgi.h" />
+    <ClInclude Include="commcli.h" />
+    <ClInclude Include="commclisubscrlight.h" />
+    <ClInclude Include="commconcli.h" />
+    <ClInclude Include="commconn.h" />
+    <ClInclude Include="commdispatcher.h" />
+    <ClInclude Include="commgrdaesencrypted.h" />
+    <ClInclude Include="commgrdnull.h" />
+    <ClInclude Include="commgrdppwd.h" />
+    <ClInclude Include="commgrdppwdsid.h" />
+    <ClInclude Include="commgrdrsa.h" />
+    <ClInclude Include="commgrdrsasimple.h" />
+    <ClInclude Include="commgrdtoken.h" />
+    <ClInclude Include="commgrdwebtoken.h" />
+    <ClInclude Include="commhercules.h" />
+    <ClInclude Include="commhtml.h" />
+    <ClInclude Include="commhttp.h" />
+    <ClInclude Include="commidmap.h" />
+    <ClInclude Include="commlib.h" />
+    <ClInclude Include="commlocalapp.h" />
+    <ClInclude Include="commlzhl.h" />
+    <ClInclude Include="commmail.h" />
+    <ClInclude Include="commmonitorlogger.h" />
+    <ClInclude Include="commmsgbody.h" />
+    <ClInclude Include="commpop3.h" />
+    <ClInclude Include="commproto.h" />
+    <ClInclude Include="commqueue.h" />
+    <ClInclude Include="commredundant.h" />
+    <ClInclude Include="commrtable.h" />
+    <ClInclude Include="commsgml.h" />
+    <ClInclude Include="commsharedmem.h" />
+    <ClInclude Include="commsharedmemintrf.h" />
+    <ClInclude Include="commsharedmemloop.h" />
+    <ClInclude Include="commsmtp.h" />
+    <ClInclude Include="commsrv.h" />
+    <ClInclude Include="commsrvcomposite.h" />
+    <ClInclude Include="commsrvsubscrlight.h" />
+    <ClInclude Include="commssl.h" />
+    <ClInclude Include="commstreamencryption.h" />
+    <ClInclude Include="commstreamencryptionpike.h" />
+    <ClInclude Include="commsubscr.h" />
+    <ClInclude Include="commtime.h" />
+    <ClInclude Include="commtmandroid.h" />
+    <ClInclude Include="commtmclient.h" />
+    <ClInclude Include="commtmclientudp.h" />
+    <ClInclude Include="commtmcomposite.h" />
+    <ClInclude Include="commtmlm.h" />
+    <ClInclude Include="commtmlocal.h" />
+    <ClInclude Include="commtmmac.h" />
+    <ClInclude Include="commtmrw.h" />
+    <ClInclude Include="commtmrwudp.h" />
+    <ClInclude Include="commtmsimple.h" />
+    <ClInclude Include="commtmwin.h" />
+    <ClInclude Include="commtok822.h" />
+    <ClInclude Include="commtthread.h" />
+    <ClInclude Include="commurl.h" />
+    <ClInclude Include="tok822.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

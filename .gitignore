@@ -23,3 +23,11 @@ algorithms/algorithms/x64/Debug
 algorithms/Debug
 algorithms/x64
 algorithms/algorithms/Debug
+server/plib/.vs
+server/plib/x64
+server/plib/Debug
+server/commlib2a/x64
+server/commlib2a/Debug
+server/commlib2a/commmessage/Debug
+commextlib/x64
+commextlib/Debug

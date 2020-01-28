@@ -1,0 +1,5 @@
+patch=dispatcherstart.h
+
+file=dispatchermain.cpp
+dir=../plib
+file=../plib/_ppabort.cpp

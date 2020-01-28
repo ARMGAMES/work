@@ -1,0 +1,43 @@
+# connection=ip:<address>:<port>/<object name>/<conn type>
+# aconnection= same with password
+# asconnection= same with password + PIN
+#
+# Next lines define messages. First line for each message has to start
+# with 'message=' command following by msgId.
+# message=msgId[/wait]
+# Optional parameter 'wait' means that the next message should be sent
+# only after receiving answer from the previous message. Without 
+# this parameer all messages will be sent simultaneously.
+
+# For every message you have to define content of message body
+# DON'T ADD THE FIRST REQUEST ID (reqId, which we usually add 
+# as the start of the message body). It will be added by the program
+# 
+# Every compose should be defined in one line
+# Lines should begin with
+# 8=    - for INT64 and UINT64
+# 4=    - for INT32 and UINT32
+# 2=    - for INT16 and UINT16
+# 1=    - for bytes (byte could be defined by symbol or 0xnn for nonprintable symbols
+# s=    - for strings
+# t=    - for time (YYYY/MM/DD HH:MM:SS)
+# d=    - for date (YYYY/MM/DD)
+# m=    - for message body till 'end'
+# b=[t|f] - for bool
+# e=base64encoded - varblock
+# sfile=file_name - content of file as string
+# vfile=file_name - file as varblock
+#
+# parser= how to parse response: () [|] <>
+# v["file_name"] - parse and (optional save) varblock
+# V - parse and printf varblock
+
+#connection=ip:localhost:4323/RequestDbmServerInstance/trustedAdmin
+asconnection=ip:localhost:4322/RegulatorServerInstance/admin
+
+# MSG_REGULATOR_ADMIN_REINIT
+message=7112/wait
+1=0x01
+
+# How to parse response. (optional)
+parser=2[s|m(4<m(ssss)>)]

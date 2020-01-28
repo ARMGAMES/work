@@ -1,0 +1,405 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="DebugMD|Win32">
+      <Configuration>DebugMD</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="DebugMD|x64">
+      <Configuration>DebugMD</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectName>plib</ProjectName>
+    <ProjectGuid>{BC7ACFA9-3540-4717-8F40-D649A0D130EF}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugMD|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugMD|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="..\protocols\PyrRelease.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="..\protocols\PyrDebug.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugMD|Win32'" Label="PropertySheets">
+    <Import Project="..\protocols\PyrDebug.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="..\protocols\PyrRelease.props" />
+    <Import Project="..\protocols\PyrX64.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="..\protocols\PyrDebug.props" />
+    <Import Project="..\protocols\PyrX64.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='DebugMD|x64'" Label="PropertySheets">
+    <Import Project="..\protocols\PyrDebug.props" />
+    <Import Project="..\protocols\PyrX64.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.60315.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugMD|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='DebugMD|x64'">
+    <OutDir>.\x64\Debug\</OutDir>
+    <IntDir>.\x64\Debug\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/Zc:implicitNoexcept-</AdditionalOptions>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalDependencies>DbgHelp.lib</AdditionalDependencies>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugMD|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/Zc:implicitNoexcept-</AdditionalOptions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib />
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+    <Lib>
+      <AdditionalDependencies>DbgHelp.lib</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/Zc:implicitNoexcept-</AdditionalOptions>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+      <AdditionalDependencies>DbgHelp.lib</AdditionalDependencies>
+    </Lib>
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='DebugMD|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/Zc:implicitNoexcept-</AdditionalOptions>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib />
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+    <Lib>
+      <AdditionalDependencies>DbgHelp.lib</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>/Zc:implicitNoexcept-</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib />
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+    <Lib>
+      <AdditionalDependencies>DbgHelp.lib</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions>/Zc:implicitNoexcept-</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Lib />
+    <Bscmake>
+      <SuppressStartupBanner>true</SuppressStartupBanner>
+    </Bscmake>
+    <Lib>
+      <AdditionalDependencies>DbgHelp.lib</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="ppmemtrace.cpp" />
+    <ClCompile Include="ppsocketsudt.cpp" />
+    <ClCompile Include="ppstacktrace.cpp" />
+    <ClCompile Include="udt\pudtbuffer.cpp" />
+    <ClCompile Include="udt\pudtccc.cpp" />
+    <ClCompile Include="udt\pudtlosslist.cpp" />
+    <ClCompile Include="udt\pudtpacket.cpp" />
+    <ClCompile Include="udt\pudtsocket.cpp" />
+    <ClCompile Include="udt\pudttimer.cpp" />
+    <ClCompile Include="udt\pudtwindow.cpp" />
+    <ClCompile Include="zip\adler32.c" />
+    <ClCompile Include="zip\crc32.c" />
+    <ClCompile Include="zip\deflate.c" />
+    <ClCompile Include="ungif\dgif_lib.c" />
+    <ClCompile Include="ungif\gif_err.c" />
+    <ClCompile Include="ungif\gif_hash.c" />
+    <ClCompile Include="ungif\gifalloc.c" />
+    <ClCompile Include="zip\gzio2.cpp" />
+    <ClCompile Include="zip\infblock.c" />
+    <ClCompile Include="zip\infcodes.c" />
+    <ClCompile Include="zip\inffast.c" />
+    <ClCompile Include="zip\inflate.c" />
+    <ClCompile Include="zip\inftrees.c" />
+    <ClCompile Include="zip\infutil.c" />
+    <ClCompile Include="jpeg\jcapimin.c" />
+    <ClCompile Include="jpeg\jcapistd.c" />
+    <ClCompile Include="jpeg\jccoefct.c" />
+    <ClCompile Include="jpeg\jccolor.c" />
+    <ClCompile Include="jpeg\jcdctmgr.c" />
+    <ClCompile Include="jpeg\jchuff.c" />
+    <ClCompile Include="jpeg\jcinit.c" />
+    <ClCompile Include="jpeg\jcmainct.c" />
+    <ClCompile Include="jpeg\jcmarker.c" />
+    <ClCompile Include="jpeg\jcmaster.c" />
+    <ClCompile Include="jpeg\jcomapi.c" />
+    <ClCompile Include="jpeg\jcparam.c" />
+    <ClCompile Include="jpeg\jcphuff.c" />
+    <ClCompile Include="jpeg\jcprepct.c" />
+    <ClCompile Include="jpeg\jcsample.c" />
+    <ClCompile Include="jpeg\jdapimin.c" />
+    <ClCompile Include="jpeg\jdapistd.c" />
+    <ClCompile Include="jpeg\jdcoefct.c" />
+    <ClCompile Include="jpeg\jdcolor.c" />
+    <ClCompile Include="jpeg\jddctmgr.c" />
+    <ClCompile Include="jpeg\jdhuff.c" />
+    <ClCompile Include="jpeg\jdinput.c" />
+    <ClCompile Include="jpeg\jdmainct.c" />
+    <ClCompile Include="jpeg\jdmarker.c" />
+    <ClCompile Include="jpeg\jdmaster.c" />
+    <ClCompile Include="jpeg\jdmerge.c" />
+    <ClCompile Include="jpeg\jdphuff.c" />
+    <ClCompile Include="jpeg\jdpostct.c" />
+    <ClCompile Include="jpeg\jdsample.c" />
+    <ClCompile Include="jpeg\jfdctflt.c" />
+    <ClCompile Include="jpeg\jfdctfst.c" />
+    <ClCompile Include="jpeg\jfdctint.c" />
+    <ClCompile Include="jpeg\jidctflt.c" />
+    <ClCompile Include="jpeg\jidctfst.c" />
+    <ClCompile Include="jpeg\jidctint.c" />
+    <ClCompile Include="jpeg\jidctred.c" />
+    <ClCompile Include="jpeg\jmemmgr.c" />
+    <ClCompile Include="jpeg\jmemnobs.c" />
+    <ClCompile Include="jpeg\jquant1.c" />
+    <ClCompile Include="jpeg\jquant2.c" />
+    <ClCompile Include="jpeg\jutils.c" />
+    <ClCompile Include="ppblock.cpp" />
+    <ClCompile Include="ppclient.cpp" />
+    <ClCompile Include="ppconapp.cpp" />
+    <ClCompile Include="zip\ppdeflate.cpp" />
+    <ClCompile Include="ppdir.cpp" />
+    <ClCompile Include="pperror.cpp" />
+    <ClCompile Include="ppfstream.cpp" />
+    <ClCompile Include="ungif\ppgif.cpp" />
+    <ClCompile Include="zip\ppgzip.cpp" />
+    <ClCompile Include="ppi18n_1252.cpp" />
+    <ClCompile Include="ppi18n_ascii.cpp" />
+    <ClCompile Include="ppi18n_casefolding.cpp" />
+    <ClCompile Include="ppi18n_codepage.cpp" />
+    <ClCompile Include="ppi18n_stream.cpp" />
+    <ClCompile Include="ppimage.cpp" />
+    <ClCompile Include="ppincludebase.cpp" />
+    <ClCompile Include="zip\ppinflate.cpp" />
+    <ClCompile Include="ppinifile.cpp" />
+    <ClCompile Include="ppinifileex.cpp" />
+    <ClCompile Include="ppiofile.cpp" />
+    <ClCompile Include="ppipc.cpp" />
+    <ClCompile Include="jpeg\ppjerror.cpp" />
+    <ClCompile Include="jpeg\ppjpeg.cpp" />
+    <ClCompile Include="jpeg\ppjpegout.cpp" />
+    <ClCompile Include="pplogfile.cpp" />
+    <ClCompile Include="ppmsg.cpp" />
+    <ClCompile Include="ppmstream.cpp" />
+    <ClCompile Include="ppprocess.cpp" />
+    <ClCompile Include="ppprocesselevated.cpp" />
+    <ClCompile Include="ppprocesskill.cpp" />
+    <ClCompile Include="pprandom.cpp" />
+    <ClCompile Include="ppsig.cpp" />
+    <ClCompile Include="ppsocket.cpp" />
+    <ClCompile Include="ppsocketc.cpp" />
+    <ClCompile Include="ppsockets.cpp" />
+    <ClCompile Include="ppsocketudp.cpp" />
+    <ClCompile Include="ppstring.cpp" />
+    <ClCompile Include="ppstringutf8.cpp" />
+    <ClCompile Include="ppstringw.cpp" />
+    <ClCompile Include="ppstringx.cpp" />
+    <ClCompile Include="ppsysinfo.cpp" />
+    <ClCompile Include="ppthread.cpp" />
+    <ClCompile Include="ppunistring.cpp" />
+    <ClCompile Include="ppwinsvc.cpp" />
+    <ClCompile Include="ppwinwnd.cpp" />
+    <ClCompile Include="zip\ppzzip.cpp" />
+    <ClCompile Include="zip\trees.c" />
+    <ClCompile Include="zip\unzip.c" />
+    <ClCompile Include="zip\zip.c" />
+    <ClCompile Include="zip\zip2.cpp" />
+    <ClCompile Include="zip\zutil.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="jpeg\jchuff.h" />
+    <ClInclude Include="jpeg\jconfig.h" />
+    <ClInclude Include="jpeg\jdct.h" />
+    <ClInclude Include="jpeg\jdhuff.h" />
+    <ClInclude Include="jpeg\jerror.h" />
+    <ClInclude Include="jpeg\jinclude.h" />
+    <ClInclude Include="jpeg\jmemsys.h" />
+    <ClInclude Include="jpeg\jmorecfg.h" />
+    <ClInclude Include="jpeg\jpegint.h" />
+    <ClInclude Include="jpeg\jpeglib.h" />
+    <ClInclude Include="jpeg\jversion.h" />
+    <ClInclude Include="ppblock.h" />
+    <ClInclude Include="ppclient.h" />
+    <ClInclude Include="ppcontainer.h" />
+    <ClInclude Include="ppdaemon.h" />
+    <ClInclude Include="ppdir.h" />
+    <ClInclude Include="pperror.h" />
+    <ClInclude Include="ppi18n.h" />
+    <ClInclude Include="ppi18n_bcustring.h" />
+    <ClInclude Include="ppi18n_casefolding.h" />
+    <ClInclude Include="ppi18n_codepage.h" />
+    <ClInclude Include="ppi18n_string.h" />
+    <ClInclude Include="ppi18n_utf8.h" />
+    <ClInclude Include="ppi18n_x.h" />
+    <ClInclude Include="ppidmap.h" />
+    <ClInclude Include="ppimage.h" />
+    <ClInclude Include="ppinclude.h" />
+    <ClInclude Include="ppincludebase.h" />
+    <ClInclude Include="ppinifile.h" />
+    <ClInclude Include="ppiofile.h" />
+    <ClInclude Include="ppipc.h" />
+    <ClInclude Include="pplogfile.h" />
+    <ClInclude Include="ppmemtrace.h" />
+    <ClInclude Include="ppmemtracedisable.h" />
+    <ClInclude Include="ppmemtraceenable.h" />
+    <ClInclude Include="ppmsg.h" />
+    <ClInclude Include="ppprocess.h" />
+    <ClInclude Include="pprandom.h" />
+    <ClInclude Include="ppsig.h" />
+    <ClInclude Include="ppsocket.h" />
+    <ClInclude Include="ppsocketudt.h" />
+    <ClInclude Include="ppstacktrace.h" />
+    <ClInclude Include="ppstream.h" />
+    <ClInclude Include="ppstring.h" />
+    <ClInclude Include="ppstrtok.h" />
+    <ClInclude Include="ppsystem.h" />
+    <ClInclude Include="ppthread.h" />
+    <ClInclude Include="pptime.h" />
+    <ClInclude Include="ppunistring.h" />
+    <ClInclude Include="ppwinwnd.h" />
+    <ClInclude Include="ppzip.h" />
+    <ClInclude Include="udt\pudtbuffer.h" />
+    <ClInclude Include="udt\pudtccc.h" />
+    <ClInclude Include="udt\pudtcommon.h" />
+    <ClInclude Include="udt\pudtdefine.h" />
+    <ClInclude Include="udt\pudtlosslist.h" />
+    <ClInclude Include="udt\pudtpacket.h" />
+    <ClInclude Include="udt\pudtsocket.h" />
+    <ClInclude Include="udt\pudttimer.h" />
+    <ClInclude Include="udt\pudtwindow.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
