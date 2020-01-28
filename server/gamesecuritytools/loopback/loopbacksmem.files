@@ -1,0 +1,3 @@
+patch=LoopbackStart.h
+file=LoopbackSMemStart.cpp
+file=LoopbackObject.cpp
