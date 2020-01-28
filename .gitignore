@@ -26,8 +26,12 @@ algorithms/algorithms/Debug
 server/plib/.vs
 server/plib/x64
 server/plib/Debug
+server/commlib2a/.vs
 server/commlib2a/x64
 server/commlib2a/Debug
 server/commlib2a/commmessage/Debug
+server/commextlib/.vs
 server/commextlib/x64
 server/commextlib/Debug
+server/securitytools/Generic/.vs
+server/securitytools/Generic/Debug

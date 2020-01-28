@@ -90,7 +90,10 @@
     <ClCompile Include="..\..\protocols\initdatetime.cpp">
       <Filter>Source Files\protocols</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\protocols\PBitmask.cpp">
+    <ClCompile Include="..\..\protocols\sitemasks.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\licensemask.cpp">
       <Filter>Source Files\protocols</Filter>
     </ClCompile>
   </ItemGroup>
