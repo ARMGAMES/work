@@ -35,3 +35,6 @@ server/commextlib/x64
 server/commextlib/Debug
 server/securitytools/Generic/.vs
 server/securitytools/Generic/Debug
+server/PDServer/.vc
+server/PDServer/x64
+server/PDServer/Debug
