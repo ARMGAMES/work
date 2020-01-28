@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Class text generators">
+      <UniqueIdentifier>{ec43a4c1-3fb2-43ad-9a95-8671578c4af5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Class text generators">
+      <UniqueIdentifier>{d73a8bce-a43b-4bb7-9df0-140fd83d30e7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="genJavaScript.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CGJSjavascriptmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CGJSbasecls.cpp">
+      <Filter>Source Files\Class text generators</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="genJavaScript.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CGJSjavascriptmain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CGJSbasecls.h">
+      <Filter>Header Files\Class text generators</Filter>
+    </ClInclude>
+    <ClInclude Include="CGJSsimplecls.h">
+      <Filter>Header Files\Class text generators</Filter>
+    </ClInclude>
+    <ClInclude Include="CGJSvectorcls.h">
+      <Filter>Header Files\Class text generators</Filter>
+    </ClInclude>
+    <ClInclude Include="CGJSobjcls.h">
+      <Filter>Header Files\Class text generators</Filter>
+    </ClInclude>
+    <ClInclude Include="CGJSarraycls.h">
+      <Filter>Header Files\Class text generators</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

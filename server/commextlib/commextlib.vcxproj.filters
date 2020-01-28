@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="commextcache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commextcliconn.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commextedbmemail.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commextemail.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commextfiberobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commextlock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commextobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commextthread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commextmultithreadspool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="_commextthreadmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commexthttpthreadmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commexthttpsthreadmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commproxy\commproxy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commproxy\commproxyguards.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="commproxy\commproxypool.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="commext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commextcache.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commextcliconn.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commextedbmemail.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commextemail.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commextfiberobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commextfiberrequest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commextlock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commextobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commextobjectext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commextthread.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commextmultithreadspool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commextthreadcommunicator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commexthttp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commexthttpthreadmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="_commextthreadmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commextbasiccache.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commextjson.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

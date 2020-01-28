@@ -1,0 +1,153 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Helpers and definitions">
+      <UniqueIdentifier>{0e01162d-5587-45b8-954c-0e8d3391d560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Helpers and definitions">
+      <UniqueIdentifier>{f5cbe17e-1e07-41e7-9406-a1c245476d95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Generated">
+      <UniqueIdentifier>{a8cbe47b-c4ed-4f9d-8040-0dff17d5b76a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Generated">
+      <UniqueIdentifier>{ac9b5816-d2ca-452d-a6df-9812f476952c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Objects">
+      <UniqueIdentifier>{39e53579-7365-47c8-854c-9fd216101d24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Objects">
+      <UniqueIdentifier>{f15cc23b-c781-4fc4-b550-a26568bd928d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Plugins">
+      <UniqueIdentifier>{312bd951-f936-48bc-99bc-496b5fadd387}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CGapp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CGdefs.h">
+      <Filter>Header Files\Helpers and definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="CGfile.h">
+      <Filter>Header Files\Helpers and definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="antlr\output\commgenLexer.h">
+      <Filter>Header Files\Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="antlr\output\commgenParser.h">
+      <Filter>Header Files\Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="CGstruct.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CGfield.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CGdocument.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CGloader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CGfieldtype.h">
+      <Filter>Header Files\Objects</Filter>
+    </ClInclude>
+    <ClInclude Include="CGbaseobj.h">
+      <Filter>Header Files\Helpers and definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="CGbaseparsecompose.h">
+      <Filter>Header Files\Helpers and definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="CGmain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="commgenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CGwindynplugin.h">
+      <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="CGplugin.h">
+      <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="CGwinstatplugin.h">
+      <Filter>Header Files\Plugins</Filter>
+    </ClInclude>
+    <ClInclude Include="antlr\output\comminifileLexer.h">
+      <Filter>Header Files\Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="antlr\output\comminifileParser.h">
+      <Filter>Header Files\Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header Files\Helpers and definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="CGlog.h">
+      <Filter>Header Files\Helpers and definitions</Filter>
+    </ClInclude>
+    <ClInclude Include="antlr\output\commdataLexer.h">
+      <Filter>Header Files\Generated</Filter>
+    </ClInclude>
+    <ClInclude Include="antlr\output\commdataParser.h">
+      <Filter>Header Files\Generated</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CGapp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CGdefs.cpp">
+      <Filter>Source Files\Helpers and definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="antlr\output\commgenLexer.c">
+      <Filter>Source Files\Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="antlr\output\commgenParser.c">
+      <Filter>Source Files\Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="CGfield.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CGdocument.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CGloader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CGstruct.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CGfieldtype.cpp">
+      <Filter>Source Files\Objects</Filter>
+    </ClCompile>
+    <ClCompile Include="CGbaseobj.cpp">
+      <Filter>Source Files\Helpers and definitions</Filter>
+    </ClCompile>
+    <ClCompile Include="antlr\output\comminifileLexer.c">
+      <Filter>Source Files\Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="antlr\output\comminifileParser.c">
+      <Filter>Source Files\Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="antlr\output\commdataLexer.c">
+      <Filter>Source Files\Generated</Filter>
+    </ClCompile>
+    <ClCompile Include="antlr\output\commdataParser.c">
+      <Filter>Source Files\Generated</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

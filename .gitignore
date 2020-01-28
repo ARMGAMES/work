@@ -29,5 +29,5 @@ server/plib/Debug
 server/commlib2a/x64
 server/commlib2a/Debug
 server/commlib2a/commmessage/Debug
-commextlib/x64
-commextlib/Debug
+server/commextlib/x64
+server/commextlib/Debug

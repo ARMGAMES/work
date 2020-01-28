@@ -1,0 +1,15 @@
+file=commextemail.cpp
+file=commextcache.cpp
+file=commextcliconn.cpp
+file=commextlock.cpp
+file=commextobject.cpp
+file=commextedbmemail.cpp
+file=commextthread.cpp
+file=commextfiberobject.cpp
+file=commextmultithreadspool.cpp
+file=_commextthreadmanager.cpp
+file=commexthttpthreadmanager.cpp
+file=commexthttpsthreadmanager.cpp
+file=commproxy/commproxy.cpp
+file=commproxy/commproxyguards.cpp
+file=commproxy/commproxypool.cpp
