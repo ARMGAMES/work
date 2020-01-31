@@ -76,8 +76,6 @@ void GenericServerObjectBase::init(CommMsgBody& initMsg)
 {
 	PTRACE("GenericServerObjectBase::init");
 
-	doPreInit(initMsg);
-
 	CommMsgParser parser(initMsg);
 	const char* initDir_;
 	parser.parseString(initDir_);
@@ -93,6 +91,8 @@ void GenericServerObjectBase::init(CommMsgBody& initMsg)
 	}
 
 	dynamicInit();
+
+	startup();
 
 	srvPool.registerFactory(TRUSTEDADMIN_CONNTYPE, connTrustedAdminFactory);
 	doInitRegisterFactories();

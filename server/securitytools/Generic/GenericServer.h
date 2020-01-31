@@ -20,7 +20,6 @@ enum ServerConnectionType : int
 
 	// Add new connection types here, and also to "CONN_TYPES"
 	ExampleSrv,
-	SecPortalSrv,
 
 	UpperGuard
 };
@@ -37,7 +36,6 @@ static const CONN_TYPE_STRUCT CONN_TYPES[] =
 	, { TrustedAdmin, "TA" }
 	, { Admin, "A" }
 	, { ExampleSrv, "EX" }
-	, { SecPortalSrv, "SPS" }
 	, { UpperGuard, "" }
 };
 

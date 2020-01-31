@@ -28,15 +28,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\securitytools\Generic\GenericConnections.cpp">
-      <Filter>Source Files\Generic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\securitytools\Generic\GenericServer.cpp">
-      <Filter>Source Files\Generic</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\securitytools\Generic\GenericSrvObject.cpp">
-      <Filter>Source Files\Generic</Filter>
-    </ClCompile>
     <ClCompile Include="pdserverMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -49,11 +40,20 @@
     <ClCompile Include="pdserversmemstart.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\protocols\counters.cpp">
-      <Filter>Source Files\protocols</Filter>
+    <ClCompile Include="..\protocols\counters.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\protocols\shared.cpp">
-      <Filter>Source Files\protocols</Filter>
+    <ClCompile Include="..\protocols\shared.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\securitytools\Generic\GenericConnections.cpp">
+      <Filter>Source Files\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\securitytools\Generic\GenericServer.cpp">
+      <Filter>Source Files\Generic</Filter>
+    </ClCompile>
+    <ClCompile Include="..\securitytools\Generic\GenericSrvObject.cpp">
+      <Filter>Source Files\Generic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

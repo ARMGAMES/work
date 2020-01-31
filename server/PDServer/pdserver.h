@@ -7,8 +7,8 @@
 
 ////////////////////////////////////////////////////////////////////////////////
 
-constexpr const char* const PDSRV_LOGINAUTH_CONNTYPE = "colutilserver";
-constexpr const char* const PDSRV_ADMIN_CONNTYPE = "admin";
+const char* const PDSRV_LOGINAUTH_CONNTYPE = "colutilserver";
+const char* const PDSRV_ADMIN_CONNTYPE = "admin";
 
 ////////////////////////////////////////////////////////////////////////////////
 

@@ -53,6 +53,7 @@ public:
 	virtual void dynamicInit();
 	virtual void reconnect(CommClientGConnection& conn, const char* const serverName, const char* const serverObject, const char* const serverConnectionType);
 	virtual void shutdown() override;
+	
 
 	virtual void processMessage(_CommMsg& msg) override;
 	virtual void processCommonServerMessage(UINT32 msgId, const CommMsgBody& body, ServerConnectionType srvConnType, GenericSrvConn* conn);
@@ -87,7 +88,7 @@ protected:
 	virtual bool isConnTypeSupported(int connType) const;
 
 	// "Life cycle events". Override as required
-	virtual void doPreInit(CommMsgBody& /*initMsg*/) { }
+	virtual void startup() {}
 	virtual void doInitRegisterFactories() { }
 	virtual void doPostInit() { }
 	virtual void doPreDynamicInit(const PIniFile& /*ini*/) { }
