@@ -13,9 +13,6 @@ file=UtilDbmShared.cpp
 file=shared/ColossusConstantsInfo.cpp
 dir=../protocols
 
-file=../protocols/mtlobby/MultidayTourn_thin.cpp
-file=../protocols/mtlobby/TournCommonStructs_thin.cpp
-file=../protocols/storm/TableCommonStructs_thin.cpp
 file=../protocols/counters.cpp
 file=../protocols/dbcommon.cpp
 file=../protocols/dbmgenerator.cpp
@@ -37,13 +34,3 @@ file=../protocols/sitemasks.cpp
 file=../protocols/stringroutines.cpp
 file=../protocols/vppmultipliers.cpp
 
-file=../srvshared/mtlobby/mtlobbyserverprot_thin.cpp
-file=../srvshared/mtlobby/stormdataprot_thin.cpp
-file=../srvshared/table/PowersMap.cpp
-file=../srvshared/table/stormData.cpp
-file=../srvshared/table/tableserverprot_thin.cpp
-file=../srvshared/ColossusCommon.cpp
-file=../srvshared/scriptstringparser.cpp
-file=../srvshared/TCADetector.cpp
-file=../srvshared/tourscript.cpp
-file=../srvshared/RebuyRakeCountries.cpp
