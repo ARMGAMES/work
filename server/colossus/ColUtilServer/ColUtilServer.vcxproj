@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{DFD32437-D236-4DB1-B589-9CA79DDAAAE0}</ProjectGuid>
+    <RootNamespace>ColUtilServer</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="..\..\protocols\PyrDebug.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="..\..\protocols\PyrRelease.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\protocols\counters.cpp" />
+    <ClCompile Include="..\..\protocols\handhistory.cpp" />
+    <ClCompile Include="..\..\protocols\atfgenerated\brandimgs_thin.cpp" />
+    <ClCompile Include="..\..\protocols\i18n.locales.cpp" />
+    <ClCompile Include="..\..\protocols\i18n.strmap.cpp" />
+    <ClCompile Include="..\..\protocols\i18n.utils.cpp" />
+    <ClCompile Include="..\..\protocols\licensemask.cpp" />
+    <ClCompile Include="..\..\protocols\licenserules.cpp" />
+    <ClCompile Include="..\..\protocols\mtlobby\MultidayTourn_thin.cpp" />
+    <ClCompile Include="..\..\protocols\mtlobby\TournCommonStructs_thin.cpp" />
+    <ClCompile Include="..\..\protocols\PBitmask.cpp" />
+    <ClCompile Include="..\..\protocols\shared.cpp" />
+    <ClCompile Include="..\..\protocols\sitemasks.cpp" />
+    <ClCompile Include="..\..\protocols\storm\TableCommonStructs_thin.cpp" />
+    <ClCompile Include="..\..\protocols\stringroutines.cpp" />
+    <ClCompile Include="..\..\protocols\vppmultipliers.cpp" />
+    <ClCompile Include="..\..\srvshared\ColCda.cpp" />
+    <ClCompile Include="..\..\srvshared\coldbm.cpp" />
+    <ClCompile Include="..\..\srvshared\ColossusCommon.cpp" />
+    <ClCompile Include="..\..\srvshared\ColossusConstants.cpp" />
+    <ClCompile Include="..\..\srvshared\ColossusHand.cpp" />
+    <ClCompile Include="..\..\srvshared\ColossusTablePositions.cpp" />
+    <ClCompile Include="..\..\srvshared\HandStats.cpp" />
+    <ClCompile Include="..\..\srvshared\mtlobby\mtlobbyserverprot_thin.cpp" />
+    <ClCompile Include="..\..\srvshared\mtlobby\stormdataprot_thin.cpp" />
+    <ClCompile Include="..\..\srvshared\RebuyRakeCountries.cpp" />
+    <ClCompile Include="..\..\srvshared\scriptstringparser.cpp" />
+    <ClCompile Include="..\..\srvshared\sharedconversion.cpp" />
+    <ClCompile Include="..\..\srvshared\table\PowersMap.cpp" />
+    <ClCompile Include="..\..\srvshared\table\stormData.cpp" />
+    <ClCompile Include="..\..\srvshared\table\tableserverprot_thin.cpp" />
+    <ClCompile Include="..\..\srvshared\TCADetector.cpp" />
+    <ClCompile Include="..\..\srvshared\tourscript.cpp" />
+    <ClCompile Include="..\ColossusSHD\ColShdEvent.cpp" />
+    <ClCompile Include="..\ColossusStructures.cpp" />
+    <ClCompile Include="..\shared\AccumulatorShared.cpp" />
+    <ClCompile Include="..\shared\AmpsStructs.cpp" />
+    <ClCompile Include="..\shared\BPSShared.cpp" />
+    <ClCompile Include="..\shared\ColossusConstantsInfo.cpp" />
+    <ClCompile Include="..\shared\ColWhitelist.cpp" />
+    <ClCompile Include="..\SHDAggregator\SHDAggregatorStructs.cpp" />
+    <ClCompile Include="..\ShdFreqPartners.cpp" />
+    <ClCompile Include="..\utils.cpp" />
+    <ClCompile Include="ColSrvMain.cpp" />
+    <ClCompile Include="ColSrvObject.cpp" />
+    <ClCompile Include="ColSrvStructs.cpp" />
+    <ClCompile Include="ColUtilServersmemstart.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ReportCaches.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\srvshared\ColCda.h" />
+    <ClInclude Include="..\..\srvshared\coldbm.h" />
+    <ClInclude Include="..\..\srvshared\ColossusConstants.h" />
+    <ClInclude Include="..\..\srvshared\TCADetector.h" />
+    <ClInclude Include="..\shared\AccumulatorShared.h" />
+    <ClInclude Include="..\shared\AmpsStructs.h" />
+    <ClInclude Include="..\shared\BPSShared.h" />
+    <ClInclude Include="..\shared\ColWhitelist.h" />
+    <ClInclude Include="..\ShdFreqPartners.h" />
+    <ClInclude Include="ColSrvObject.h" />
+    <ClInclude Include="ColSrvStructs.h" />
+    <ClInclude Include="colutilserver.h" />
+    <ClInclude Include="ColUtilServerStart.h" />
+    <ClInclude Include="ReportCaches.h" />
+    <ClInclude Include="ReportCacheTemplates.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="colutilserversmem.files">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="colutilsrv_sample.ini">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+    </None>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Misc">
+      <UniqueIdentifier>{826ffe87-e21c-497d-ac85-284b453e6cf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\srvshared">
+      <UniqueIdentifier>{d0561d5e-096e-4e1c-a6f1-f58d2629cf8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocols">
+      <UniqueIdentifier>{4923640e-b00d-41a7-ab32-6b3030c0dc37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Shared">
+      <UniqueIdentifier>{d59b4297-34cb-4bb2-91cf-5cfea23ba489}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Shared">
+      <UniqueIdentifier>{29ea8f2e-55ef-479a-8f41-87529132b987}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ShdAggregator">
+      <UniqueIdentifier>{598363da-5765-49a3-abc7-4702919f0074}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\srvshared">
+      <UniqueIdentifier>{2410f580-de82-4247-bdc2-7068498bde43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\ColossusSHD">
+      <UniqueIdentifier>{6ef6bfd3-0ccf-48e5-b5c3-4f271552bd07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocols\atfgenerated">
+      <UniqueIdentifier>{2345c623-b5b0-479e-ba58-6fa824fe34a6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocols\mtlobby">
+      <UniqueIdentifier>{1570f16c-494a-437f-b484-c9a02d0d04b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\srvshared\mtlobby">
+      <UniqueIdentifier>{07663e0c-4997-4f5a-a7a0-8ce232344857}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocols\storm">
+      <UniqueIdentifier>{b7b55952-5d28-4784-8c21-a7873b9a748e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\srvshared\table">
+      <UniqueIdentifier>{83e59026-d6bb-4cef-aa32-0f8f3b5b965d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ColSrvMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColSrvObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\counters.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="ColUtilServersmemstart.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ColSrvStructs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ShdFreqPartners.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\SHDAggregator\SHDAggregatorStructs.cpp">
+      <Filter>Source Files\ShdAggregator</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\shared.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\HandStats.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\ColossusTablePositions.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\ColossusCommon.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\i18n.strmap.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\vppmultipliers.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\i18n.locales.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\scriptstringparser.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\ColossusHand.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\i18n.utils.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\handhistory.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\stringroutines.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\TCADetector.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\ColCda.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\AmpsStructs.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ColossusStructures.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ColossusSHD\ColShdEvent.cpp">
+      <Filter>Source Files\ColossusSHD</Filter>
+    </ClCompile>
+    <ClCompile Include="ReportCaches.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\sharedconversion.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\ColWhitelist.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\ColossusConstants.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\BPSShared.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\ColossusConstantsInfo.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\PBitmask.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\atfgenerated\brandimgs_thin.cpp">
+      <Filter>Source Files\protocols\atfgenerated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\mtlobby\MultidayTourn_thin.cpp">
+      <Filter>Source Files\protocols\mtlobby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\tourscript.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\mtlobby\TournCommonStructs_thin.cpp">
+      <Filter>Source Files\protocols\mtlobby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\mtlobby\mtlobbyserverprot_thin.cpp">
+      <Filter>Source Files\srvshared\mtlobby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\storm\TableCommonStructs_thin.cpp">
+      <Filter>Source Files\protocols\storm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\table\tableserverprot_thin.cpp">
+      <Filter>Source Files\srvshared\table</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\mtlobby\stormdataprot_thin.cpp">
+      <Filter>Source Files\srvshared\table</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\table\PowersMap.cpp">
+      <Filter>Source Files\srvshared\table</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\table\stormData.cpp">
+      <Filter>Source Files\srvshared\table</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\AccumulatorShared.cpp">
+      <Filter>Source Files\Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\coldbm.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\RebuyRakeCountries.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\licenserules.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\licensemask.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\sitemasks.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ColSrvObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColUtilServerStart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ColSrvStructs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ShdFreqPartners.h">
+      <Filter>Header Files\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\srvshared\TCADetector.h">
+      <Filter>Header Files\srvshared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\srvshared\ColossusConstants.h">
+      <Filter>Header Files\srvshared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\srvshared\coldbm.h">
+      <Filter>Header Files\srvshared</Filter>
+    </ClInclude>
+    <ClInclude Include="colutilserver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\srvshared\ColCda.h">
+      <Filter>Header Files\srvshared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\AmpsStructs.h">
+      <Filter>Header Files\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="ReportCacheTemplates.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ReportCaches.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\ColWhitelist.h">
+      <Filter>Header Files\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\BPSShared.h">
+      <Filter>Header Files\Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\AccumulatorShared.h">
+      <Filter>Header Files\Shared</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="colutilsrv_sample.ini">
+      <Filter>Misc</Filter>
+    </None>
+    <None Include="colutilserversmem.files">
+      <Filter>Misc</Filter>
+    </None>
+  </ItemGroup>
+</Project>

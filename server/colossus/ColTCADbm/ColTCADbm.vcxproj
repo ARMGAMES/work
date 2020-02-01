@@ -1,0 +1,145 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{245C5F81-9DFD-41C3-A652-B688120C7730}</ProjectGuid>
+    <RootNamespace>ColTCADbmobj</RootNamespace>
+    <ProjectName>ColTCADbm</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v141</PlatformToolset>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="..\..\protocols\PyrDebug.props" />
+    <Import Project="..\..\protocols\PyrDbm.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="..\..\protocols\PyrRelease.props" />
+    <Import Project="..\..\protocols\PyrDbm.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl />
+    <ClCompile />
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link />
+    <Bscmake />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl />
+    <ClCompile />
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link />
+    <Bscmake />
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\protocols\atfgenerated\brandimgs_thin.cpp" />
+    <ClCompile Include="..\..\protocols\counters.cpp" />
+    <ClCompile Include="..\..\protocols\dbcommon.cpp" />
+    <ClCompile Include="..\..\protocols\dbmgenerator.cpp" />
+    <ClCompile Include="..\..\protocols\dbmserverobjectcommon.cpp" />
+    <ClCompile Include="..\..\protocols\dbmstmt.cpp" />
+    <ClCompile Include="..\..\protocols\dbmstmtolap.cpp" />
+    <ClCompile Include="..\..\protocols\i18n.locales.cpp" />
+    <ClCompile Include="..\..\protocols\i18n.strmap.cpp" />
+    <ClCompile Include="..\..\protocols\i18n.utils.cpp" />
+    <ClCompile Include="..\..\protocols\initdata.cpp" />
+    <ClCompile Include="..\..\protocols\initdatetime.cpp" />
+    <ClCompile Include="..\..\protocols\licensemask.cpp" />
+    <ClCompile Include="..\..\protocols\licenserules.cpp" />
+    <ClCompile Include="..\..\protocols\mtlobby\MultidayTourn_thin.cpp" />
+    <ClCompile Include="..\..\protocols\mtlobby\TournCommonStructs_thin.cpp" />
+    <ClCompile Include="..\..\protocols\olapreplicatordummy.cpp" />
+    <ClCompile Include="..\..\protocols\PBitmask.cpp" />
+    <ClCompile Include="..\..\protocols\shared.cpp" />
+    <ClCompile Include="..\..\protocols\sitemasks.cpp" />
+    <ClCompile Include="..\..\protocols\storm\TableCommonStructs_thin.cpp" />
+    <ClCompile Include="..\..\protocols\stringroutines.cpp" />
+    <ClCompile Include="..\..\protocols\vppmultipliers.cpp" />
+    <ClCompile Include="..\..\srvshared\ColossusCommon.cpp" />
+    <ClCompile Include="..\..\srvshared\mtlobby\mtlobbyserverprot_thin.cpp" />
+    <ClCompile Include="..\..\srvshared\mtlobby\stormdataprot_thin.cpp" />
+    <ClCompile Include="..\..\srvshared\RebuyRakeCountries.cpp" />
+    <ClCompile Include="..\..\srvshared\scriptstringparser.cpp" />
+    <ClCompile Include="..\..\srvshared\table\PowersMap.cpp" />
+    <ClCompile Include="..\..\srvshared\table\stormData.cpp" />
+    <ClCompile Include="..\..\srvshared\table\tableserverprot_thin.cpp" />
+    <ClCompile Include="..\..\srvshared\TCADetector.cpp" />
+    <ClCompile Include="..\..\srvshared\tourscript.cpp" />
+    <ClCompile Include="..\DateExtents.cpp" />
+    <ClCompile Include="..\shared\ColossusConstantsInfo.cpp" />
+    <ClCompile Include="..\shared\TCAShared.cpp" />
+    <ClCompile Include="..\UtilDbmShared.cpp" />
+    <ClCompile Include="..\utils.cpp" />
+    <ClCompile Include="ColTCACacheTypes.cpp" />
+    <ClCompile Include="Connection.cpp" />
+    <ClCompile Include="ColTCADbmAdminProcessing.cpp" />
+    <ClCompile Include="ColTCADbmmain.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="ColTCADbmmanager.cpp" />
+    <ClCompile Include="ColTCADbmobject.cpp" />
+    <ClCompile Include="..\..\protocols\psqlvalue.cpp" />
+    <ClCompile Include="ColTCADbmprepstmt.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\protocols\dbcommon.h" />
+    <ClInclude Include="..\..\protocols\dbmgenerator.h" />
+    <ClInclude Include="..\..\protocols\dbmserverobjectcommon.h" />
+    <ClInclude Include="..\..\protocols\dbmstmt.h" />
+    <ClInclude Include="..\..\srvshared\coldbm.h" />
+    <ClInclude Include="..\..\srvshared\TCADetector.h" />
+    <ClInclude Include="..\DateExtents.h" />
+    <ClInclude Include="..\shared\TCAShared.h" />
+    <ClInclude Include="..\utils.h" />
+    <ClInclude Include="ColTCACacheTypes.h" />
+    <ClInclude Include="Connection.h" />
+    <ClInclude Include="ColTCADbmmanager.h" />
+    <ClInclude Include="ColTCADbmobject.h" />
+    <ClInclude Include="ColTCADbmprepstmt.h" />
+    <ClInclude Include="ColTCADbmstart.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ColTCADbm.files" />
+    <None Include="ColTCADbm_sample.ini" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
