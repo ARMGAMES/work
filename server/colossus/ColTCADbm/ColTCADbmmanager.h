@@ -1,16 +1,8 @@
-// ===========================================================
-// Copyright (C) 2018 PYR Software Ltd. All rights reserved.
-// ===========================================================
-
-//dbmanager.h
-
-#ifndef ColTCADbmmanager_h_included
-#define	ColTCADbmmanager_h_included
+#pragma once
 
 #include "ppstring.h"
 #include "commlib.h"
 #include "dbcommon.h"
-#include "dbmstruct.h"
 #include "pyrtime.h"
 #include "ColTCADbmprepstmt.h"
 
@@ -24,7 +16,7 @@ typedef vector<HeLoggerParameter> HeLoggerParameters;
 class ColTCADbmManager : public DatabaseManagerCommon
 {
 private:
-	ColTCADbmServerObject*	dbmObj;
+	ColTCADbmServerObject*		dbmObj;
 	int							errorsInMessages;
 	UINT32						dbReconnectInterval;
 
@@ -41,9 +33,7 @@ public:
 	void composeHeLoggerParameters( HeLoggerParameters& parameters ) const;
 
 	// Messages
-	INT16 getTCAUsersTournData(TCAColTaskData& tcaColTaskData, PString& sqlErr);
-	INT16 getTCAPairsByUidStartLetter(TCAColTaskData& tcaColTaskData, char uidStartLetter, PString& sqlErr);
-	INT16 getTCATaskExtent(TCAColTaskData& tcaColTaskData, PString& sqlErr);
+
 
 private:
 	void setCurrentSchema();
@@ -58,4 +48,3 @@ private:
 	const DbmGenerator::Generator* getGenerators( size_t& generatorsSize ) const override;
 };
 
-#endif	//ColTCADbmanager_h_included

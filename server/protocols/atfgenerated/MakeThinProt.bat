@@ -1,1 +1,0 @@
-for %%f in ( *.txt ) do ( @if "%%f" NEQ "mlobby_atf.txt" ( ..\..\atf\genprot.pl -genMoveConstructor -thin "%%f" ) else ( ..\..\atf\genprot.pl -thin "%%f" ) )

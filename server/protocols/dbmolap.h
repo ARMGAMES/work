@@ -17,7 +17,7 @@
 // Add new replication messages just above the "Define new OLAP messages" comment
 
 #include "dbm.h"
-#include "ice/dbmolapice.h"
+
 
 #define DBM_OLAP_MIN					20000
 #define DBM_OLAP_DELTA					1000

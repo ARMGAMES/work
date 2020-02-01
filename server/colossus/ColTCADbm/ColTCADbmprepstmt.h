@@ -7,9 +7,7 @@
 
 #include	"dbmstmt.h"
 #include	"dbm.h"
-#include    "dbmstruct.h"
 #include	"pyrtime.h"
-#include	"TCADetector.h"
 
 class ColPairMap;
 
@@ -27,28 +25,6 @@ protected: // Disallow invocation of execute methods
 
 typedef NoExecStmtT<DbmStatement> NoExecStmt;
 
-class GetTCAPartnersStmt : public NoExecStmt
-{
-	// SQL Outputs
-	PSqlString<USER_NAME_LEN>	userId;
-	PSqlString<USER_NAME_LEN>	partnerId;
-	PSqlInt						totalTourns;
-	PSqlInt						numAllInConfrontations;
 
-public:
-	GetTCAPartnersStmt(DatabaseManagerCommon& man, const PString& query);
-	void execGet(UINT32 queryTimeLimitMinutes, UINT32 maxColPairSize, ColPairMap& colPairMap);
-};
-
-class GetTCAUserTournStmt : public NoExecStmt
-{
-	// SQL Outputs
-	PSqlString<USER_NAME_LEN>	userId;
-	PSqlInt						totalTourns;
-
-public:
-	GetTCAUserTournStmt(DatabaseManagerCommon& man, const PString& query);
-	void execGet(UINT32 queryTimeLimitMinutes, UserTournDataMap& userTournMap);
-};
 
 #endif	//ColTCADbmprepstmt_h

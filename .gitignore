@@ -38,3 +38,6 @@ server/securitytools/Generic/Debug
 server/PDServer/.vc
 server/PDServer/x64
 server/PDServer/Debug
+server/colossus/ColTCADbm/Debug
+server/colossus/ColTCADbm/Release
+server/colossus/ColTCADbm/x64

@@ -1,17 +1,10 @@
-// ===========================================================
-// Copyright (C) 2018 PYR Software Ltd. All rights reserved.
-// ===========================================================
-
-//dbmanager.cpp
 
 #include "ppinifile.h"
 #include "ColTCADbmmanager.h"
 #include "pperror.h"
 #include "pplogfile.h"
 #include "ColTCADbmobject.h"
-#include "../utils.h"
-#include "../DateExtents.h"
-#include "../shared/TCAShared.h"
+
 
 ColTCADbmManager::ColTCADbmManager()
 {
@@ -76,8 +69,8 @@ const DbmGenerator::Generator* ColTCADbmManager::getGenerators( size_t& generato
 	{
 		//  objectName  			local
 		//	--------------			-----------
-		{ TCA_CONFIG_TABLE_NAME,	false },
-		{ TCA_TASK_TABLE_NAME,		false },
+		{ "SampleTable1",		false },
+		{ "SampleTable2",		false },
 	};
 	generatorsSize = SZARR( generators );
 	return generators;
@@ -151,113 +144,5 @@ void ColTCADbmManager::zeroStatements()
 
 /* Message processing */
 
-INT16 ColTCADbmManager::getTCAUsersTournData(TCAColTaskData& tcaColTaskData, PString& sqlErr)
-{
-	PLog("getTCAUsersTournData: configId=%u", tcaColTaskData.tcaConfig.configId);
-	
-	try
-	{
-		PString query;
-		TCAROIQueryBuilderAgg aggQueryBuilder(tcaColTaskData.tcaConfig, tcaColTaskData.tournROIExtentOutputs.extents);
-		aggQueryBuilder.buildQuery(query);
 
-		// if no agg data needed, query is empty.
-		if (query.length() > 0)
-		{
-			GetTCAUserTournStmt getTCAUserTournStmt(*this, query);
-			getTCAUserTournStmt.execGet(tcaColTaskData.tcaConfig.maxRunTimeMinutes, tcaColTaskData.userTournDataMap);
-		}
-		return DBM_NO_ERROR;
-	}
-	catch (const PSqlError& er)
-	{
-		++errorsInMessages;
-		sqlErr = er.why();
-		return er.code();
-	}
-}
-
-INT16 ColTCADbmManager::getTCAPairsByUidStartLetter(TCAColTaskData& tcaColTaskData, char uidStartLetter, PString& sqlErr)
-{
-	PLog("getTCAPairsByUidStartLetter: configId=%u", tcaColTaskData.tcaConfig.configId);
-	try
-	{
-		PString query;
-		TCAPartnersQueryBuilderAgg aggQueryBuilder(tcaColTaskData.tcaConfig, tcaColTaskData.tournPartnerExtentOutputs.extents, uidStartLetter);
-		aggQueryBuilder.buildQuery(query);
-
-		// if no agg data needed, query is empty.
-		if (query.length() > 0)
-		{
-			GetTCAPartnersStmt getTCAPartnersStmt(*this, query);
-			getTCAPartnersStmt.execGet(tcaColTaskData.tcaConfig.maxRunTimeMinutes, tcaColTaskData.tcaConfig.maxColPairSize, tcaColTaskData.colAggPairMap);
-		}
-
-		return DBM_NO_ERROR;
-	}
-	catch (const PSqlError& er)
-	{
-		++errorsInMessages;
-		sqlErr = er.why();
-		return er.code();
-	}
-}
-
-INT16 ColTCADbmManager::getTCATaskExtent(TCAColTaskData& tcaColTaskData, PString& sqlErr)
-{
-	PLog("getTCATaskExtent");
-	try
-	{
-		SrvTime fromTime, toTime;
-		fromTime.currentLocalTime();
-		toTime.currentLocalTime();
-		ColUtils::addDays(fromTime, -tcaColTaskData.tcaConfig.daysStartOffset);
-		ColUtils::addDays(toTime, -tcaColTaskData.tcaConfig.daysEndOffset);
-
-		DateRange requested;
-		requested.first.assign(fromTime);
-		requested.second.assign(toTime);
-
-		// Get TournROI extent
-		GetDateExtentsOptions tournROIExtentsOptions(true /* verbose */, ColAggTabType::eAggTypeTournRoi, requested);
-
-		bool res = ::getDateExtents(tournROIExtentsOptions, *this, tcaColTaskData.tournROIExtentOutputs);
-
-		if (!res)
-		{
-			PLog("Warning: found no tournROI agg date!");
-			tcaColTaskData.lastTournROIAggDate = requested.first;
-			ColUtils::addDays(tcaColTaskData.lastTournROIAggDate, -1);
-		}
-		else
-		{
-			tcaColTaskData.lastTournROIAggDate = tcaColTaskData.tournROIExtentOutputs.actual.second;
-		}
-		
-
-		// Get TournPartner extent
-		GetDateExtentsOptions tournPartnerExtentsOptions(true /* verbose */, ColAggTabType::eAggTypeTournPartners, requested);
-
-		res = ::getDateExtents(tournPartnerExtentsOptions, *this, tcaColTaskData.tournPartnerExtentOutputs);
-
-		if (!res)
-		{
-			PLog("Warning: found no tournPartner agg date!");
-			tcaColTaskData.lastTournPartnerAggDate = requested.first;
-			ColUtils::addDays(tcaColTaskData.lastTournPartnerAggDate, -1);
-		}
-		else
-		{
-			tcaColTaskData.lastTournPartnerAggDate = tcaColTaskData.tournPartnerExtentOutputs.actual.second;
-		}
-		
-		return DBM_NO_ERROR;
-	}
-	catch (const PSqlError& er)
-	{
-		++errorsInMessages;
-		sqlErr = er.why();
-		return er.code();
-	}
-}
 ////////////////////////////////////////////////////////////////////////////////////////////////////

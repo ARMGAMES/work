@@ -1,14 +1,10 @@
-// ===========================================================
-// Copyright (C) 2018 PYR Software Ltd. All rights reserved.
-// ===========================================================
 
-#include	"TCADetector.h"
 #include	"ColTCADbmobject.h"
 #include	"admincommon.h"
 
-void ColTCADbmServerObject::processAdminMessage(UINT32 msgId, const CommMsgBody& body, ColTCADbmConnection* conn)
+void ColTCADbmServerObject::processAdminMessage(UINT32 msgId, const CommMsgBody& body, GenericSrvConnection* conn)
 {
-	ColTCADbmAdminServerConnection* adminConn = dynamic_cast<ColTCADbmAdminServerConnection*>(conn);
+	AdminSrvConnection* adminConn = dynamic_cast<AdminSrvConnection*>(conn);
 	if (!adminConn)
 	{
 		PLog("Incoming connection from admin lost!");
@@ -49,9 +45,9 @@ void ColTCADbmServerObject::processAdminMessage(UINT32 msgId, const CommMsgBody&
 }
 
 
-void ColTCADbmServerObject::processTrustedAdminMessage(UINT32 msgId, const CommMsgBody& body, ColTCADbmConnection* conn)
+void ColTCADbmServerObject::processTrustedAdminMessage(UINT32 msgId, const CommMsgBody& body, GenericSrvConnection* conn)
 {
-	ColTCADbmTrustedAdminServerConnection* tadminConn = dynamic_cast<ColTCADbmTrustedAdminServerConnection*>(conn);
+	TrustedAdminSrvConnection* tadminConn = dynamic_cast<TrustedAdminSrvConnection*>(conn);
 	if (!tadminConn)
 	{
 		PLog("Incoming connection from admin lost!");
@@ -102,7 +98,7 @@ void ColTCADbmServerObject::processTrustedAdminMessage(UINT32 msgId, const CommM
 
 void ColTCADbmServerObject::processKillServer(const char* adminId)
 {
-	PLog("ColTCA::processKillServer: admin id: %s", adminId);
+	PLog("processKillServer: admin id: %s", adminId);
 
 	shutdown();
 	this->exit();
@@ -111,27 +107,36 @@ void ColTCADbmServerObject::processKillServer(const char* adminId)
 
 void ColTCADbmServerObject::processRereadSettings(const char* adminId, CommMsgBody& reply)
 {
-	PLog("ColTCA::processRereadSettings: admin id: %s", adminId);
+	PLog("processRereadSettings: admin id: %s", adminId);
 	dynamicInit();
 
 	setReply(reply, DBM_NO_ERROR);
 }
 
-void ColTCADbmServerObject::receiveAdminAuth( const CommMsgBody& body, ColTCADbmAdminServerConnection* pConn )
+void ColTCADbmServerObject::receiveAdminAuth(UINT32 /*replyId*/, CommMsgParser& parser, AdminAuthAsyncCall& callState)
 {
-	CommMsgParser parser(body);
-
 	INT16 errCode;
 	parser.parseINT16(errCode);
-	pConn->saveAuthError(errCode);
+	
+	UINT32 connId = callState.data;
+	CommServerConnection* pConn = findConnection(connId);
+	AdminSrvConnection* adminConn = dynamic_cast<AdminSrvConnection*>(pConn);
+
+	if (!adminConn)
+	{
+		PLog("Lost admin connection, aborting");
+		return;
+	}
+
+	adminConn->saveAuthError(errCode);
 
 	if (errCode)
 	{
-		const char* errDescr;
+		const char* errDescr = nullptr;
 		parser.parseString(errDescr);
-		pConn->gotUserAuth(0, errCode, errDescr);
+		adminConn->gotUserAuth(nullptr, errCode, errDescr);
 
-		PLog("ColTCADbmServerObject::receiveAdminAuth error %d (%s)", errCode, errDescr);
+		PLog("receiveAdminAuth error %d (%s)", errCode, errDescr);
 		return;
 	}
 
@@ -160,19 +165,21 @@ void ColTCADbmServerObject::receiveAdminAuth( const CommMsgBody& body, ColTCADbm
 	{
 		const char* right;
 		parser.parseString(right);
-		pConn->addAdminRight(right);
+		adminConn->addAdminRight(right);
 	}
 
 	// Skip the rest of the message as it is not needed.
 
-	pConn->setUserIntId(userIntId);
+	adminConn->setUserIntId(userIntId);
 
 	CommMsgParser authParser(authBody);
-	if (!pConn->gotUserAuth(&authParser))
+	if (!adminConn->gotUserAuth(&authParser))
+	{
 		PLog("Authentication failed");
+	}
 }
 
-bool ColTCADbmServerObject::checkAdminRight(const char* right, const ColTCADbmPrivilegedConnection* pConn, CommMsgBody& reply)
+bool ColTCADbmServerObject::checkAdminRight(const char* right, const GenericPrivilegedSrvConnection* pConn, CommMsgBody& reply)
 {
 	if (pConn->checkAdminRight(right))
 		return true;

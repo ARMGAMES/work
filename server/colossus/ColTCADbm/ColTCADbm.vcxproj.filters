@@ -21,26 +21,8 @@
     <Filter Include="Misc">
       <UniqueIdentifier>{18cc45fe-9fb6-4be5-9593-f02989940a73}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Shared">
-      <UniqueIdentifier>{e8faf674-adf5-4850-bb1a-3ef2af231e92}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\protocols">
       <UniqueIdentifier>{41686949-dea9-4bce-96aa-f545fb5ee194}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\protocols\mtlobby">
-      <UniqueIdentifier>{8be4eeea-ccae-4cd2-ae4c-c89cff13f538}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\srvshared\mtlobby">
-      <UniqueIdentifier>{ebc6a49f-f54a-4bc4-b7f3-735d40933a84}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\protocols\atfgenerated">
-      <UniqueIdentifier>{faa6b44c-2ea7-4807-8738-16d0552df1fd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\protocols\storm">
-      <UniqueIdentifier>{82cd343b-53f8-47f6-9860-7e30cfbf62c4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\srvshared\table">
-      <UniqueIdentifier>{883e5569-dd65-4ca6-868b-68b11c01255b}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -71,9 +53,6 @@
     <ClCompile Include="..\..\protocols\dbmstmtolap.cpp">
       <Filter>Source Files\protocols</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\protocols\initdata.cpp">
-      <Filter>Source Files\protocols</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\protocols\initdatetime.cpp">
       <Filter>Source Files\protocols</Filter>
     </ClCompile>
@@ -95,17 +74,8 @@
     <ClCompile Include="..\..\protocols\shared.cpp">
       <Filter>Source Files\protocols</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\srvshared\TCADetector.cpp">
-      <Filter>Source Files\srvshared</Filter>
-    </ClCompile>
     <ClCompile Include="ColTCACacheTypes.cpp">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\shared\ColossusConstantsInfo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\srvshared\ColossusCommon.cpp">
-      <Filter>Source Files\srvshared</Filter>
     </ClCompile>
     <ClCompile Include="..\..\protocols\i18n.strmap.cpp">
       <Filter>Source Files\protocols</Filter>
@@ -116,12 +86,6 @@
     <ClCompile Include="..\..\protocols\i18n.locales.cpp">
       <Filter>Source Files\protocols</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\protocols\mtlobby\MultidayTourn_thin.cpp">
-      <Filter>Source Files\protocols\mtlobby</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\srvshared\scriptstringparser.cpp">
-      <Filter>Source Files\srvshared</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\protocols\vppmultipliers.cpp">
       <Filter>Source Files\protocols</Filter>
     </ClCompile>
@@ -130,45 +94,6 @@
     </ClCompile>
     <ClCompile Include="..\..\protocols\PBitmask.cpp">
       <Filter>Source Files\protocols</Filter>
-    </ClCompile>
-    <ClCompile Include="..\DateExtents.cpp">
-      <Filter>Source Files\Shared</Filter>
-    </ClCompile>
-    <ClCompile Include="..\UtilDbmShared.cpp">
-      <Filter>Source Files\Shared</Filter>
-    </ClCompile>
-    <ClCompile Include="..\utils.cpp">
-      <Filter>Source Files\Shared</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\srvshared\tourscript.cpp">
-      <Filter>Source Files\srvshared</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\protocols\mtlobby\TournCommonStructs_thin.cpp">
-      <Filter>Source Files\protocols\mtlobby</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\srvshared\mtlobby\mtlobbyserverprot_thin.cpp">
-      <Filter>Source Files\srvshared\mtlobby</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\protocols\atfgenerated\brandimgs_thin.cpp">
-      <Filter>Source Files\protocols\atfgenerated</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\protocols\storm\TableCommonStructs_thin.cpp">
-      <Filter>Source Files\protocols\storm</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\srvshared\table\tableserverprot_thin.cpp">
-      <Filter>Source Files\srvshared\table</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\srvshared\mtlobby\stormdataprot_thin.cpp">
-      <Filter>Source Files\srvshared\mtlobby</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\srvshared\table\PowersMap.cpp">
-      <Filter>Source Files\srvshared\table</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\srvshared\table\stormData.cpp">
-      <Filter>Source Files\srvshared\table</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\srvshared\RebuyRakeCountries.cpp">
-      <Filter>Source Files\srvshared</Filter>
     </ClCompile>
     <ClCompile Include="..\..\protocols\licensemask.cpp">
       <Filter>Source Files\protocols</Filter>
@@ -179,8 +104,8 @@
     <ClCompile Include="..\..\protocols\licenserules.cpp">
       <Filter>Source Files\protocols</Filter>
     </ClCompile>
-    <ClCompile Include="..\shared\TCAShared.cpp">
-      <Filter>Source Files\Shared</Filter>
+    <ClCompile Include="..\..\protocols\initdata.cpp">
+      <Filter>Source Files\protocols</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -211,22 +136,10 @@
     <ClInclude Include="Connection.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\srvshared\TCADetector.h">
-      <Filter>Header Files\srvshared</Filter>
-    </ClInclude>
-    <ClInclude Include="..\utils.h">
-      <Filter>Header Files\srvshared</Filter>
-    </ClInclude>
-    <ClInclude Include="..\DateExtents.h">
-      <Filter>Header Files\srvshared</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\srvshared\coldbm.h">
-      <Filter>Header Files\srvshared</Filter>
-    </ClInclude>
     <ClInclude Include="ColTCACacheTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\shared\TCAShared.h">
+    <ClInclude Include="ColTCADbmshared.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

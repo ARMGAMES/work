@@ -13,7 +13,6 @@ file=UtilDbmShared.cpp
 file=shared/ColossusConstantsInfo.cpp
 dir=../protocols
 
-file=../protocols/atfgenerated/brandimgs_thin.cpp
 file=../protocols/mtlobby/MultidayTourn_thin.cpp
 file=../protocols/mtlobby/TournCommonStructs_thin.cpp
 file=../protocols/storm/TableCommonStructs_thin.cpp
