@@ -1,0 +1,221 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{6aefc373-0b21-4a53-bf1c-e26dfce61617}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{d1ed494b-3090-4c17-9daa-8b5635af0811}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Header Files\Protocols">
+      <UniqueIdentifier>{76957389-764b-4ca5-b228-a382a0cf6978}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc">
+      <UniqueIdentifier>{73c6bf95-4b9f-477a-a3bc-fdfe2cc63322}</UniqueIdentifier>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Header Files\shared">
+      <UniqueIdentifier>{00cdbcd5-67e5-4bf6-b8ea-95c60a24c281}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocols">
+      <UniqueIdentifier>{343c6e95-7390-4c49-9a70-0476c41c827a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\srvshared">
+      <UniqueIdentifier>{ffcf5495-d0b7-4834-a84a-8e1b1a090e83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocols\atfgenerated">
+      <UniqueIdentifier>{4bce3de7-741d-4b28-ba34-b0d13a43edd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocols\mtlobby">
+      <UniqueIdentifier>{75348a56-87dd-4f84-9d14-5d0d32178a40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\srvshared\mtlobby">
+      <UniqueIdentifier>{8675b65c-200a-4c48-b840-1dd53efbf164}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocols\storm">
+      <UniqueIdentifier>{7c965d9d-d6b7-4851-9551-8d4b7949d513}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\srvshared\table">
+      <UniqueIdentifier>{48881975-5b3b-4439-9270-b7efe35b688f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AccumulatorDbManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AccumulatorMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AccumulatorPrepStmt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AccumulatorStructs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\dbcommon.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\dbmgenerator.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\dbmstmt.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\dbmstmtolap.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\handhistory.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\i18n.locales.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\i18n.strmap.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\i18n.utils.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\initdata.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\initdatetime.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\psqlvalue.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\shared.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\vppmultipliers.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\stringroutines.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\PBitmask.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\atfgenerated\brandimgs_thin.cpp">
+      <Filter>Source Files\protocols\atfgenerated</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\mtlobby\MultidayTourn_thin.cpp">
+      <Filter>Source Files\protocols\mtlobby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\ColossusCommon.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\ColossusTablePositions.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\ColossusHand.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\HandStats.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\olapreplicatordummy.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\scriptstringparser.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\tourscript.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\mtlobby\TournCommonStructs_thin.cpp">
+      <Filter>Source Files\protocols\mtlobby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\mtlobby\mtlobbyserverprot_thin.cpp">
+      <Filter>Source Files\srvshared\mtlobby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\storm\TableCommonStructs_thin.cpp">
+      <Filter>Source Files\protocols\storm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\table\tableserverprot_thin.cpp">
+      <Filter>Source Files\srvshared\table</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\mtlobby\stormdataprot_thin.cpp">
+      <Filter>Source Files\srvshared\mtlobby</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\table\stormData.cpp">
+      <Filter>Source Files\srvshared\table</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\table\PowersMap.cpp">
+      <Filter>Source Files\srvshared\table</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\srvshared\RebuyRakeCountries.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\licenserules.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\licensemask.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\sitemasks.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AccumulatorDbManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AccumulatorPrepStmt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AccumulatorStart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AccumulatorStructs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protocols\dbcommon.h">
+      <Filter>Header Files\Protocols</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protocols\dbm.h">
+      <Filter>Header Files\Protocols</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protocols\dbmgenerator.h">
+      <Filter>Header Files\Protocols</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protocols\dbmstmt.h">
+      <Filter>Header Files\Protocols</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\srvshared\HandStats.h">
+      <Filter>Header Files\Protocols</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protocols\initdata.h">
+      <Filter>Header Files\Protocols</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protocols\initdatetime.h">
+      <Filter>Header Files\Protocols</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protocols\psqlvalue.h">
+      <Filter>Header Files\Protocols</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protocols\shared.h">
+      <Filter>Header Files\Protocols</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\AccumulatorShared.h">
+      <Filter>Header Files\shared</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Accumulator.files">
+      <Filter>Misc</Filter>
+    </None>
+    <None Include="Accumulator.ini">
+      <Filter>Misc</Filter>
+    </None>
+  </ItemGroup>
+</Project>

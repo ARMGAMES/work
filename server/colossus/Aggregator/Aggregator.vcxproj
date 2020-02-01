@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{028B3292-1C3F-4B23-B549-3C3D4CD6DCFB}</ProjectGuid>
+    <RootNamespace>Aggregator</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="..\..\protocols\PyrDebug.props" />
+    <Import Project="..\..\protocols\PyrDbm.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="..\..\protocols\PyrRelease.props" />
+    <Import Project="..\..\protocols\PyrDbm.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.51106.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <TypeLibraryName>Debug/Aggregator.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile />
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link />
+    <Bscmake />
+    <PostBuildEvent>
+      <Command />
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <TypeLibraryName>Release/Aggregator.tlb</TypeLibraryName>
+      <HeaderFileName />
+    </Midl>
+    <ClCompile />
+    <ResourceCompile>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+    </ResourceCompile>
+    <Link />
+    <Bscmake />
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\protocols\licensemask.cpp" />
+    <ClCompile Include="..\..\protocols\licenserules.cpp" />
+    <ClCompile Include="..\..\protocols\mtlobby\TournCommonStructs_thin.cpp" />
+    <ClCompile Include="..\..\protocols\PBitmask.cpp" />
+    <ClCompile Include="..\..\protocols\sitemasks.cpp" />
+    <ClCompile Include="..\..\protocols\storm\TableCommonStructs_thin.cpp" />
+    <ClCompile Include="..\..\srvshared\ColossusTablePositions.cpp" />
+    <ClCompile Include="..\..\srvshared\mtlobby\mtlobbyserverprot_thin.cpp" />
+    <ClCompile Include="..\..\srvshared\mtlobby\stormdataprot_thin.cpp" />
+    <ClCompile Include="..\..\srvshared\RebuyRakeCountries.cpp" />
+    <ClCompile Include="..\..\srvshared\scriptstringparser.cpp" />
+    <ClCompile Include="..\..\protocols\stringroutines.cpp" />
+    <ClCompile Include="..\..\protocols\vppmultipliers.cpp" />
+    <ClCompile Include="..\..\srvshared\table\PowersMap.cpp" />
+    <ClCompile Include="..\..\srvshared\table\stormData.cpp" />
+    <ClCompile Include="..\..\srvshared\table\tableserverprot_thin.cpp" />
+    <ClCompile Include="..\..\srvshared\tourscript.cpp" />
+    <ClCompile Include="AggregatorDbManager.cpp" />
+    <ClCompile Include="AggregatorMain.cpp" />
+    <ClCompile Include="AggregatorPrepStmt.cpp" />
+    <ClCompile Include="AggregatorStructs.cpp" />
+    <ClCompile Include="..\utils.cpp" />
+    <ClCompile Include="..\..\srvshared\ColossusCommon.cpp" />
+    <ClCompile Include="..\..\srvshared\ColossusHand.cpp" />
+    <ClCompile Include="..\..\protocols\dbcommon.cpp" />
+    <ClCompile Include="..\..\protocols\dbmgenerator.cpp" />
+    <ClCompile Include="..\..\protocols\dbmstmt.cpp" />
+    <ClCompile Include="..\..\protocols\dbmstmtolap.cpp" />
+    <ClCompile Include="..\..\protocols\handhistory.cpp" />
+    <ClCompile Include="..\..\protocols\atfgenerated\brandimgs_thin.cpp" />
+    <ClCompile Include="..\..\srvshared\HandStats.cpp" />
+    <ClCompile Include="..\..\protocols\i18n.locales.cpp" />
+    <ClCompile Include="..\..\protocols\i18n.strmap.cpp" />
+    <ClCompile Include="..\..\protocols\i18n.utils.cpp" />
+    <ClCompile Include="..\..\protocols\initdata.cpp" />
+    <ClCompile Include="..\..\protocols\initdatetime.cpp" />
+    <ClCompile Include="..\..\protocols\mtlobby\MultidayTourn_thin.cpp" />
+    <ClCompile Include="..\..\srvshared\olapreplicatordummy.cpp" />
+    <ClCompile Include="..\..\protocols\psqlvalue.cpp" />
+    <ClCompile Include="..\..\protocols\shared.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\AggregatorShared.h" />
+    <ClInclude Include="AggregatorConstants.h" />
+    <ClInclude Include="AggregatorDbManager.h" />
+    <ClInclude Include="AggregatorPrepStmt.h" />
+    <ClInclude Include="AggregatorStart.h" />
+    <ClInclude Include="AggregatorStructs.h" />
+    <ClInclude Include="AggregatorTemplates.h" />
+    <ClInclude Include="..\utils.h" />
+    <ClInclude Include="..\..\protocols\dbcommon.h" />
+    <ClInclude Include="..\..\protocols\dbm.h" />
+    <ClInclude Include="..\..\protocols\dbmgenerator.h" />
+    <ClInclude Include="..\..\protocols\dbmstmt.h" />
+    <ClInclude Include="..\..\srvshared\HandStats.h" />
+    <ClInclude Include="..\..\protocols\initdata.h" />
+    <ClInclude Include="..\..\protocols\initdatetime.h" />
+    <ClInclude Include="..\..\protocols\psqlvalue.h" />
+    <ClInclude Include="..\..\protocols\shared.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Aggregator.files">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </None>
+    <None Include="Aggregator.ini">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </None>
+    <None Include="aggregator_example.ini">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <FileType>Document</FileType>
+    </None>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
