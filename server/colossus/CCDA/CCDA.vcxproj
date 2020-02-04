@@ -1,0 +1,150 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F356624F-B2CB-40B2-B0E2-2BA24C5D93A7}</ProjectGuid>
+    <RootNamespace>CCDA</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="..\..\protocols\PyrDebug.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="..\..\protocols\PyrRelease.props" />
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="colccda_sample.ini">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+    <None Include="colossuscdasmem.files">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\protocols\counters.cpp" />
+    <ClCompile Include="..\..\protocols\handhistory.cpp" />
+    <ClCompile Include="..\..\protocols\atfgenerated\brandimgs_thin.cpp" />
+    <ClCompile Include="..\..\protocols\i18n.locales.cpp" />
+    <ClCompile Include="..\..\protocols\i18n.strmap.cpp" />
+    <ClCompile Include="..\..\protocols\i18n.utils.cpp" />
+    <ClCompile Include="..\..\protocols\licensemask.cpp" />
+    <ClCompile Include="..\..\protocols\licenserules.cpp" />
+    <ClCompile Include="..\..\protocols\mtlobby\MultidayTourn_thin.cpp" />
+    <ClCompile Include="..\..\protocols\mtlobby\TournCommonStructs_thin.cpp" />
+    <ClCompile Include="..\..\protocols\PBitmask.cpp" />
+    <ClCompile Include="..\..\protocols\shared.cpp" />
+    <ClCompile Include="..\..\protocols\sitemasks.cpp" />
+    <ClCompile Include="..\..\protocols\storm\TableCommonStructs_thin.cpp" />
+    <ClCompile Include="..\..\protocols\stringroutines.cpp" />
+    <ClCompile Include="..\..\protocols\vppmultipliers.cpp" />
+    <ClCompile Include="..\..\srvshared\ColCda.cpp" />
+    <ClCompile Include="..\..\srvshared\coldbm.cpp" />
+    <ClCompile Include="..\..\srvshared\ColossusCommon.cpp" />
+    <ClCompile Include="..\..\srvshared\ColossusConstants.cpp" />
+    <ClCompile Include="..\..\srvshared\ColossusHand.cpp" />
+    <ClCompile Include="..\..\srvshared\ColossusTablePositions.cpp" />
+    <ClCompile Include="..\..\srvshared\HandStats.cpp" />
+    <ClCompile Include="..\..\srvshared\mtlobby\mtlobbyserverprot_thin.cpp" />
+    <ClCompile Include="..\..\srvshared\mtlobby\stormdataprot_thin.cpp" />
+    <ClCompile Include="..\..\srvshared\RebuyRakeCountries.cpp" />
+    <ClCompile Include="..\..\srvshared\scriptstringparser.cpp" />
+    <ClCompile Include="..\..\srvshared\sharedconversion.cpp" />
+    <ClCompile Include="..\..\srvshared\table\PowersMap.cpp" />
+    <ClCompile Include="..\..\srvshared\table\stormData.cpp" />
+    <ClCompile Include="..\..\srvshared\table\tableserverprot_thin.cpp" />
+    <ClCompile Include="..\..\srvshared\tourscript.cpp" />
+    <ClCompile Include="..\ColossusSHD\ColCdhEvent.cpp" />
+    <ClCompile Include="..\ColossusSHD\ColCdhHandEvaluator.cpp" />
+    <ClCompile Include="..\ColossusSHD\ColShdHandEvaluator.cpp" />
+    <ClCompile Include="..\ColossusStructures.cpp" />
+    <ClCompile Include="..\ColTournRetryData.cpp" />
+    <ClCompile Include="..\shared\CCDAShared.cpp" />
+    <ClCompile Include="..\shared\ColossusConstantsInfo.cpp" />
+    <ClCompile Include="..\shared\ColWhitelist.cpp" />
+    <ClCompile Include="..\shared\UserWMData.cpp" />
+    <ClCompile Include="..\utils.cpp" />
+    <ClCompile Include="ColCdaAdminProcessing.cpp" />
+    <ClCompile Include="ColCdaCacheTypes.cpp" />
+    <ClCompile Include="ColCdaMain.cpp" />
+    <ClCompile Include="ColCdaObject.cpp" />
+    <ClCompile Include="ColCdaRuleProcessing.cpp" />
+    <ClCompile Include="ColCdaRules.cpp" />
+    <ClCompile Include="ColCdaSmemStart.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\srvshared\ColCda.h" />
+    <ClInclude Include="..\..\srvshared\coldbm.h" />
+    <ClInclude Include="..\..\srvshared\ColossusConstants.h" />
+    <ClInclude Include="..\..\srvshared\HandStats.h" />
+    <ClInclude Include="..\..\srvshared\sharedconversion.h" />
+    <ClInclude Include="..\shared\CCDAShared.h" />
+    <ClInclude Include="..\shared\ColossusConstantsInfo.h" />
+    <ClInclude Include="..\shared\ColWhitelist.h" />
+    <ClInclude Include="ColCdaObject.h" />
+    <ClInclude Include="ColCdaCacheTypes.h" />
+    <ClInclude Include="ColCdaRules.h" />
+    <ClInclude Include="ColCdaStart.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
