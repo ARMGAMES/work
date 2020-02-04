@@ -3,17 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Generic", "..\securitytools\Generic\Generic.vcxproj", "{4327AF2A-B123-4DE3-A0DE-16DACE486488}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "plib", "..\plib\plib.vcxproj", "{BC7ACFA9-3540-4717-8F40-D649A0D130EF}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "commlib2a", "..\commlib2a\commlib2a.vcxproj", "{3B0D651B-1E8F-4866-B1ED-A767B1F56DEA}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "commextlib", "..\commextlib\commextlib.vcxproj", "{2C7C84F6-1A86-4827-AE7B-B8CFC99EC816}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PDServer", "..\PDServer\PDServer.vcxproj", "{EDCB1D3B-2F7A-413D-B606-29D0BE298CB2}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Collusions", "..\..\..\..\..\MyWorks\pyr\work\Collusions\Collusions.vcxproj", "{D028BBD4-4F1C-491C-9576-82E6DBC5AE17}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ColTCADbm", "..\colossus\ColTCADbm\ColTCADbm.vcxproj", "{245C5F81-9DFD-41C3-A652-B688120C7730}"
 EndProject
@@ -29,17 +23,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4327AF2A-B123-4DE3-A0DE-16DACE486488}.Debug|x64.ActiveCfg = Debug|Win32
-		{4327AF2A-B123-4DE3-A0DE-16DACE486488}.Debug|x64.Build.0 = Debug|Win32
-		{4327AF2A-B123-4DE3-A0DE-16DACE486488}.Debug|x86.ActiveCfg = Debug|Win32
-		{4327AF2A-B123-4DE3-A0DE-16DACE486488}.Debug|x86.Build.0 = Debug|Win32
-		{4327AF2A-B123-4DE3-A0DE-16DACE486488}.DebugMD|x64.ActiveCfg = Release|Win32
-		{4327AF2A-B123-4DE3-A0DE-16DACE486488}.DebugMD|x64.Build.0 = Release|Win32
-		{4327AF2A-B123-4DE3-A0DE-16DACE486488}.DebugMD|x86.ActiveCfg = Debug|Win32
-		{4327AF2A-B123-4DE3-A0DE-16DACE486488}.DebugMD|x86.Build.0 = Debug|Win32
-		{4327AF2A-B123-4DE3-A0DE-16DACE486488}.Release|x64.ActiveCfg = Release|x64
-		{4327AF2A-B123-4DE3-A0DE-16DACE486488}.Release|x86.ActiveCfg = Release|Win32
-		{4327AF2A-B123-4DE3-A0DE-16DACE486488}.Release|x86.Build.0 = Release|Win32
 		{BC7ACFA9-3540-4717-8F40-D649A0D130EF}.Debug|x64.ActiveCfg = Debug|Win32
 		{BC7ACFA9-3540-4717-8F40-D649A0D130EF}.Debug|x64.Build.0 = Debug|Win32
 		{BC7ACFA9-3540-4717-8F40-D649A0D130EF}.Debug|x86.ActiveCfg = Debug|Win32
@@ -76,28 +59,6 @@ Global
 		{2C7C84F6-1A86-4827-AE7B-B8CFC99EC816}.Release|x64.Build.0 = Release|x64
 		{2C7C84F6-1A86-4827-AE7B-B8CFC99EC816}.Release|x86.ActiveCfg = Release|Win32
 		{2C7C84F6-1A86-4827-AE7B-B8CFC99EC816}.Release|x86.Build.0 = Release|Win32
-		{EDCB1D3B-2F7A-413D-B606-29D0BE298CB2}.Debug|x64.ActiveCfg = Debug|Win32
-		{EDCB1D3B-2F7A-413D-B606-29D0BE298CB2}.Debug|x64.Build.0 = Debug|Win32
-		{EDCB1D3B-2F7A-413D-B606-29D0BE298CB2}.Debug|x86.ActiveCfg = Debug|Win32
-		{EDCB1D3B-2F7A-413D-B606-29D0BE298CB2}.Debug|x86.Build.0 = Debug|Win32
-		{EDCB1D3B-2F7A-413D-B606-29D0BE298CB2}.DebugMD|x64.ActiveCfg = Debug|x64
-		{EDCB1D3B-2F7A-413D-B606-29D0BE298CB2}.DebugMD|x64.Build.0 = Debug|x64
-		{EDCB1D3B-2F7A-413D-B606-29D0BE298CB2}.DebugMD|x86.ActiveCfg = Debug|Win32
-		{EDCB1D3B-2F7A-413D-B606-29D0BE298CB2}.DebugMD|x86.Build.0 = Debug|Win32
-		{EDCB1D3B-2F7A-413D-B606-29D0BE298CB2}.Release|x64.ActiveCfg = Release|x64
-		{EDCB1D3B-2F7A-413D-B606-29D0BE298CB2}.Release|x64.Build.0 = Release|x64
-		{EDCB1D3B-2F7A-413D-B606-29D0BE298CB2}.Release|x86.ActiveCfg = Release|Win32
-		{EDCB1D3B-2F7A-413D-B606-29D0BE298CB2}.Release|x86.Build.0 = Release|Win32
-		{D028BBD4-4F1C-491C-9576-82E6DBC5AE17}.Debug|x64.ActiveCfg = Debug|Win32
-		{D028BBD4-4F1C-491C-9576-82E6DBC5AE17}.Debug|x86.ActiveCfg = Debug|Win32
-		{D028BBD4-4F1C-491C-9576-82E6DBC5AE17}.Debug|x86.Build.0 = Debug|Win32
-		{D028BBD4-4F1C-491C-9576-82E6DBC5AE17}.DebugMD|x64.ActiveCfg = Release|Win32
-		{D028BBD4-4F1C-491C-9576-82E6DBC5AE17}.DebugMD|x64.Build.0 = Release|Win32
-		{D028BBD4-4F1C-491C-9576-82E6DBC5AE17}.DebugMD|x86.ActiveCfg = Debug|Win32
-		{D028BBD4-4F1C-491C-9576-82E6DBC5AE17}.DebugMD|x86.Build.0 = Debug|Win32
-		{D028BBD4-4F1C-491C-9576-82E6DBC5AE17}.Release|x64.ActiveCfg = Release|Win32
-		{D028BBD4-4F1C-491C-9576-82E6DBC5AE17}.Release|x86.ActiveCfg = Release|Win32
-		{D028BBD4-4F1C-491C-9576-82E6DBC5AE17}.Release|x86.Build.0 = Release|Win32
 		{245C5F81-9DFD-41C3-A652-B688120C7730}.Debug|x64.ActiveCfg = Debug|Win32
 		{245C5F81-9DFD-41C3-A652-B688120C7730}.Debug|x64.Build.0 = Debug|Win32
 		{245C5F81-9DFD-41C3-A652-B688120C7730}.Debug|x86.ActiveCfg = Debug|Win32
