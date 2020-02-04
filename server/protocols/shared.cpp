@@ -1015,48 +1015,12 @@ struct CountryPair
 	const char* code;
 };
 
-static const CountryPair countryCodes[] =
-{
-#include <countries.c>
-};
-
-const char* countryName( const char* code )
-{
-	if( *code )
-		for( int i = 0; i < ( sizeof( countryCodes ) / sizeof( *countryCodes ) ); i++ )
-			if( strcmp( countryCodes[i].code, code ) == 0 )
-				return countryCodes[i].name;
-	return "";
-}
-
-
 struct _CountryStateCodes
 {
 	const char* stateName;
 	const char* countryCode;
 	const char* stateCode;
 };
-static const _CountryStateCodes _countryStateCodes[] =
-{
-#include "states_admin.c"
-};
-
-const char* getStateCodeByName(const char* stateName, const char* countryCode)
-{
-	if (!stateName || !*stateName || !countryCode || !*countryCode)
-		return "";
-	for (size_t i = 0; i < sizeof(_countryStateCodes)/sizeof(*_countryStateCodes); ++i)
-	{
-		const _CountryStateCodes& ctryState = _countryStateCodes[i];
-		if ( PString::compareIgnoreCase(ctryState.countryCode, countryCode) == 0 &&
-			(PString::compareIgnoreCase(ctryState.stateName, stateName) == 0 || 
-			 PString::compareIgnoreCase(ctryState.stateCode, stateName) == 0) )
-		{
-			return ctryState.stateCode;
-		}
-	}
-	return "";
-}
 
 int StrToCents( const char* str_p )
 {

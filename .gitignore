@@ -3,6 +3,7 @@
 *.pdb
 *.sdf
 *.log
+pyr.log.*
 Analysis/Racing/obj/
 Analysis/Racing/bin/
 Analysis/Analysis/bin/
@@ -41,3 +42,5 @@ server/PDServer/Debug
 server/colossus/ColTCADbm/Debug
 server/colossus/ColTCADbm/Release
 server/colossus/ColTCADbm/x64
+server/colossus/CCDA/Debug
+server/colossus/CCDA/Release

@@ -3,6 +3,6 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LocalDebuggerCommandArguments>-debug 5402 ColCDAInstance</LocalDebuggerCommandArguments>
     <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
-    <LocalDebuggerWorkingDirectory>C:\ericl\configfiles\colossus\CCDA</LocalDebuggerWorkingDirectory>
+    <LocalDebuggerWorkingDirectory>D:\Eric\MyProjects\GitHub\work\server\colossus\CCDA</LocalDebuggerWorkingDirectory>
   </PropertyGroup>
 </Project>

@@ -30,41 +30,42 @@ using AdminAuthAsyncCall = NoReplyAsyncCall<ColTCADbmServerObject, UINT32 /* con
 class ColTCADbmServerObject : public DbmServerObjectCommon
 {
 private:
-	static const UINT32 fileVer = 1;
-
 	typedef DbmServerObjectCommon		Parent;
 
 	static CommServerNullGuardFactory					guardFactory;
 	static CommServerPlainTextPasswordSidGuardFactory	authGuardFactory;
 	static CommClientNullGuardFactory					clientNullGuardFactory;
 
-	CommServerConnectionPool			srvPool;
-	CommClientConnectionPool			cliPool;
+	static const UINT32 fileVer = 1;
+
+	CommServerConnectionPool		srvPool;
+	CommClientConnectionPool		cliPool;
 
 	// Incoming connections
-	AdminServerConnFactory				connAdminFactory;
-	TrustedAdminServerConnFactory		connTrustedAdminFactory;
-	GenericServerConnFactory			connExampleSrvFactory;
+	AdminServerConnFactory			connAdminFactory;
+	TrustedAdminServerConnFactory	connTrustedAdminFactory;
+	GenericServerConnFactory		connExampleSrvFactory;
 
 	// Outgoing connections
-	GenericOutgoingConnection			loginConnection;
+	GenericOutgoingConnection		loginConnection;
 
 	
-	PString fullFileName;
-	PString initDir;
+	PString							fullFileName;
+	PString							initDir;
 
-	ColTCADbmManager					dbManager;
+	ColTCADbmManager				dbManager;
+	TicksAccumulator				ticksAccumulator;
 
 	// Logger
-	bool								useLogger;
-	HeLogger*							heLogger;
-	PString								loggerStationName;
-	UINT32								heLoggerTimerHandle;
-	UINT32								cleanupTimerHandle;
+	bool							useLogger;
+	HeLogger*						heLogger;
+	PString							loggerStationName;
+	UINT32							heLoggerTimerHandle;
+	UINT32							cleanupTimerHandle;
 
 	// Server config settings
-	bool								moreTrace;
-	PString								dumpFile;
+	bool							moreTrace;
+	PString							dumpFile;
 
 	// server cache
 
@@ -72,17 +73,20 @@ public:
 	ColTCADbmServerObject( _CommInterface& inter );
 	~ColTCADbmServerObject();
 
+	// server start and shutdown
 	void init(CommMsgBody& initMsg) override;
 	void dynamicInit();
-	bool registerAllFactories() override; // PYR-27418 - need to postpone registering factories till ID ranges are received
+	bool registerAllFactories() override;
 	void startup();
 	void shutdown() override;
 
+	// helpers
 	void replyMsg(UINT32 connId, UINT32 msgId, CommMsgBody& body);
+	void postReply(GenericSrvConnection* pConn, UINT32 msgId, CommMsgBody& body);
+	void setReply(CommMsgBody& reply, INT16 errCode, const char* errDesc = "");
 
 	void processTimerMessage( UINT32 handle, UINT32 msgId, CommMsgBody& body ) override;
 	void processCommonServerMessage(UINT32 msgId, const CommMsgBody& body, ServerConnectionType connType, GenericSrvConnection* conn);
-
 
 	// Callbacks
 	void processCallback(UINT32 reqId, UINT32 msgId, const CommMsgBody& body, CommClientGConnection::AsyncCall* pCall);
@@ -106,6 +110,7 @@ public:
 	}
 
 private:
+	// process server messages
 	void processAdminMessage(UINT32 msgId, const CommMsgBody& body, GenericSrvConnection* conn);
 	void processTrustedAdminMessage(UINT32 msgId, const CommMsgBody& body, GenericSrvConnection* conn);
 	void processExampleSrvMessage(UINT32 msgId, const CommMsgBody & body, GenericSrvConnection* conn);
@@ -116,16 +121,10 @@ private:
 	void processKillServer(const char* adminId);
 	void processRereadSettings(const char* adminId, CommMsgBody& reply);
 
-	void postReply(GenericSrvConnection* pConn, UINT32 msgId, CommMsgBody& body);
-	void setReply(CommMsgBody& reply, INT16 errCode, const char* errDesc = "");
-
 	void startHeLogger(const char * strServerAddress, const char * strStationName);
 	void stopHeLogger();
 	void reportPerformance();
-
-public:
-
-	TicksAccumulator					ticksAccumulator;
+	
 };
 
 class ColTCADbmServerObjectFactory : public CommServerObjectFactory

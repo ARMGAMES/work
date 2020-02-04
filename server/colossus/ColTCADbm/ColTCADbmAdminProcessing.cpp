@@ -1,6 +1,6 @@
 
-#include	"ColTCADbmobject.h"
-#include	"admincommon.h"
+#include "ColTCADbmobject.h"
+#include "admincommon.h"
 
 void ColTCADbmServerObject::processAdminMessage(UINT32 msgId, const CommMsgBody& body, GenericSrvConnection* conn)
 {

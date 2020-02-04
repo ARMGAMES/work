@@ -9,9 +9,6 @@
       <UniqueIdentifier>{dbc8e845-b125-48eb-8cb8-50d747cb9572}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl</Extensions>
     </Filter>
-    <Filter Include="Header Files\Protocols">
-      <UniqueIdentifier>{530823f5-c9ba-40c8-be13-1e9e05362999}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\srvshared">
       <UniqueIdentifier>{a07d97e5-b35a-4be7-97c4-920e5eb88324}</UniqueIdentifier>
     </Filter>
@@ -23,6 +20,9 @@
     </Filter>
     <Filter Include="Source Files\protocols">
       <UniqueIdentifier>{41686949-dea9-4bce-96aa-f545fb5ee194}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\protocols">
+      <UniqueIdentifier>{530823f5-c9ba-40c8-be13-1e9e05362999}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -122,16 +122,16 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\..\protocols\dbcommon.h">
-      <Filter>Header Files\Protocols</Filter>
+      <Filter>Header Files\protocols</Filter>
     </ClInclude>
     <ClInclude Include="..\..\protocols\dbmgenerator.h">
-      <Filter>Header Files\Protocols</Filter>
+      <Filter>Header Files\protocols</Filter>
     </ClInclude>
     <ClInclude Include="..\..\protocols\dbmserverobjectcommon.h">
-      <Filter>Header Files\Protocols</Filter>
+      <Filter>Header Files\protocols</Filter>
     </ClInclude>
     <ClInclude Include="..\..\protocols\dbmstmt.h">
-      <Filter>Header Files\Protocols</Filter>
+      <Filter>Header Files\protocols</Filter>
     </ClInclude>
     <ClInclude Include="Connection.h">
       <Filter>Header Files</Filter>
@@ -140,7 +140,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ColTCADbmshared.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\srvshared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
