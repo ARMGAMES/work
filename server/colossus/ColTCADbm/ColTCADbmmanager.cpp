@@ -37,7 +37,7 @@ void ColTCADbmManager::setCurrentSchema()//throw
 
 bool ColTCADbmManager::openDataStorage(const char* fullFileName, const char* sectionName)
 {
-	PLog("ColTCADbmManager::openDataStorage start");
+	PLog(__FUNCTION__" start");
 	deleteStatements();
 
 	bool bResult = DatabaseManagerCommon::openDataStorage(fullFileName, sectionName);
