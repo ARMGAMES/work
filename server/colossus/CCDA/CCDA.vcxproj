@@ -47,6 +47,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
+      <DisableSpecificWarnings>%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -81,13 +82,8 @@
     <ClCompile Include="..\..\protocols\i18n.locales.cpp" />
     <ClCompile Include="..\..\protocols\i18n.strmap.cpp" />
     <ClCompile Include="..\..\protocols\i18n.utils.cpp" />
-    <ClCompile Include="..\..\protocols\licensemask.cpp" />
-    <ClCompile Include="..\..\protocols\licenserules.cpp" />
-    <ClCompile Include="..\..\protocols\PBitmask.cpp" />
     <ClCompile Include="..\..\protocols\shared.cpp" />
-    <ClCompile Include="..\..\protocols\sitemasks.cpp" />
     <ClCompile Include="..\..\protocols\stringroutines.cpp" />
-    <ClCompile Include="..\..\protocols\vppmultipliers.cpp" />
     <ClCompile Include="ColCdaAdminProcessing.cpp" />
     <ClCompile Include="ColCdaCacheTypes.cpp" />
     <ClCompile Include="ColCdaMain.cpp" />

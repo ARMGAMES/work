@@ -50,16 +50,10 @@
     <ClCompile Include="..\..\protocols\dbmstmt.cpp">
       <Filter>Source Files\protocols</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\protocols\dbmstmtolap.cpp">
-      <Filter>Source Files\protocols</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\protocols\initdatetime.cpp">
       <Filter>Source Files\protocols</Filter>
     </ClCompile>
     <ClCompile Include="..\..\protocols\psqlvalue.cpp">
-      <Filter>Source Files\protocols</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\protocols\olapreplicatordummy.cpp">
       <Filter>Source Files\protocols</Filter>
     </ClCompile>
     <ClCompile Include="ColTCADbmprepstmt.cpp">
@@ -86,22 +80,7 @@
     <ClCompile Include="..\..\protocols\i18n.locales.cpp">
       <Filter>Source Files\protocols</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\protocols\vppmultipliers.cpp">
-      <Filter>Source Files\protocols</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\protocols\stringroutines.cpp">
-      <Filter>Source Files\protocols</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\protocols\PBitmask.cpp">
-      <Filter>Source Files\protocols</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\protocols\licensemask.cpp">
-      <Filter>Source Files\protocols</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\protocols\sitemasks.cpp">
-      <Filter>Source Files\protocols</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\protocols\licenserules.cpp">
       <Filter>Source Files\protocols</Filter>
     </ClCompile>
     <ClCompile Include="..\..\protocols\initdata.cpp">

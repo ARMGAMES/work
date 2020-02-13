@@ -48,7 +48,7 @@
 #include	"pplib.h"
 
 #include	"dbmgenerator.h"
-#include	"olapmsghandler.h"
+#include	"pyrtime.h"
 #include	"sqlerror.h"
 
 class	PDbDisconnectError
@@ -82,8 +82,7 @@ public:
 	PDbFederatedDeadInternalConnectError(const char* msg_) : sqlError(msg_) {}
 };
 
-class OlapReplicator;
-class OlapManager;
+
 class CommServerObjectWithOlapInteface;
 class CommMsgBody;
 
@@ -146,7 +145,6 @@ protected:
 		arraySize = 0;
 		return nullptr;
 	}
-	eHost hostId;
 	INT32 remainingIdsThreshold;
 	INT32 requiredIdsBuffer;
 	bool useMasterGenerator; // some dbms have read-only instances which don't need generator functionality
@@ -192,9 +190,7 @@ public:
 		maxDbDeadlockRetries = 5; // PYR-37539 - just some reasonable value
 		globalAutoCommitFlag = true;
 		lockTimeout = 0; // do not set lock timeout
-		olapReplicator = 0;
 		stmtFailureLogging = eStmtFailureLogging_Off;
-		hostId = eHost_IOM;
 	}
 /*lint -save -e1740 */
 	virtual ~DatabaseManagerCommon()
@@ -210,7 +206,6 @@ public:
 	};
 	int getMaxDbReconnectAttempts() const { return maxDbReconnectAttempts; }
 	INT32 getMaxDbDeadlockRetries() const { return maxDbDeadlockRetries; } // PYR-37539
-	eHost getHostId() const { return hostId; }
 
 	// PYR-27418
 	bool useSharedIds() const { return generator.useSharedGenerators(); }
@@ -321,46 +316,6 @@ public:
 		return generator.init( remainingIdsThreshold, requiredIdsBuffer, initFinishedCallback );
 	}
 
-///////////////// Interface from DatabaseManagerCommonWithOlap ///////////////////////
-//protected:
-private:
-	OlapReplicator* olapReplicator;
-public:
-	const char* getMsgTableName() const;
-	const char* getMsgObjectName() const;
-	const char* getOrdinalPropName() const;
-	OlapManager* _getOlapManager();
-	virtual	INT16 getIntProperty(const char* /*propName*/, int& /*propValue*/, PString& /*sqlErr*/ );
-	virtual	INT16 saveIntProperty(const char* /*propName*/, int /*propValue*/, PString& /*sqlErr*/ );
-	//void commit();no need, already there
-	void commitTransactionMessages(CommServerObjectWithOlapInteface* dbmObj);
-	void rollbackTransactionMessages();
-	void insertTransactionUpdate(const UINT32 msgId, CommMsgBody& body, BYTE msgMask, const OlapMsgSysInfo& sysInfo);
-	virtual void allOlapsInDirectSend(bool inDirectSend) {};
-	virtual bool getLicenseIdByUserIntId(UINT32 userIntId, UINT32& licenseId) 	 	// PYR-25464
-	{
-		return false;
-	}
-	// PYR-27214 -	default implementation. in dbm's that need this data
-	//				override must set utcTime to a stored value and return true
-	virtual bool getUtcTimeForOlap( CommUtcTime& utcTime ) const
-	{
-		utcTime.setNull();
-		return false;
-	}
-	virtual UINT32 getDbmId() const { return MAX_DBM_ID_SUPPORTED; } // PYR-30404
-protected:
-	void setReplicator(OlapReplicator* repl);
-
-///////////////// Interface from DatabaseManagerCommonWithOlap end ///////////////////////
-
-/////////////////// #21575 - send end transaction marker /////////////////////
-private:
-	vector<EndMarkerData> transMarkers;													// PYR-26586
-	void composeEndMarker();
-public:
-	void setSendEndMarker(UINT32 endTransInt_ = 0, const char* endTransStr_ = "");
-/////////////////// #21575 - send end transaction marker end /////////////////
 
 	virtual const char* getTableName(eTableNames tableNameEnum) const; // PYR-26147
 	virtual void ensureCanProcessUserRelatedTables(UINT32 licenseId, UINT32 userIntId) const /* can throw PSqlError */ {} // PYR-27872

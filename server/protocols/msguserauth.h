@@ -7,11 +7,7 @@
 
 #include "pyrtime.h"
 #include "dbm.h"
-#include "cashtypes.h"
-#include "licenseid.h"
 #include "composecolls.h"
-#include "clientplatforms.h"
-#include "brands.h"
 #include "pbitmask.h"
 #include "sitemasks.h"
 
@@ -45,10 +41,6 @@ inline void composeUserAuthMsg(
 	UINT32 clientVersion = 0,
 	UINT32 minClientVersion = 0,
 	const char* routerMacAddr = "", // PYR-29604
-	UINT32 brandsUsed = BrandType_PokerStars, // PYR-37793
-	UINT32 osId = OSId_Unknown,						// PYR-38296
-	UINT32 appTypeId = AppTypeId_Unknown,	// PYR-38296
-	UINT32 productId = ProductId_Unknown,			// PYR-38296
 	const char* pwdHash = "",
 	UINT64 parentAppSessionId = 0, // PYR-38296: used only by webtokenserver, 0 for all other cases
 	const char* installId2 = ""		//	PYR-51188
@@ -125,10 +117,6 @@ inline void composeUserAuthMsg(
 				.composeUINT32(clientVersion)		// PYR-25260
 				.composeUINT32(minClientVersion)
 				.composeString(routerMacAddr)
-				.composeUINT32(brandsUsed)
-				.composeUINT32(osId)
-				.composeUINT32(appTypeId)
-				.composeUINT32(productId)
 				.composeString(pwdHash)
 				.composeUINT64(parentAppSessionId)  // PYR-38296				
 				.composeString(installId2)	// PYR-51188
@@ -167,10 +155,6 @@ inline void composeUserAuthMsgForUserIntId(
 	UINT32 clientVersion = 0,
 	UINT32 minClientVersion = 0,
 	const char* routerMacAddr = "", // PYR-29604
-	UINT32 brandsUsed = BrandType_PokerStars, // PYR-37793
-	UINT32 osId = OSId_Unknown,						// PYR-38296
-	UINT32 appTypeId = AppTypeId_Unknown,	// PYR-38296
-	UINT32 productId = ProductId_Unknown,			// PYR-38296
 	const char* pwdHash = "",
 	UINT64 parentAppSessionId = 0, // PYR-38296: used only by webtokenserver, 0 for all other cases
 	const char* installId2 = ""		//	PYR-51188
@@ -201,10 +185,6 @@ inline void composeUserAuthMsgForUserIntId(
 		clientVersion,
 		minClientVersion,
 		routerMacAddr,
-		brandsUsed,
-		osId,
-		appTypeId,
-		productId,
 		pwdHash,
 		parentAppSessionId,
 		installId2
@@ -235,10 +215,6 @@ inline void parseUserAuthMsg(
 	UINT32& clientVersion,
 	UINT32& minClientVersion,
 	const char*& routerMacAddr, // PYR-29604
-	UINT32& brandsUsed, // PYR-37793
-	UINT32& osId,				// PYR-38296
-	UINT32& appTypeId,		// PYR-38296
-	UINT32& productId,			// PYR-38296
 	const char*& pwdHash,
 	UINT64& parentAppSessionId, // PYR-38296: used only by webtokenserver, 0 for all other cases
 	const char*& installId2		//	PYR-51188
@@ -315,10 +291,6 @@ inline void parseUserAuthMsg(
 				.parseUINT32(clientVersion)		// PYR-25260
 				.parseUINT32(minClientVersion)
 				.parseString(routerMacAddr)
-				.parseUINT32(brandsUsed)
-				.parseUINT32(osId)
-				.parseUINT32(appTypeId)
-				.parseUINT32(productId)
 				.parseString(pwdHash)
 				.parseUINT64(parentAppSessionId)
 				.parseString(installId2)
@@ -338,10 +310,6 @@ inline void parseUserAuthMsg(
 			clientVersion = 0;
 			minClientVersion = 0;
 			routerMacAddr = "";
-			brandsUsed = BrandType_PokerStars;
-			osId = OSId_Unknown;
-			appTypeId = AppTypeId_Unknown;
-			productId = ProductId_Unknown;
 			pwdHash = "";
 			parentAppSessionId = 0;
 			installId2 = "";
@@ -370,7 +338,6 @@ inline void composeUserAuthOkReplyMsg
 	const char* state,
 	const CommMsgBody& dummyBody,
 	const vector<PString>& rights,
-	const PaysystemMask& depositMask,
 	UINT32 ltFpp,
 	UINT32 vipStatus,
 	UINT32 locale,
@@ -423,7 +390,6 @@ inline void composeUserAuthOkReplyMsg
 		reply.composeString(rights[n]);
 	}
 	reply.
-		composeUINT32(depositMask.mask).
 		composeUINT32(ltFpp).
 		composeUINT32(vipStatus).
 		composeUINT32(locale).
@@ -436,11 +402,9 @@ inline void composeUserAuthOkReplyMsg
 		composeSrvTime(SrvTime()). // gracePeriodUntil
 		composeUINT64(flags2).
 		composeUINT32(originalUserIntId).
-		composeUINT64(depositMask.getUInt64()).
 		composeSrvTime(lastLogin).
 		composeString(countryByIp).
 		composeString(stateByIp);
-	depositMask.compose(reply);
 	reply
 		.composeUINT32(vipCounter3)
 		.composeUINT32(licenseId)
@@ -742,15 +706,9 @@ inline void parseUserLogout(
 		.parseString(userId)
 		.parseINT32(logoutType)
 		.parseUINT64(appSessionId)
+		.parseUINT32(clientType);
 		;
-	if (!parser.parseEnded())
-	{
-		parser.parseUINT32(clientType);
-	}
-	else
-	{
-		clientType = ClientType_Unknown;
-	}
+
 }
 
 class LastLoginInfoComposer
@@ -766,7 +724,7 @@ public:
 		AppSessionInfo()
 			: appSessionId( 0 )
 			, sessionFlags( 0 )
-			, parentAppTypeId( AppTypeId_Unknown )
+			, parentAppTypeId( 0 )
 		{}
 		void compose( CommMsgBody& body ) const
 		{

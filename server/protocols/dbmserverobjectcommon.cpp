@@ -5,6 +5,8 @@
 #include "dbmserverobjectcommon.h"
 #include "counters.h"
 #include "HeLogger.h"
+#include "dbmmsg.h"
+#include "dbm.h"
 
 // PYR-27418
 /*static*/ class CommServerNullGuardFactory DbmServerObjectCommon::serverGuardFactoryCommon;
@@ -53,7 +55,6 @@ void DbmServerObjectCommon::processDbmCommonServerMessage( UINT32 msgId, const C
 		{
 			//47<s7> - reqId, num<objectName,rangeSize>
 			INT16 errCode = DBM_NO_ERROR;
-			PASSERT( dbManagerCommon->getHostId() == eHost_IOM );
 			CommMsgParser parser( body );
 			UINT32 reqId;
 			INT32 numObjects;
@@ -132,7 +133,7 @@ void DbmServerObjectCommon::initGenerator(
 	dbManagerCommon = dbManagerCommon_;
 	generatorReady = true;
 	useMasterGenerator = dbManagerCommon->isUseMasterGenerator();
-	if( useMasterGenerator && dbManagerCommon->getHostId() != eHost_IOM && dbManagerCommon->useSharedIds() )
+	if( useMasterGenerator && dbManagerCommon->useSharedIds() )
 	{
 		idRangeConn = new IdRangeClientConnection( *clientGuardFactory_, this );
 		connectToMasterGenerator( iniFile );
@@ -147,7 +148,7 @@ void DbmServerObjectCommon::initGenerator(
 
 void DbmServerObjectCommon::dynamicInit( const PIniFile& iniFile )
 {
-	if( useMasterGenerator && dbManagerCommon->getHostId() != eHost_IOM && dbManagerCommon->useSharedIds() )
+	if( useMasterGenerator && dbManagerCommon->useSharedIds() )
 	{
 		connectToMasterGenerator( iniFile );
 	}
@@ -190,7 +191,7 @@ bool DbmServerObjectCommon::registerAllFactories()
 		PLog( "registerAllFactories - generator not ready yet" );
 		return false;
 	}
-	if( dbManagerCommon->getHostId() == eHost_IOM && dbManagerCommon->useSharedIds() ) // IOM dbm is the recipient of the messages
+	if( dbManagerCommon->useSharedIds() ) // IOM dbm is the recipient of the messages
 	{
 		if( generatorFactoryRegistered )
 		{

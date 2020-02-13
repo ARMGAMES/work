@@ -17,23 +17,14 @@
 #include "ppcontainer.h"
 #include "commmsgbody.h"
 #include "pyrtime.h"
-#include "getservconnip.h"
 #include "i18n.strmap.h"
 #include "nextrandom.h"
-#include "licenseid.h"
-#include "tlbbop.h"
-#include "PlayChipsScaler.h" // PYR-23932
-#include "clientplatforms.h" // PYR-26426
 #include "commonmacros.h"
 #include "TimeUtils.h" // movet TimeUtils to a separate file
-#include "clientshared.h"
-#include "PlayChipsDefs.h"
 #include "Base26Converter.h"
-#include "brands.h"
 #include "commgrdppwdsid.h"
 #include "commgrdencryptedpwd.h"
 #include "misc.h"
-#include "TicketType.h"
 
 void _appendMoney( PString& buf, INT64 chips64 );
 INT64 centstoi64( const char* str, const char** ppos = NULL ); // accepts '+10' '-.10' '10.5' '10.05', sets ppos to after parsed cents (or str if cents not found)
@@ -284,7 +275,6 @@ void readIntSetFromString( const char* str, set<INT32_TYPE>& uintSet, char delim
 	}
 }
 void readUintSetFromString(const char* str, set<UINT32>& uintSet, char delimeter);
-void readUintLicenceIdSetFromString(const char* str, set<UINT32>& uintSet, const char delimeter =','); // PYR-98749 Does NOT clear before insert
 void readMultimapStrStr(const char* str, multimap<PString, PString, PStringCmp>& result,
 	char delimPairs = ',', char delimInsidePair = ':', bool trim = true); // PYR-114093 Does clear result before inserts
 
@@ -1262,34 +1252,6 @@ void removeRepresentmentSuffix(PString& gatewayName);
 const char* checkAccountByIBAN(const char* iban, const char* account);
 const char* removeLeadingZeros(const char* account);
 
-// #14344 this struct used by cashier & gcdbm
-struct UnCashedChequeEmailReminder
-{
-    PString templateName;
-    PString userId;
-    UINT32 transId;
-    INT32 dayReminder;
-    INT32 fxAmount;
-    INT32 converted;
-    PString fxCurrency; // fx currency
-    PString procCurrency; // processor currency
-    PString xTransStr;  // cheque number
-    SrvTime started; // cheque cashout request timestamp
-
-    void parse(CommMsgParser& parser);
-    void compose(CommMsgBody& body) const;
-    void composeForTemplate(CommMsgBody& body) const; // for sending email
-
-	UnCashedChequeEmailReminder() : transId(0), dayReminder(0), fxAmount(0), converted(0) {}
-};
-
-void translateGameType( UINT32 dbGame, BYTE& gameType , BYTE& isHiLo );
-int translateTableGame( BYTE gameType, BYTE isHiLo );
-int translateTableMultiGame( BYTE gameType, BYTE isHiLo ); // PYR-66899
-bool checkUserFilter(const char* userId, const vector<PString>& userFilter);
-bool checkUserFilter2(UINT32 userIntId, const vector<PString>& userFilter);
-bool isUserIntIdFilter(const PString& filter);
-
 struct UserBalanceData
 {
 	struct Cash
@@ -1510,8 +1472,6 @@ void composeAfterGuardEncryptStrings(CommMsgBody& msgBody, const CommServerGuard
 // PYR-18205
 const char* sanitizeStringForLogging(const PString &origStr, PString& sanitizedStr, UINT32 maxLength );
 
-// PYR-15261
-void setShowSomeCardsTableFlag( UINT32& tableFlags, UINT32 lobbySetting, bool isPlayMoney, HandType handType );
 
 // normalizes input dates such as "March 32, 2011" to a proper date such as "April 1, 2011".
 // numDays is by default set to 0, and is a number of days to add to "inputDate"
@@ -1539,81 +1499,6 @@ void set32From64(UINT64 val64, UINT32& intValue, UINT32& intValue2);
 
 //PYR-20528 
 UINT32 getPlayersLimitForCountry( const PString& restriction, const char * countryCode );
-
-// PYR-20580
-/* Usage:
-    1. call init() to initialize an object
-    2. call dynamicInit() to enable or disable event logs.
-    3. call writeLog() to write a record into the log. Note userId and userIntId can't be 
-       both empty. If it happens, the record will be ignored when the event log is processed
-       by importlog utility.
-    4. call checkDayChange() with a timer periodically.
-    Note: go to EpisTransportServerObject and see how it uses EventLogger as an example.
-*/
-class RegulatorsEventLogger
-{
-    UINT32 licenseId;
-    PString loggerStationName;
-    UINT32 transportIndex;
-    bool enableEventLog;
-    BYTE logStartDay;
-
-    // the log file will reside in the same directory as the system PLog file
-    PLogFile* logFile;
-    void createLogFile(const char* eventLogFileName);
-
-    // deal with string that might be empty. If it is empty, return string "''" instead.
-    static const char* getString(const char* str)
-    {
-        return (str && str[0])? str : "''";
-    }
-
-public:
-    RegulatorsEventLogger()
-        : licenseId(eLicenceDefault),
-        transportIndex(0),
-        enableEventLog(false),
-        logStartDay(0),
-        logFile(NULL)
-    {
-    }
-
-    ~RegulatorsEventLogger()
-    {
-        delete logFile;
-    }
-
-    // called by the regulator transport init
-    void init(UINT32 licenseId_, const PString& loggerStationName_, 
-        UINT32 transportIndex_, const char* eventLogFileName)
-    {
-        licenseId = licenseId_;
-        loggerStationName = loggerStationName_;
-        transportIndex = transportIndex_;
-        createLogFile(eventLogFileName);
-    }
-
-    // called by the regulator transport dynamicInit
-    void dynamicInit(bool enableEventLog_)
-    {
-        enableEventLog = enableEventLog_;
-    }
-
-    // write the event to the log file
-    void writeLog(const char* messageType, 
-        const char* userId, 
-        const char* userIntId, 
-        const char* licenseProtocol, 
-        const char* internalMessageId,
-        const char* externalMessageId,
-        UINT16 responseCode, 
-        const char* responseStr, 
-        const char* extraInfo);
-
-    // put a line in the event log file when a new day starts. This ensures that 
-    // an event log file with perDate property will be generated and closed every day.
-    void checkDayChange();
-};
 
 const char* titleEnumToString(eUserTitle eTitle); // not i18n
 
@@ -1651,44 +1536,6 @@ struct MigrationGameInfo
 		}
 		s.append("}");
 		return s;
-	}
-};
-
-
-// #22570
-class MigrationUserActiveFilter // allowes in some cases migrating users to be registered in some tournaments.
-{
-	typedef PStringMap< vector<UINT32> > RulesMap;
-	RulesMap allowedTypes;
-public:
-		// format is: filterName=FROM.TO:type[,type...]
-		// FROM/TO = {COM|IT|FR|EE|BE|ES|DK|EU}
-		// type = RM - real money, PM - play money, DRM - dummy real money, DPM - dummy play money
-		// in log file tournament types would be printed as numbers: 1=RM, 33=PM, 65=DRM, 97=DPM
-	void readAndPrint(const PIniFile::Section& section, const char* filterName, UINT32 gtfMask /*see MigrationGameInfo*/);
-	bool isPassed(UINT32 licenseFrom, UINT32 licenseTo, const vector<MigrationGameInfo>& tourns) const;
-	void clear();
-};
-
-struct RejectedUser
-{
-	PString userId;
-	INT16 errCode;
-	PString errDesc;
-	RejectedUser(): errCode( DBM_NO_ERROR ){}
-	RejectedUser( const char * userId_, INT16 errCode_, const char* errDesc_ )
-		: userId( userId_ ), errCode(errCode_), errDesc( errDesc_ ){}
-	void compose(CommMsgBody & body) const
-	{
-		body.composeString( userId )
-			.composeINT16( errCode )
-			.composeString( errDesc );
-	}
-	void parse(CommMsgParser & parser)
-	{
-		parser.parseStringP( userId )
-			.parseINT16( errCode )
-			.parseStringP( errDesc );
 	}
 };
 
@@ -1843,65 +1690,6 @@ void maskNumber(const char* number, PString& maskedNumber, int keepLeft, int kee
 
 int daysInMonth(UINT16 year, BYTE month);
 
-class MessageIPStatistics
-{
-	PStringMap< UINT32 > counters;
-
-public:
-	bool increment( const CommServerConnection* conn, UINT32 level )
-	{
-		PString ipAddr;
-		int port;
-		if( ! getServConnIp( *conn, ipAddr, port ) )
-			return true;
-		if( ! ipAddr.length() )
-			return true;
-
-		return increment( ipAddr, level );
-	}
-	bool increment( const char* ipAddr, UINT32 level )
-	{
-		if( !ipAddr || !*ipAddr )
-			return true;
-
-		PStringMap< UINT32 >::iterator it = counters.insert( make_pair( ipAddr, 0 ) ).first;
-		if( (*it).second > level )
-		{
-			PLog( "++counter exceeded ip='%s'", ipAddr );
-			return false;
-		}
-		(*it).second++;
-		return true;
-	}
-	bool isLimitReached( const CommServerConnection* conn, UINT32 level )
-	{
-		PString ipAddr;
-		int port;
-		if( ! getServConnIp( *conn, ipAddr, port ) )
-			return false;
-		if( ! ipAddr.length() )
-			return false;
-
-		return isLimitReached( ipAddr, level );
-	}
-	bool isLimitReached( const char* ipAddr, UINT32 level )
-	{
-		if( !ipAddr || !*ipAddr )
-			return false;
-
-		PStringMap< UINT32 >::iterator it = counters.find( ipAddr );
-		if( it == counters.end() )
-			return false;
-		
-		return it->second >= level;
-	}
-
-	void clear()
-	{
-		counters.clear();
-	}
-};
-
 class UserRequestStatistics // moved from lobbyobject.h and changed 
 {
 	PStringMap< UINT32 > data;
@@ -2027,15 +1815,6 @@ struct UserRefundInfo
 	}
 };
 
-//MOVED here from dbmanager.cpp after BUILD1026
-const char* getLimitTypeComment(INT32 /*eTableLimitType*/ type, UINT32 licenseId); // PYR-112845
-bool isTournLimit(INT32 type);
-bool isTableLimit(INT32 type);
-bool isBuyInLimitEx(INT32 type);
-bool isCasinoLimit(INT32 type);
-bool isSportsLimit(INT32 type);
-bool isCzLimit(INT32 type);
-
 // PYR-33657
 void replaceSubstring(PString& data, const char* toReplace, const char* replacement);
 
@@ -2158,35 +1937,6 @@ public:
 	}
 };
 
-struct UserBrandPair // used in DBM_Q_GET_USERS_REGISTRATION_BRAND
-{
-	UINT32 userIntID;
-	BrandTypes brandId;
-
-	UserBrandPair() : userIntID(0), brandId(BrandType_None) {}
-	UserBrandPair(UINT32 userIntID_, BrandTypes brandId_) : userIntID(userIntID_), brandId(brandId_) {}
-
-	CommMsgBody& compose( CommMsgBody& body ) const
-	{
-		return body
-			.composeUINT32(userIntID)
-			.composeUINT32(brandId);
-	}
-	CommMsgParser& parse( CommMsgParser& parser )
-	{
-		UINT32 brandId_;
-		parser
-			.parseUINT32(userIntID)
-			.parseUINT32(brandId_);
-		brandId = static_cast<BrandTypes>(brandId_);
-		return parser;
-	}
-};
-
-void encodeZipPString(const PString& in, PString& out); // PYR-37487
-
-// PYR-74625: When using this method, please ensure the message being decompressed DOESN'T come from the end users, due to known vulnerabilities in zlib.
-void decodeUnzipPString(const PString& in, PString& out); // PYR-37487
 
 bool isValidCurrencyCode(const char* currencyCode); // PYR-38845
 

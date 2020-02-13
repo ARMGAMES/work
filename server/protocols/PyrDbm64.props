@@ -7,11 +7,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup />
   <ItemDefinitionGroup>
-    <ClCompile>
-      <AdditionalIncludeDirectories>..\db2_libs\CLI9\include;..\..\db2_libs\CLI9\include;..\..\..\db2_libs\CLI9\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-    </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>..\db2_libs\CLI9\win64;..\..\db2_libs\CLI9\win64;..\..\..\db2_libs\CLI9\win64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>..\db2_libs\CLI9\win64;..\..\db2_libs\CLI9\win64;..\..\..\db2_libs\CLI9\win64;..\mssql_libs\110\lib\x64;..\..\mssql_libs\110\lib\x64;..\..\..\mssql_libs\110\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

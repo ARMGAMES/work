@@ -17,7 +17,6 @@
 //                                                                     //
 /////////////////////////////////////////////////////////////////////////
 
-#include "gamedefs.h"
 #include "dbmmsg.h"
 #include "ppincludebase.h"
 

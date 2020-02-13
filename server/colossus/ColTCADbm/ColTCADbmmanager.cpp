@@ -4,7 +4,7 @@
 #include "pperror.h"
 #include "pplogfile.h"
 #include "ColTCADbmobject.h"
-
+#include "commonmacros.h"
 
 ColTCADbmManager::ColTCADbmManager()
 {

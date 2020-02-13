@@ -1,7 +1,6 @@
 //dbcommon.cpp
 #include	"dbcommon.h"
 #include	"commssl.h"
-#include	"olapreplicator.h"
 #include	"dbmstmt.h"
 
 #define REMAINING_IDS_THRESHOLD_DEFAULT	900000
@@ -87,8 +86,6 @@ bool	DatabaseManagerCommon::openDataStorage(const char* fullFileName, const char
 	PLog("DatabaseManagerCommon::openDataStorage end");
 	reportDB2ApplicationId(); // PYR-33265
 	generator.prepareStatements( *this );
-	if(olapReplicator)
-		olapReplicator->openDataStorage();
 	return true;
 }
 
@@ -263,7 +260,6 @@ void	DatabaseManagerCommon::_openDataStorage(const char* fullFileName, const cha
 	if (deplSection)
 	{
 		PLog("reading [%s] size=%u", DEPLOYMENT_SECTION_NAME, deplSection->items.size());
-		hostId = (eHost)deplSection->getIntProperty("hostId", eHost_IOM);
 		remainingIdsThreshold = deplSection->getIntProperty("remainingIdsThreshold", REMAINING_IDS_THRESHOLD_DEFAULT);
 		requiredIdsBuffer = deplSection->getIntProperty("requiredIdsBuffer", REQUIRED_IDS_BUFFER_DEFAULT);
 		useMasterGenerator = deplSection->getIntProperty("useMasterGenerator", 0) != 0;
@@ -271,7 +267,6 @@ void	DatabaseManagerCommon::_openDataStorage(const char* fullFileName, const cha
 	else
 	{
 		PLog("no [%s] section in ini file", DEPLOYMENT_SECTION_NAME);
-		hostId = eHost_IOM;
 		remainingIdsThreshold = REMAINING_IDS_THRESHOLD_DEFAULT;
 		requiredIdsBuffer = REQUIRED_IDS_BUFFER_DEFAULT;
 		useMasterGenerator = false;
@@ -286,7 +281,6 @@ void	DatabaseManagerCommon::_openDataStorage(const char* fullFileName, const cha
 	{
 		PLog( "WARNING: rangeIncrement (%d) is less than minimum requested Ids buffer (%d).", generator.getRangeIncrement(), requiredIdsBuffer - remainingIdsThreshold );
 	}
-	PLog("hostId=%u", hostId);
 	PLog("remainingIdsThreshold=%d, requiredIdsBuffer=%d", remainingIdsThreshold, requiredIdsBuffer);
 	PLog("useMasterGenerator=%s", useMasterGenerator ? "true" : "false");
 
@@ -297,13 +291,8 @@ void	DatabaseManagerCommon::_openDataStorage(const char* fullFileName, const cha
 	{
 		addObjectNameToGenerator( generators[i].objectName, generators[i].local ); //-V522
 	}
-	if( PString::length( getMsgObjectName() ) > 0 )
-	{
-		addObjectNameToGenerator( getMsgObjectName(), true /*local*/);
-	}
 	if( useMasterGenerator && !useSharedIds() )
 	{
-		PLog( LOG_TRACE_FAULTY_LOGIC ": useMasterGenerator is set but no shared ids detected - misconfiguration or forgot to add shared generators in code." );
 		PASSERT(0);
 	}
 	// PYR-40317
@@ -314,14 +303,11 @@ void	DatabaseManagerCommon::_openDataStorage(const char* fullFileName, const cha
 		addMonotonicGenerator( monotonicGenerators[i] ); //-V522
 	}
 
-	PLog("DatabaseManagerCommon::_openDataStorage end. DbmId: %u", getDbmId());
 }
 
 void DatabaseManagerCommon::closeDataStorage()
 {
 	generator.deleteStatements();
-	if(olapReplicator)
-		olapReplicator->closeDataStorage();
 	if ( 0 != hdbc )
 	{
 		SQLDisconnect(hdbc); //pclint
@@ -551,115 +537,11 @@ void DatabaseManagerCommon::checkRetcode(
 		throw PSqlError( sqlErr, sqlStateLst );
 	}
 }
-///////////////// Interface from DatabaseManagerCommonWithOlap ///////////////////////
-#include "olapreplicator.h"
-const char* DatabaseManagerCommon::getMsgTableName() const
-{
-	if(olapReplicator)
-		return olapReplicator->getMsgTableName();
-	else return "";
-}
 
-const char* DatabaseManagerCommon::getMsgObjectName() const
-{
-	if(olapReplicator)
-		return olapReplicator->getMsgObjectName();
-	else return "";
-}
-
-const char* DatabaseManagerCommon::getOrdinalPropName() const
-{
-	if(olapReplicator)
-		return olapReplicator->getOrdinalPropName();
-	else return "";
-}
-
-OlapManager* DatabaseManagerCommon::_getOlapManager()
-{
-	if(olapReplicator)
-		return olapReplicator->_getOlapManager();
-	else 
-		return 0;
-}
-
-void DatabaseManagerCommon::commitTransactionMessages( CommServerObjectWithOlapInteface* dbmObj )
-{
-	if(olapReplicator)
-	{
-		composeEndMarker();
-		olapReplicator->commitTransactionMessages(dbmObj);
-	}
-}
-
-void DatabaseManagerCommon::rollbackTransactionMessages()
-{
-	if(olapReplicator)
-	{
-		composeEndMarker();	// PYR-26586
-		olapReplicator->rollbackTransactionMessages();
-	}
-}
-
-void DatabaseManagerCommon::insertTransactionUpdate( const UINT32 msgId, CommMsgBody& body, BYTE msgMask, const OlapMsgSysInfo& sysInfo )
-{
-	if(olapReplicator)
-		olapReplicator->insertTransactionUpdate(msgId, body, msgMask, sysInfo);
-}
-
-void DatabaseManagerCommon::setReplicator( OlapReplicator* repl )
-{
-	PLog("setReplicator %p to %p", olapReplicator, repl);
-	olapReplicator = repl;
-}
-
-INT16 DatabaseManagerCommon::getIntProperty( const char* /*propName*/, int& /*propValue*/, PString& /*sqlErr*/ )
-{
-	PASSERT(false);
-}
-
-INT16 DatabaseManagerCommon::saveIntProperty( const char* /*propName*/, int /*propValue*/, PString& /*sqlErr*/ )
-{
-	PASSERT(false);
-}
-///////////////// Interface from DatabaseManagerCommonWithOlap end ///////////////////////
-
-
-/////////////////// #21575 - send end transaction marker /////////////////////
-
-#include "dbmolap.h"
-
-void DatabaseManagerCommon::composeEndMarker()
-{
-	for (int i = 0; i < transMarkers.size(); i++)
-	{
-		PLog("cEM %u %s", transMarkers[i].transId, transMarkers[i].endTransStr.c_str());
-		CommMsgBody body;
-		body.
-			composeUINT32(transMarkers[i].transId).
-			composeString(transMarkers[i].endTransStr);
-		// if needed, a message body can be composed to the end of int/str as generic message holder
-		OlapMsgSysInfo olapMsgSysInfo(OlapMsgSysInfo::eOlapGroupNonOlap, getHostId(), getDbmId()); // #22086
-		CommUtcTime tfo;
-		if( getUtcTimeForOlap(tfo) )
-		{
-			olapMsgSysInfo.setUtcTimeForOlap(tfo);
-		}
-		insertTransactionUpdate(DBM_Q_TRANSACTION_FINISHED, body, 0, olapMsgSysInfo);
-	}
-	transMarkers.clear();
-}
-
-void DatabaseManagerCommon::setSendEndMarker(UINT32 endTransInt_, const char* endTransStr_)
-{
-	PTRACE5("sEM %u %s", endTransInt_, endTransStr_);
-	transMarkers.push_back(EndMarkerData(endTransInt_, endTransStr_));
-}
-/////////////////// #21575 - send end transaction marker end /////////////////
 
 //virtual 
 const char* DatabaseManagerCommon::getTableName(eTableNames tableNameEnum) const // PYR-26147
 {
-	PLog(LOG_TRACE_FAULTY_LOGIC " !getTableName(%d)", tableNameEnum);
 	PASSERT5(0);
 	return "";
 }
@@ -751,7 +633,6 @@ bool DatabaseManagerCommon::setMaxParallelismDegreeNoThrow()
 		}
 		if (defaultParallelismDegree.length() == 0)
 		{
-			PLog(LOG_TRACE_FAULTY_LOGIC ": setMaxParallelismDegreeNoThrow failed, undefined defaultParallelismDegree");
 			return false;
 		}
 		setMaxParallelismDegree();
