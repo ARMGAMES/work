@@ -121,6 +121,9 @@
     <ClInclude Include="ColTCADbmshared.h">
       <Filter>Header Files\srvshared</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\protocols\dbmconstants.h">
+      <Filter>Header Files\protocols</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ColTCADbm.files">

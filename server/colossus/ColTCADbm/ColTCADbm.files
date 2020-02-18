@@ -26,7 +26,6 @@ file=../protocols/initdata.cpp
 file=../protocols/initdatetime.cpp
 file=../protocols/licensemask.cpp
 file=../protocols/licenserules.cpp
-file=../protocols/olapreplicatordummy.cpp
 file=../protocols/PBitmask.cpp
 file=../protocols/psqlvalue.cpp
 file=../protocols/shared.cpp

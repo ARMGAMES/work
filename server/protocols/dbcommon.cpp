@@ -112,7 +112,6 @@ void	DatabaseManagerCommon::_openDataStorage(const char* fullFileName, const cha
 	schema = section->getProperty("schema");
 	int isolation = section->getIntProperty("isolation", 0);
 	lockTimeout = section->getIntProperty( DB_LOCKTIMEOUT_PARAM_NAME, 0 ); // PYR-35295
-	// PYR-49252
 	defaultParallelismDegree = section->getProperty( DB_DEFAULT_PARAL_PARAM_NAME, "" );
 	maxParallelismDegree = section->getProperty( DB_MAX_PARAL_PARAM_NAME, "" );
 	PLog( DB_DEFAULT_PARAL_PARAM_NAME ":'%s' " DB_MAX_PARAL_PARAM_NAME ":'%s'", defaultParallelismDegree.c_str(), maxParallelismDegree.c_str() );
@@ -122,7 +121,7 @@ void	DatabaseManagerCommon::_openDataStorage(const char* fullFileName, const cha
 	maxDbDeadlockRetries = section->getIntProperty( DB_DEADLOCK_RETRIES_PARAM_NAME, 5 ); // PYR-37539
 	PLog( DB_RECONNECT_ATTEMPTS_PARAM_NAME ":%d " DB_DEADLOCK_RETRIES_PARAM_NAME ":%d", maxDbReconnectAttempts, maxDbDeadlockRetries );
 
-	if ( !*dsName.c_str() )  //  PYR-16309
+	if ( !*dsName.c_str() ) 
 	{
 		PString errStr;
 		errStr.append("Incorrect [").append(sectionName).
@@ -130,10 +129,8 @@ void	DatabaseManagerCommon::_openDataStorage(const char* fullFileName, const cha
 		throw( PError(errStr) );
 	}
 
-	readStmtFailureLoggingState(*section); // PYR-27855
+	readStmtFailureLoggingState(*section);
 
-	// PYR-20813
-	// PYR-28457
 	// allow any value
 	forUpdateClause = section->getProperty("forUpdateClause", "FOR UPDATE WITH RS");
 	
@@ -453,7 +450,7 @@ void DatabaseManagerCommon::checkRetcode(
 		SQLSMALLINT HandleType,	
 		SQLRETURN retcode,
 		SQLHSTMT hstmt, 
-		CheckModifier modifier // = DatabaseManager::eCheckNotSuccess
+		CheckModifier modifier 
 		) const
 {
 	PASSERT(0 != hstmt);
@@ -538,13 +535,6 @@ void DatabaseManagerCommon::checkRetcode(
 	}
 }
 
-
-//virtual 
-const char* DatabaseManagerCommon::getTableName(eTableNames tableNameEnum) const // PYR-26147
-{
-	PASSERT5(0);
-	return "";
-}
 
 void DatabaseManagerCommon::addObjectNameToGenerator(const char* objectName, bool local) // PYR-27418
 {

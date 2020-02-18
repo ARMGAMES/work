@@ -146,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\protocols\dbcommon.h" />
+    <ClInclude Include="..\..\protocols\dbmconstants.h" />
     <ClInclude Include="..\..\protocols\dbmgenerator.h" />
     <ClInclude Include="..\..\protocols\dbmserverobjectcommon.h" />
     <ClInclude Include="..\..\protocols\dbmstmt.h" />

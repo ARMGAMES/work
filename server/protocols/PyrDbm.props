@@ -5,12 +5,12 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\db2_libs\CLI9\include;..\..\db2_libs\CLI9\include;..\..\..\db2_libs\CLI9\include;..\mssql_libs\110\include;..\..\mssql_libs\110\include;..\..\..\mssql_libs\110\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\mssql_libs\110\include;..\..\mssql_libs\110\include;..\..\..\mssql_libs\110\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
 	  <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
-      <AdditionalDependencies>db2cli.lib;sqlncli11.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\db2_libs\CLI9\win32;..\..\db2_libs\CLI9\win32;..\..\..\db2_libs\CLI9\win32;..\mssql_libs\110\lib\x86;..\..\mssql_libs\110\lib\x86;..\..\..\mssql_libs\110\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sqlncli11.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\mssql_libs\110\lib\x86;..\..\mssql_libs\110\lib\x86;..\..\..\mssql_libs\110\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

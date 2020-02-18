@@ -220,7 +220,6 @@ public:
 	static void prepareInString(const vector<UINT64>& inVector, PString& inString);
 	static void prepareInStringParams(const size_t n, PString& inString); // PYR-63589
 
-	const char* getTableName(eTableNames tableNameEnum) const { return manager.getTableName(tableNameEnum); } // PYR-26147
 
 protected:
 	static void appendIntField(PString& s, SQLINTEGER value, SQLINTEGER cbValue);

@@ -25,11 +25,12 @@ ColTCADbmManager::~ColTCADbmManager()
 	}
 }
 
-void ColTCADbmManager::setCurrentSchema()//throw
+void ColTCADbmManager::setCurrentSchema()
 {
 	if (!*schemaStr)
 		return;
 	PString exec = "SET CURRENT SCHEMA ";
+	// ALTER USER dbdev WITH DEFAULT_SCHEMA = dbo;
 	exec.append(schemaStr);
 	DbmStatement stmt(*this);
 	stmt.execDirect( (SQLCHAR*)exec.c_str(), DatabaseManagerCommon::eCheckNotSuccess );

@@ -24,6 +24,7 @@ algorithms/algorithms/x64/Debug
 algorithms/Debug
 algorithms/x64
 algorithms/algorithms/Debug
+server/_solution/.vs
 server/plib/.vs
 server/plib/x64
 server/plib/Debug

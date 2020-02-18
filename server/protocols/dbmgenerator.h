@@ -10,10 +10,10 @@ class	GetNextIdStmt;
 class	InsertObjectRowStmt;
 class	SetNextIdStmt;
 class	SelectAndSetNextIdStmt;
-class	CallGetAndUpdateNextIdStmt; // PYR-48098
-class	CallInsertIdStmt; // PYR-48098
+class	CallGetAndUpdateNextIdStmt; 
+class	CallInsertIdStmt; 
 
-// PYR-27418
+
 class InsertIdRangeStmt;
 class GetIdRangesStmt;
 class GetCurrentIdRangesStmt;
@@ -24,15 +24,15 @@ class CommMsgParser;
 
 class DbmGenerator
 {
+private:
 	GetNextIdStmt*			getNextIdStmt;
-	GetNextIdStmt*			getNextIdStmtNoForUpdateClause; // PYR-45721
+	GetNextIdStmt*			getNextIdStmtNoForUpdateClause; 
 	InsertObjectRowStmt*	insertObjectRowStmt;
 	SetNextIdStmt*			setNextIdStmt;
-	SelectAndSetNextIdStmt* selectAndSetNextIdStmt; // PYR-45721
-	CallGetAndUpdateNextIdStmt* callGetAndUpdateNextIdStmt; // PYR-48098
-	CallInsertIdStmt*		callInsertIdStmt; // PYR-48098
+	SelectAndSetNextIdStmt* selectAndSetNextIdStmt; 
+	CallGetAndUpdateNextIdStmt* callGetAndUpdateNextIdStmt; 
+	CallInsertIdStmt*		callInsertIdStmt; 
 
-	// PYR-27418
 	InsertIdRangeStmt*		insertIdRangeStmt; // save the range received from master dbm
 	GetIdRangesStmt*		getIdRangesStmt; // called on init to read all available Id ranges received or needed to be received from master dbm
 	GetCurrentIdRangesStmt*	getCurrentIdRangesStmt; // called every time the current range is exhausted
@@ -44,7 +44,6 @@ class DbmGenerator
 	bool selectObjectRowWithUpdateLock64( const char* objectName, UINT64& objectId ); // PYR-45721
 	bool _callGetAndUpdateNextId( const char* objectName, const UINT64 idIncrement, UINT64& oldObjectId ); // PYR-48098 - helper to be called from updateObjectRow64()
 
-private:
 	bool getId64FromTable( const char* objectName, UINT64& id );
 	void assertObjectNameValid( const char* objectName, const bool unCached = false /*PYR-40317*/ ) const; // PYR-27418 - PASSERT5 violation happens if not valid
 
@@ -56,6 +55,7 @@ private:
 		UINT64 idsRemaining() const { return isEmpty() ? 0 : end - begin + 1; } // PYR-38720
 		ObjectIdRange() { begin = 0; end = 0; }
 	};
+
 	INT32 rangeIncrement;
 	PStringMap<ObjectIdRange> rangesMap;
 	PStringMap<ObjectIdRange> rangesPrevMap;
@@ -94,6 +94,11 @@ private:
 	PStringSet monotonicByUserIdGenerators; // PYR-40317
 	bool useSelectWithUpdate; // PYR-45721 - use new way
 	bool useAutonomousTransaction; // PYR-48098 - DB2 specific only NOT ready for other DBs
+
+	void _zeroStatements();
+
+	DbmGenerator(const DbmGenerator& other);
+	const DbmGenerator& operator =(const DbmGenerator& other);
 
 public:
 	struct Generator // PYR-27418
@@ -162,13 +167,6 @@ public:
 	void commit();
 	void rollback();
 	void clearPrevMap();
-
-private:
-	void _zeroStatements();
-
-private: //forbidden
-	DbmGenerator( const DbmGenerator& other );
-	const DbmGenerator& operator =( const DbmGenerator& other );
 };
 
 #endif	//dbmgenerator_h_included
