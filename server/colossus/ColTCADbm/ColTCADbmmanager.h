@@ -34,10 +34,7 @@ public:
 
 	// Messages
 
-
 private:
-	void setCurrentSchema();
-
 	// statements
 
 	void prepareStatements();

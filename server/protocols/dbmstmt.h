@@ -377,32 +377,7 @@ public:
 	// PYR-27855 end
 };
 
-// errorStateAllowedForOlap MOVED to dbcommon.h
 
-// PYR-33265
-#ifndef SQL_MAX_ID_LENGTH
-#define SQL_MAX_ID_LENGTH 128
-#endif
-
-class GetDB2ApplicationIdStmt : public DbmStatement
-{
-	PSqlString<SQL_MAX_ID_LENGTH> db2ApplicationId;
-
-	void prepareStmt()
-	{
-		prepare("select application_id() from sysibm.sysdummy1");
-		bindFirstCol(db2ApplicationId);
-	}
-public:
-	GetDB2ApplicationIdStmt(DatabaseManagerCommon& man) : DbmStatement(man) 
-	{
-		prepareStmt();
-	}
-	const char* getApplicationId() const
-	{ 
-		return db2ApplicationId.c_str(); 
-	}
-};
 
 // Start Re-factored from picdbmprepstmt.h
 #define  MAX_DATA_LEN 1024

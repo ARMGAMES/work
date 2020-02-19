@@ -15,32 +15,6 @@
 #include	"dbmserverobjectcommon.h"
 #include	"sites.h"
 
-// PYR-27418
-class IdRangesAsyncCall : public CommClientGConnection::AsyncCall
-{
-private:
-	DbmGenerator* dbmGenerator;
-	PStringSet* requestsSent;
-	PAutoPtr<DbmGenerator::DbmGeneratorCallback> callback; // externally provided callback interface
-
-public:
-	void processReply( UINT32 /*requestId*/, UINT32 /*msgId*/, const CommMsgBody& body ) override
-	{
-		CommMsgParser parser( body );
-		dbmGenerator->processReceiveRangesRequest( parser, *requestsSent, callback.extract() );
-	}
-
-	IdRangesAsyncCall( DbmGenerator* obj, PStringSet* requestsSent_, DbmGenerator::DbmGeneratorCallback* callback_ = 0 )
-		: dbmGenerator( obj )
-		, requestsSent( requestsSent_ )
-		, callback( callback_ )
-	{}
-
-	~IdRangesAsyncCall()
-	{
-		delete requestsSent;
-	}
-};
 
 DbmGenerator::DbmGenerator()
 	: rangeIncrement( 0 )
@@ -48,8 +22,7 @@ DbmGenerator::DbmGenerator()
 	, idRangeConn( 0 )
 	, remainingIdsThreshold( 0 )
 	, requiredIdsBuffer( 0 )
-	, useSelectWithUpdate( true ) // PYR-45721, PYR-47222 - default to the new way
-	, useAutonomousTransaction( false ) // PYR-48098
+	, useSelectWithUpdate( true ) 
 {
 	_zeroStatements();
 	PLog("DbmGenerator: useSelectWithUpdate=%s", useSelectWithUpdate ? "yes" : "no");// PYR-47222 #mgrosman - eventually remove
@@ -64,9 +37,6 @@ void DbmGenerator::prepareStatements( DatabaseManagerCommon& manager )
 	setNextIdStmt		= new SetNextIdStmt( manager );
 	insertObjectRowStmt	= new InsertObjectRowStmt( manager );
 	selectAndSetNextIdStmt = new SelectAndSetNextIdStmt( manager ); // PYR-45721
-	callGetAndUpdateNextIdStmt	= new CallGetAndUpdateNextIdStmt( manager ); // PYR-48098
-	callInsertIdStmt	= new CallInsertIdStmt( manager ); // PYR-48098
-	// PYR-27418
 	insertIdRangeStmt	= new InsertIdRangeStmt( manager );
 	getIdRangesStmt		= new GetIdRangesStmt( manager );
 	getCurrentIdRangesStmt = new GetCurrentIdRangesStmt( manager );
@@ -79,9 +49,6 @@ void DbmGenerator::deleteStatements()
 	delete	getNextIdStmt;
 	delete	getNextIdStmtNoForUpdateClause; // PYR-45721
 	delete	selectAndSetNextIdStmt; // PYR-45721
-	delete	callGetAndUpdateNextIdStmt; // PYR-48098
-	delete	callInsertIdStmt; // PYR-48098
-	// PYR-27418
 	delete	insertIdRangeStmt;
 	delete	getIdRangesStmt;
 	delete	getCurrentIdRangesStmt;
@@ -97,9 +64,6 @@ void DbmGenerator::_zeroStatements()
 	insertObjectRowStmt	= 0;
 	selectAndSetNextIdStmt = nullptr; // PYR-45721
 	getNextIdStmtNoForUpdateClause = nullptr; // PYR-45721
-	callGetAndUpdateNextIdStmt	= nullptr; // PYR-48098
-	callInsertIdStmt	= nullptr; // PYR-48098
-	// PYR-27418
 	insertIdRangeStmt	= 0;
 	getIdRangesStmt		= 0;
 	getCurrentIdRangesStmt = 0;
@@ -147,7 +111,7 @@ bool DbmGenerator::getId64FromTable( const char* objectName, UINT64& id )
 		if( getNextIdStmt->fetch() )
 		{
 			found = true;
-			id = getNextIdStmt->objectId;
+			id = getNextIdStmt->getObjectId();
 		}
 		getNextIdStmt->closeCursor();
 	}
@@ -200,16 +164,8 @@ void	DbmGenerator::insertObject( const char* objectName, UINT32 objectId )
 
 void	DbmGenerator::insertObject64( const char* objectName, UINT64 objectId )
 {
-	if( useAutonomousTransaction ) // PYR-48098
-	{
-		callInsertIdStmt->init( objectName, objectId );
-		callInsertIdStmt->execute();
-	}
-	else
-	{
-		insertObjectRowStmt->init( objectName, objectId );
-		insertObjectRowStmt->execute();
-	}
+	insertObjectRowStmt->init(objectName, objectId);
+	insertObjectRowStmt->execute();
 }
 
 // PYR-24146
@@ -279,7 +235,7 @@ UINT64 DbmGenerator::peekNextHandId64( UINT32 siteId )
 		insertObject( objectName, 1 );
 		return 1;
 	}
-	return getNextIdStmt->objectId;
+	return getNextIdStmt->getObjectId();
 }
 
 UINT32 DbmGenerator::peekNextIdNoInsert( const char* objectName )
@@ -312,7 +268,7 @@ UINT64 DbmGenerator::peekNextId64NoInsert( const char* objectName, bool unCached
 	bool found = getNextIdStmtNoForUpdateClause->fetch();
 	getNextIdStmtNoForUpdateClause->closeCursor();
 	PASSERT5(found || !usingSlaveGenerator( objectName )); // PYR-27418 - "not found" for shared generator can only be possible for master generator
-	return found ? getNextIdStmtNoForUpdateClause->objectId : 1;
+	return found ? getNextIdStmtNoForUpdateClause->getObjectId() : 1;
 }
 
 UINT64 DbmGenerator::getNextId64UnCached( const char* objectName )
@@ -428,7 +384,7 @@ DbmGenerator::ObjectIdRange* DbmGenerator::getObjectRange( const char* objectNam
 			getNextIdStmt->closeCursor();
 			if( found )
 			{
-				currentId = getNextIdStmt->objectId;
+				currentId = getNextIdStmt->getObjectId();
 			}
 		}
 		if( !found )
@@ -471,18 +427,15 @@ DbmGenerator::ObjectIdRange* DbmGenerator::getObjectRange( const char* objectNam
 			}
 		}
 		it = rangesMap.insert(PStringMap<ObjectIdRange>::value_type(objectName, newRange)).first;
-		////////////////////////
-		if( !useAutonomousTransaction ) // PYR-48098 - for autonomous transaction we cannot rollback
+		
+		ObjectIdRange dummyRange;
+		dummyRange.begin = 1; /// so it will be deleted in generator.rollback()
+		dummyRange.end = rangeIncrement;
+		// saving previous values of range in rangesPrevMap
+		pair< PStringMap<ObjectIdRange>::iterator, bool > res = rangesPrevMap.insert(PStringMap<ObjectIdRange>::value_type(objectName, dummyRange));
+		if (!res.second)
 		{
-			ObjectIdRange dummyRange;
-			dummyRange.begin = 1; /// so it will be deleted in generator.rollback()
-			dummyRange.end = rangeIncrement;
-			// saving previous values of range in rangesPrevMap
-			pair< PStringMap<ObjectIdRange>::iterator, bool > res = rangesPrevMap.insert(PStringMap<ObjectIdRange>::value_type(objectName, dummyRange));
-			if( !res.second )
-			{
-				PLog( LOG_TRACE_FAULTY_LOGIC ": failed to insert dummyRange into rangesPrevMap: '%s'", objectName );
-			}
+			PLog(LOG_TRACE_FAULTY_LOGIC ": failed to insert dummyRange into rangesPrevMap: '%s'", objectName);
 		}
 	}
 	return &(*it).second;
@@ -518,7 +471,7 @@ void DbmGenerator::replenishRange(const char* objectName, ObjectIdRange* range)
 		if( getNextIdStmt->fetch() )
 		{
 			found = true;
-			id = getNextIdStmt->objectId;
+			id = getNextIdStmt->getObjectId();
 		}
 		getNextIdStmt->closeCursor();
 	}
@@ -536,13 +489,8 @@ void DbmGenerator::replenishRange(const char* objectName, ObjectIdRange* range)
 		// PYR-27418 - can only happen in the master generator or slave in local mode
 		PASSERT5( !usingSlaveGenerator( objectName ) );
 	}
-	if( !useAutonomousTransaction ) // PYR-48098 - for autonomous transaction we cannot rollback
-	{
-		// saving previous values of range in rangesPrevMap
-		rangesPrevMap.insert(PStringMap<ObjectIdRange>::value_type(objectName, *range));
-		// we ignore the result of the insert() since replenishRange() could be called multiple times during one transaction
-		// in which case we want the map to have the first inserted value
-	}
+
+	rangesPrevMap.insert(PStringMap<ObjectIdRange>::value_type(objectName, *range));
 	
 	// PYR-27418 - check if rangeIncrement fits into the current range for slave generator
 	INT32 increment = rangeIncrement;
@@ -585,11 +533,9 @@ DbmGenerator::ObjectIdRange* DbmGenerator::addObjectRange(const char* objectName
 	newRange.end = rangeIncrement;
 
 	insertObject64( objectName, (UINT64)rangeIncrement + 1 );
-	if( !useAutonomousTransaction ) // PYR-48098 - for autonomous transaction we cannot rollback
-	{
-		// saving previous values of range in rangesPrevMap
-		rangesPrevMap.insert(PStringMap<ObjectIdRange>::value_type(objectName, newRange));
-	}
+
+	// saving previous values of range in rangesPrevMap
+	rangesPrevMap.insert(PStringMap<ObjectIdRange>::value_type(objectName, newRange));
 	
 	PStringMap<ObjectIdRange>::iterator it = rangesMap.insert(PStringMap<ObjectIdRange>::value_type(objectName, newRange)).first;
 	return &(*it).second;
@@ -602,28 +548,13 @@ void DbmGenerator::commit()
 
 void DbmGenerator::clearPrevMap()
 {
-	if( useAutonomousTransaction ) // PYR-48098 - for autonomous transactions there's nothing to rollback
-	{
-		if( rangesPrevMap.size() > 0 )
-		{
-			PLog( LOG_TRACE_FAULTY_LOGIC ": clearPrevMap - using autonomous transactions but rangesPrevMap is not empty!" );
-			for( const auto it: rangesPrevMap )
-			{
-				PLog( "'%s':%" PRIu64 ":%" PRIu64, it.first, it.second.begin, it.second.end );
-			}
-		}
-	}
 	rangesPrevMap.clear();
 }
 
 void DbmGenerator::rollback()
 {
 	PLog("DbmGenerator::rollback rangesPrevMap.size=%d", rangesPrevMap.size());
-	if( useAutonomousTransaction ) // PYR-48098 - for autonomous transactions there's nothing to rollback
-	{
-		clearPrevMap();
-		return; // nothing to rollback
-	}
+
 	for(PStringMap<ObjectIdRange>::const_iterator it = rangesPrevMap.begin(); rangesPrevMap.end() != it; ++it)
 	{
 		const ObjectIdRange& prev_range = (*it).second;
@@ -738,13 +669,7 @@ bool DbmGenerator::init( INT32 remainingIdsThreshold_, INT32 requiredIdsBuffer_,
 		idRangeRequestsSent.insert( objectName );
 		++numObjects;
 	}
-	if( numObjects )
-	{
-		request.updateVectorSize( numObjects, shift );
-		PLog( "Sending Id range request for %d objects", numObjects );
-		idRangeConn->postX( DBM_Q_GET_GENERATOR_ID_RANGES, request, new IdRangesAsyncCall( this, requestsSent, initFinishedCallback ) );
-		return false; // generator is not fully initialized yet
-	}
+
 	delete requestsSent;
 	delete initFinishedCallback;
 	return true;
@@ -793,7 +718,7 @@ INT16 DbmGenerator::getIdRangeForSlave( const char* objectName, INT32 rangeSize,
 		}
 		else
 		{
-			startId = getNextIdStmt->objectId;
+			startId = getNextIdStmt->getObjectId();
 			endId = startId + rangeSize - 1;
 			setNextIdStmt->init( objectName, endId + 1 );
 			setNextIdStmt->execUpdateDelete();
@@ -805,103 +730,6 @@ INT16 DbmGenerator::getIdRangeForSlave( const char* objectName, INT32 rangeSize,
 	{
 		sqlErr = er.why();
 		return er.code();
-	}
-}
-
-void DbmGenerator::processReceiveRangesRequest( CommMsgParser& parser, PStringSet& requestsSent, DbmGeneratorCallback* callback )
-{
-	PAutoPtr<DbmGeneratorCallback> callbackPtr( callback );
-	//46[s|7<s88>] reqId, errCode[errDescr|numRanges<objectName,startId,endId>]
-	INT16 errCode;
-	parser.parseINT16( errCode );
-	if( errCode )
-	{
-		const char* errDescr;
-		parser.parseString( errDescr );
-		PLog( LOG_TRACE_FAULTY_LOGIC ": ERROR receiving ID range(s) from master: %d '%s'", errCode, errDescr );
-		for( PStringSet::iterator it = requestsSent.begin(); it != requestsSent.end(); ++it )
-		{
-			const char* objectName = *it;
-			idRangeRequestsSent.erase( objectName );
-		}
-		return;
-	}
-	INT32 numRanges;
-	parser.parseINT32( numRanges );
-	PLog( " Saving %d Id ranges:", numRanges );
-	CommMsgBody resubmitRequest;
-	UINT32 numRangesToResubmit = 0;
-	size_t shift = 0;
-	resubmitRequest.composeVectorSize( numRangesToResubmit, shift );
-	PStringSet* resubmitRequestsSent = 0;
-	for( INT32 i = 0; i < numRanges; ++i )
-	{
-		const char* objectName;
-		ObjectIdRange idRange;
-		parser
-			.parseString( objectName )
-			.parseUINT64( idRange.begin )
-			.parseUINT64( idRange.end )
-			;
-		PASSERT5( requestsSent.find( objectName ) != requestsSent.cend() );
-		PASSERT5( idRangeRequestsSent.find( objectName ) != idRangeRequestsSent.end() );
-		requestsSent.erase( objectName );
-		idRangeRequestsSent.erase( objectName );
-		if( idRange.begin == 0 )
-		{
-			// Can happen for handId if there's no error, but master could not give out the range at this moment due to next handId being multiple
-			PLog( "  '%s' - cannot allocate range at this moment - will retry", objectName );
-			if( !resubmitRequestsSent )
-			{
-				resubmitRequestsSent = new PStringSet;
-			}
-			resubmitRequestsSent->insert( objectName );
-			idRangeRequestsSent.insert( objectName );
-			resubmitRequest
-				.composeString( objectName )
-				.composeINT32( idRange.end ) // in this case 'end' is the requested range size
-				;
-			++numRangesToResubmit;
-			continue;
-		}
-		// now save the range to DB
-		char s1[32];
-		char s2[32];
-		PLog( "  '%s' %s %s", objectName, p_u64toa( idRange.begin, s1 ), p_u64toa( idRange.end, s2 ) );
-		getNextIdStmt->setObjectName( objectName ); //does it exist in the table?
-		getNextIdStmt->execute();
-		bool found = getNextIdStmt->fetch();
-		getNextIdStmt->closeCursor();
-		if( !found )
-		{
-			insertObject64( objectName, idRange.begin );
-		}
-		SrvTime now;
-		now.currentLocalTime();
-		insertIdRangeStmt->init( objectName, idRange.begin, idRange.end, now );
-		insertIdRangeStmt->execute();
-	}
-	if( !requestsSent.empty() ) // must receive all requested ranges
-	{
-		PString names;
-		for( PStringSet::const_iterator it = requestsSent.begin(); it != requestsSent.end(); ++it )
-		{
-			names.append("'").append(*it).append("' ");
-		}
-		PLog( LOG_TRACE_FAULTY_LOGIC ": some ranges were not received from master generator: %s", names.c_str() );
-		PASSERT5( requestsSent.empty() );
-	}
-	if( numRangesToResubmit > 0 )
-	{
-		resubmitRequest.updateVectorSize( numRangesToResubmit, shift );
-		PLog( "Resubmitting Id range request for %u objects", numRangesToResubmit );
-		idRangeConn->postX( DBM_Q_GET_GENERATOR_ID_RANGES, resubmitRequest, new IdRangesAsyncCall( this, resubmitRequestsSent, callbackPtr.extract() ) );
-		return;
-	}
-
-	if( callbackPtr ) // If this range request was part of the initialization sequence - call external callback method
-	{
-		callbackPtr->process();
 	}
 }
 
@@ -988,21 +816,7 @@ UINT64 DbmGenerator::checkAndAdjustNextId( const char* objectName, UINT64& curre
 		{
 			idsLeft += rangeIt->end - rangeIt->begin + 1;
 		}
-		if( idsLeft < remainingIdsThreshold )
-		{
-			PTRACE5( "Reached remainingIdsThreshold for '%s' (%d < %d) - requesting more Ids", objectName, (int)idsLeft, remainingIdsThreshold );
-			//44<s9> - reqId, num<objectName,rangeSize>
-			CommMsgBody request;
-			request
-				.composeINT32( 1 ) // numObjects
-				.composeString( objectName )
-				.composeINT32( requiredIdsBuffer - idsLeft )
-				;
-			PStringSet* requestsSent = new PStringSet;
-			requestsSent->insert( objectName );
-			idRangeRequestsSent.insert( objectName );
-			idRangeConn->postX( DBM_Q_GET_GENERATOR_ID_RANGES, request, new IdRangesAsyncCall( this, requestsSent ) );
-		}
+
 	}
 	return nextIdToSave;
 }
@@ -1042,27 +856,16 @@ void DbmGenerator::addMonotonicObjectName( const char* objectName )
 bool DbmGenerator::_callGetAndUpdateNextId( const char* objectName, const UINT64 idIncrement, UINT64& oldObjectId )
 {
 	bool found;
-	if( useAutonomousTransaction )
+
+	selectAndSetNextIdStmt->init(objectName, idIncrement);
+	selectAndSetNextIdStmt->execUpdateDelete();
+	found = selectAndSetNextIdStmt->fetch();
+	selectAndSetNextIdStmt->closeCursor();
+	if (found)
 	{
-		callGetAndUpdateNextIdStmt->init( objectName, idIncrement );
-		callGetAndUpdateNextIdStmt->execUpdateDelete();
-		found = callGetAndUpdateNextIdStmt->isFound();
-		if( found )
-		{
-			oldObjectId = callGetAndUpdateNextIdStmt->getObjectId();
-		}
+		oldObjectId = selectAndSetNextIdStmt->getObjectId();
 	}
-	else
-	{
-		selectAndSetNextIdStmt->init( objectName, idIncrement );
-		selectAndSetNextIdStmt->execUpdateDelete();
-		found = selectAndSetNextIdStmt->fetch();
-		selectAndSetNextIdStmt->closeCursor();
-		if( found )
-		{
-			oldObjectId = selectAndSetNextIdStmt->getObjectId();
-		}
-	}
+
 	return found;
 }
 

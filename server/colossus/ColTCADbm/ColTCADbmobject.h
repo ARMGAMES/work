@@ -40,6 +40,7 @@ private:
 
 	CommServerConnectionPool		srvPool;
 	CommClientConnectionPool		cliPool;
+	ColTCADbmManager				dbManager;
 
 	// Incoming connections
 	AdminServerConnFactory			connAdminFactory;
@@ -53,7 +54,6 @@ private:
 	PString							fullFileName;
 	PString							initDir;
 
-	ColTCADbmManager				dbManager;
 	TicksAccumulator				ticksAccumulator;
 
 	// Logger

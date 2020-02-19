@@ -1,28 +1,24 @@
-//dbmgeneratorprepstmt.h PYR-24146
-////////////////////////////////////////////////////////////////////////////////
-// Copyright (C) 2013 PYR Software Ltd. All rights reserved.
-////////////////////////////////////////////////////////////////////////////////
+#pragma
 
-#ifndef dbmgeneratorprepstmt_h_included
-#define dbmgeneratorprepstmt_h_included
+#include "dbmconstants.h"
+#include "dbmstmt.h"
 
 class GetNextIdStmt : public DbmStatement
 {
 	friend class DbmGenerator;
-	SQLCHAR objectName[OBJECT_NAME_LEN];
-	SQLLEN cbName, cbId;
-	SQLBIGINT objectId;
+	PSqlString<OBJECT_NAME_LEN> objectName;
+	PSqlBigInt					objectId;
 
 	void prepareStmt(const char* forUpdate)
 	{
-		PString query = "SELECT ObjectId FROM GENERATOR64 WHERE ObjectName = ?";
+		PString query = "SELECT ObjectId FROM " DB_TABLE_GENERATOR64 " WHERE ObjectName = ?";
 		if (*forUpdate) // PYR-28457 ("generatorIsolationLevel parameter from PYR-20813 is obsolete now)
 		{
 			query.append(' ').append(forUpdate);
 		}
 		prepare(query);
-		bindStrParam( 1, OBJECT_NAME_LEN, objectName, &cbName );
-		bindBigIntCol( 1, &objectId, &cbId );
+		bindFirstCol(objectId);
+		bindFirstParam(objectName);
 	}
 public:
 	GetNextIdStmt(DatabaseManagerCommon& man, const bool useForUpdateClause = true /*PYR-45721*/)	:DbmStatement(man) 
@@ -31,25 +27,22 @@ public:
 	}
 	void setObjectName( const char* name )
 	{
-		strCopy((char*) objectName, sizeof(objectName), name);
+		objectName.initCut(name);
 	}
-	UINT64 getObjectId() const // PYR-24146 new method
+	UINT64 getObjectId() const
 	{ 
-		return objectId; 
+		return objectId.value; 
 	}
 };
-
-// PYR-27418
-#define IDRANGES_TABLE_NAME	"IDRANGES"
 
 class IdRangeStmtBase : public DbmStatement
 {
 protected:
 	PSqlString<OBJECT_NAME_LEN> objectName;
-	PSqlBigInt startRange;
-	PSqlBigInt endRange;
-	PSqlTimestamp when;
-	PSqlBigInt objectId;
+	PSqlBigInt					startRange;
+	PSqlBigInt					endRange;
+	PSqlTimestamp				when;
+	PSqlBigInt					objectId;
 
 	IdRangeStmtBase( DatabaseManagerCommon& man ) : DbmStatement( man )
 	{}
@@ -60,7 +53,7 @@ class InsertIdRangeStmt : public IdRangeStmtBase
 private:
 	void prepareStmt()
 	{
-		prepare( "INSERT INTO " IDRANGES_TABLE_NAME " (OBJECTNAME, STARTRANGE, ENDRANGE, WHEN) VALUES (?, ?, ?, ?)" );
+		prepare( "INSERT INTO " DB_TABLE_IDRANGES " (OBJECTNAME, STARTRANGE, ENDRANGE, WHEN) VALUES (?, ?, ?, ?)" );
 
 		bindFirstParam( objectName );
 		bindNextParam( startRange );
@@ -88,7 +81,7 @@ class GetIdRangesStmt : public IdRangeStmtBase
 private:
 	void prepareStmt()
 	{
-		prepare( "SELECT G64.OBJECTNAME, G64.OBJECTID, STARTRANGE, ENDRANGE FROM " IDRANGES_TABLE_NAME " IDR JOIN GENERATOR64 G64 ON IDR.OBJECTNAME = G64.OBJECTNAME AND IDR.ENDRANGE >= G64.OBJECTID ORDER BY ENDRANGE" );
+		prepare( "SELECT G64.OBJECTNAME, G64.OBJECTID, STARTRANGE, ENDRANGE FROM " DB_TABLE_IDRANGES " IDR JOIN GENERATOR64 G64 ON IDR.OBJECTNAME = G64.OBJECTNAME AND IDR.ENDRANGE >= G64.OBJECTID ORDER BY ENDRANGE" );
 
 		bindFirstCol( objectName );
 		bindNextCol( objectId );
@@ -113,7 +106,7 @@ class GetCurrentIdRangesStmt : public IdRangeStmtBase
 private:
 	void prepareStmt()
 	{
-		prepare( "SELECT STARTRANGE, ENDRANGE FROM " IDRANGES_TABLE_NAME " WHERE OBJECTNAME = ? AND ENDRANGE >= ?" );
+		prepare( "SELECT STARTRANGE, ENDRANGE FROM " DB_TABLE_IDRANGES " WHERE OBJECTNAME = ? AND ENDRANGE >= ?" );
 
 		bindFirstCol( startRange );
 		bindNextCol( endRange );
@@ -224,57 +217,3 @@ public:
 	UINT64 getObjectId() const { return objectId.value; }
 };
 
-// PYR-48098 - similar to SelectAndSetNextIdStmt and InsertObjectRowStmt statements, but using stored procedures to do the autonomous transaction
-class CallGetAndUpdateNextIdStmt : public DbmStatement
-{
-	PSqlString<OBJECT_NAME_LEN> objectName;
-	PSqlBigInt objectId;
-	PSqlBigInt objectIdIncrement;
-
-	void prepareStmt()
-	{
-		prepare( "CALL DB2ADMIN.GET_NEXT_ID(?, ?, ?)" );
-
-		bindFirstParam( objectIdIncrement );
-		bindNextParam( objectName );
-		bindNextParam_ForOutput( objectId );
-	}
-
-public:
-	CallGetAndUpdateNextIdStmt( DatabaseManagerCommon& man ) : DbmStatement( man )
-	{
-		prepareStmt();
-	}
-	void init( const char* name, UINT64 idIncrement )
-	{
-		objectName = name;
-		objectIdIncrement = idIncrement;
-	}
-	UINT64 getObjectId() const { return objectId.value; }
-	bool isFound() const { return !objectId.isNull(); } // stored procedure returns null if the row is not found
-};
-
-class CallInsertIdStmt : public DbmStatement
-{
-	PSqlString<OBJECT_NAME_LEN> objectName;
-	PSqlBigInt objectId;
-	void prepareStmt()
-	{
-		prepare( "CALL DB2ADMIN.INSERT_ID(?, ?)" );
-		bindFirstParam( objectName );
-		bindNextParam( objectId );
-	}
-
-public:
-	CallInsertIdStmt( DatabaseManagerCommon& man )	: DbmStatement( man )
-	{
-		prepareStmt();
-	}
-	void init( const char* objectName_, UINT64 objectId_ )
-	{
-		objectId = objectId_;
-		objectName = objectName_;
-	}
-};
-
-#endif // dbmgeneratorprepstmt_h_included

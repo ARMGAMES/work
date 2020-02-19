@@ -74,7 +74,7 @@ void ColTCADbmServerObject::init(CommMsgBody& initMsg)
 	}
 
 	dynamicInit();
-	initGenerator( &dbManager, &srvPool, &cliPool, &clientNullGuardFactory, ini );
+	initDBMServerObject( &dbManager, ini );
 	
 	if (cleanupTimerHandle)
 	{

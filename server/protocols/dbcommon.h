@@ -138,9 +138,6 @@ public:
 	int getMaxDbReconnectAttempts() const { return maxDbReconnectAttempts; }
 	INT32 getMaxDbDeadlockRetries() const { return maxDbDeadlockRetries; } // PYR-37539
 
-	// PYR-27418
-	bool useSharedIds() const { return generator.useSharedGenerators(); }
-	bool isUseMasterGenerator() const { return useMasterGenerator; }
 	// PYR-40317
 	bool isMonotonicByUserId(const char* objectName) const { return generator.isMonotonicByUserId(objectName); }
 
@@ -266,18 +263,18 @@ protected:
 		return nullptr;
 	}
 
-	
+	void setCurrentSchema();
 
 	void addObjectNameToGenerator(const char* objectName, bool local); // PYR-27418
 	void addMonotonicGenerator(const char* objectName); // PYR-40317
 
-	void		_openDataStorage(const char* fullFileName, const char* sectionName);
-	void		setLockTimeout(); // PYR-35295
-	void		setParallelismDegree(const char* parallelismDegree); // PYR-49252
-	void		setDefaultParallelismDegree(); // PYR-49252
-	void		setMaxParallelismDegree(); // PYR-49252
-	bool		setDefaultParallelismDegreeNoThrow();	// PYR-72993, returns true if CURRENT DEGREE was reset to defaultParallelismDegree, false otherwise
-	bool		setMaxParallelismDegreeNoThrow();		// PYR-72993, returns true if CURRENT DEGREE was reset to maxParallelismDegree, false otherwise
+	void _openDataStorage(const char* fullFileName, const char* sectionName);
+	void setLockTimeout(); // PYR-35295
+	void setParallelismDegree(const char* parallelismDegree); // PYR-49252
+	void setDefaultParallelismDegree(); // PYR-49252
+	void setMaxParallelismDegree(); // PYR-49252
+	bool setDefaultParallelismDegreeNoThrow();	// PYR-72993, returns true if CURRENT DEGREE was reset to defaultParallelismDegree, false otherwise
+	bool setMaxParallelismDegreeNoThrow();		// PYR-72993, returns true if CURRENT DEGREE was reset to maxParallelismDegree, false otherwise
 
 
 	void checkRetcode(
@@ -293,7 +290,6 @@ protected:
 
 private:
 	eStmtFailureLogging stmtFailureLogging;
-	void reportDB2ApplicationId();  // PYR-33265
 	UINT32 roundtripCounter = 0;
 };
 

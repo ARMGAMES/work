@@ -50,24 +50,13 @@ public:
 	}
 };
 
-// PYR-33265
-void 	DatabaseManagerCommon::reportDB2ApplicationId()
+void DatabaseManagerCommon::setCurrentSchema()
 {
-	try
-	{
-		GetDB2ApplicationIdStmt getDB2ApplicationIdStmt(*this);
-		getDB2ApplicationIdStmt.execute();
-		bool found = getDB2ApplicationIdStmt.fetch();
-		getDB2ApplicationIdStmt.closeCursor();
-		if (found)
-		{
-			PLogSetCallback(new PLogCallback(getDB2ApplicationIdStmt.getApplicationId()));
-		}
-	}
-	catch(const PError& err)
-	{
-		PLog("Error in DatabaseManager::reportDB2ApplicationId() - %s", err.why());
-	}
+	if (schemaStr.length() == 0)
+		return;
+
+	DbmStatement stmt(*this);
+	stmt.execDirect((SQLCHAR*)schemaStr.c_str(), DatabaseManagerCommon::eCheckNotSuccess);
 }
 
 bool	DatabaseManagerCommon::openDataStorage(const char* fullFileName, const char* sectionName)
@@ -77,6 +66,12 @@ bool	DatabaseManagerCommon::openDataStorage(const char* fullFileName, const char
 	try
 	{
 		_openDataStorage(fullFileName, sectionName);
+
+		if (schemaStr.length())
+		{
+			setCurrentSchema();
+			PLog("Current schema was changed to '%s'", schemaStr.c_str());
+		}
 	}
 	catch(const PError& err)
 	{
@@ -84,8 +79,8 @@ bool	DatabaseManagerCommon::openDataStorage(const char* fullFileName, const char
 		return false;
 	}
 	PLog("DatabaseManagerCommon::openDataStorage end");
-	reportDB2ApplicationId(); // PYR-33265
-	generator.prepareStatements( *this );
+
+	//generator.prepareStatements( *this );
 	return true;
 }
 
@@ -116,7 +111,11 @@ void	DatabaseManagerCommon::_openDataStorage(const char* fullFileName, const cha
 	maxParallelismDegree = section->getProperty( DB_MAX_PARAL_PARAM_NAME, "" );
 	PLog( DB_DEFAULT_PARAL_PARAM_NAME ":'%s' " DB_MAX_PARAL_PARAM_NAME ":'%s'", defaultParallelismDegree.c_str(), maxParallelismDegree.c_str() );
 
-	schemaStr.assign(schema);
+	if (schema && *schema)
+	{
+		schemaStr
+			.assign("ALTER USER ").append(login).append(" WITH DEFAULT_SCHEMA = ").append(schema);
+	}
 	maxDbReconnectAttempts = section->getIntProperty(DB_RECONNECT_ATTEMPTS_PARAM_NAME, 3600); // PYR-37068 - new value 3600
 	maxDbDeadlockRetries = section->getIntProperty( DB_DEADLOCK_RETRIES_PARAM_NAME, 5 ); // PYR-37539
 	PLog( DB_RECONNECT_ATTEMPTS_PARAM_NAME ":%d " DB_DEADLOCK_RETRIES_PARAM_NAME ":%d", maxDbReconnectAttempts, maxDbDeadlockRetries );
@@ -288,10 +287,7 @@ void	DatabaseManagerCommon::_openDataStorage(const char* fullFileName, const cha
 	{
 		addObjectNameToGenerator( generators[i].objectName, generators[i].local ); //-V522
 	}
-	if( useMasterGenerator && !useSharedIds() )
-	{
-		PASSERT(0);
-	}
+
 	// PYR-40317
 	const char* const * const monotonicGenerators = getMonotonicGenerators( generatorsSize );
 	PASSERT( !generatorsSize || monotonicGenerators );
@@ -424,8 +420,6 @@ const set<PString, PStringCmp> federated_conn_err_codes = {
 	"40506"		// PYR-112629 (not yet supported in SqlErrDetail)
 #endif
 };
-
-
 
 // PYR-37710
 void DatabaseManagerCommon::SqlErrDetail::raiseOnError() const

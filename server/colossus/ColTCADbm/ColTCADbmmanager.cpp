@@ -25,17 +25,6 @@ ColTCADbmManager::~ColTCADbmManager()
 	}
 }
 
-void ColTCADbmManager::setCurrentSchema()
-{
-	if (!*schemaStr)
-		return;
-	PString exec = "SET CURRENT SCHEMA ";
-	// ALTER USER dbdev WITH DEFAULT_SCHEMA = dbo;
-	exec.append(schemaStr);
-	DbmStatement stmt(*this);
-	stmt.execDirect( (SQLCHAR*)exec.c_str(), DatabaseManagerCommon::eCheckNotSuccess );
-}
-
 bool ColTCADbmManager::openDataStorage(const char* fullFileName, const char* sectionName)
 {
 	PLog(__FUNCTION__" start");
@@ -44,19 +33,6 @@ bool ColTCADbmManager::openDataStorage(const char* fullFileName, const char* sec
 	bool bResult = DatabaseManagerCommon::openDataStorage(fullFileName, sectionName);
 	if (!bResult)
 		return false;
-	if ( *schemaStr ) 
-	{
-		try
-		{
-			setCurrentSchema();
-			PLog("Current schema was changed to '%s'", schemaStr.c_str());
-		}
-		catch( const PSqlError& er)
-		{
-			PLog("Current schema was not changed to '%s', error code %d, reason: %s", 
-				schemaStr.c_str(), er.code(), er.why());
-		}
-	}
 
 	prepareStatements();
 
