@@ -41,7 +41,5 @@ private:
 	void deleteStatements();
 	void zeroStatements();
 
-	// PYR-27418
-	const DbmGenerator::Generator* getGenerators( size_t& generatorsSize ) const override;
 };
 

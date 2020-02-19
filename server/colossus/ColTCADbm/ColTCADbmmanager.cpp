@@ -11,7 +11,6 @@ ColTCADbmManager::ColTCADbmManager()
 	errorsInMessages = 0;
 	dbReconnectInterval = 0;
 	zeroStatements();
-	generator.setRangeIncrement(1);
 }
 
 ColTCADbmManager::~ColTCADbmManager()
@@ -38,19 +37,6 @@ bool ColTCADbmManager::openDataStorage(const char* fullFileName, const char* sec
 
 	PLog("ColTCADbmManager::openDataStorage end");
 	return bResult;
-}
-
-const DbmGenerator::Generator* ColTCADbmManager::getGenerators( size_t& generatorsSize ) const // override
-{
-	static const DbmGenerator::Generator generators[] =
-	{
-		//  objectName  			local
-		//	--------------			-----------
-		{ "SampleTable1",		false },
-		{ "SampleTable2",		false },
-	};
-	generatorsSize = SZARR( generators );
-	return generators;
 }
 
 // reporting db manager specific parameters to Monitor

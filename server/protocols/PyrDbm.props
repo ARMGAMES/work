@@ -5,12 +5,12 @@
   <PropertyGroup />
   <ItemDefinitionGroup>
     <ClCompile>
-      <AdditionalIncludeDirectories>..\mssql_libs\110\include;..\..\mssql_libs\110\include;..\..\..\mssql_libs\110\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <!--<AdditionalIncludeDirectories>..\mssql_libs\110\include;..\..\mssql_libs\110\include;..\..\..\mssql_libs\110\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories> -->
     </ClCompile>
     <Link>
 	  <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
-      <AdditionalDependencies>sqlncli11.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>..\mssql_libs\110\lib\x86;..\..\mssql_libs\110\lib\x86;..\..\..\mssql_libs\110\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <!-- <AdditionalDependencies>sqlncli11.lib;%(AdditionalDependencies)</AdditionalDependencies> -->
+      <!--<AdditionalLibraryDirectories>..\mssql_libs\110\lib\x86;..\..\mssql_libs\110\lib\x86;..\..\..\mssql_libs\110\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories> -->
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup />

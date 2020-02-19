@@ -116,9 +116,6 @@ public:
 	};
 
 	DatabaseManagerCommon()
-		: remainingIdsThreshold(0)
-		, requiredIdsBuffer(0)
-		, useMasterGenerator(false) // by default do not use master generator functionality
 	{
 		henv = 0;
 		hdbc = 0;
@@ -127,6 +124,8 @@ public:
 		globalAutoCommitFlag = true;
 		lockTimeout = 0; // do not set lock timeout
 		stmtFailureLogging = eStmtFailureLogging_Off;
+
+		generator.init(this);
 	}
 	/*lint -save -e1740 */
 	virtual ~DatabaseManagerCommon()
@@ -137,9 +136,6 @@ public:
 	
 	int getMaxDbReconnectAttempts() const { return maxDbReconnectAttempts; }
 	INT32 getMaxDbDeadlockRetries() const { return maxDbDeadlockRetries; } // PYR-37539
-
-	// PYR-40317
-	bool isMonotonicByUserId(const char* objectName) const { return generator.isMonotonicByUserId(objectName); }
 
 	void readStmtFailureLoggingState(const PIniFile::Section& section);
 	bool isStmtFalureLoggingOn(const PString& sqlState) const;
@@ -178,43 +174,15 @@ public:
 	/*lint -restore */
 	UINT32 getNextId(const char* objectName)
 	{
-		return (UINT32)generator.getNextId64(objectName);
+		return (UINT32)generator.getNextId(objectName);
 	}
 	UINT64 getNextId64(const char* objectName)
 	{
-		return generator.getNextId64(objectName);
+		return generator.getNextId(objectName);
 	}
-	virtual bool isMainThreadManager() const // PYR-40317
+	virtual bool isMainThreadManager() const 
 	{
 		return false; // default is no multithreading
-	}
-	void getNext2Ids64(const char* objectName, UINT64& id1, UINT64& id2) // PYR-38720 - get next two consecutive ids
-	{
-		return generator.getNext2Ids64(objectName, id1, id2);
-	}
-	void getNext2Ids(const char* objectName, UINT32& id1, UINT32& id2) // PYR-38720 - get next two consecutive ids (helper for UINT32 ids)
-	{
-		UINT64 id1_, id2_;
-		getNext2Ids64(objectName, id1_, id2_);
-		id1 = id1_; id2 = id2_;
-	}
-	// only used to get "multiple" handId
-	UINT64 getNextId64UnCached(const char* objectName)
-	{
-		return generator.getNextId64UnCached(objectName);
-	}
-
-	const char* getForUpdateClause() const { return forUpdateClause.c_str(); } // PYR-28457
-	virtual INT16 getIdRange(const char* objectName, INT32 rangeSize, UINT64& startId, UINT64& endId, PString& sqlErr) // PYR-27418
-	{
-		return generator.getIdRangeForSlave(objectName, rangeSize, startId, endId, sqlErr);
-	}
-	// Called by server object on static init for slave dbm
-	bool initConnectionToMasterGenerator(IdRangeClientConnection* idRangeConn, DbmGenerator::DbmGeneratorCallback* initFinishedCallback) // PYR-27418
-	{
-		PASSERT5(useMasterGenerator);
-		generator.setIdRangeConn(idRangeConn);
-		return generator.init(remainingIdsThreshold, requiredIdsBuffer, initFinishedCallback);
 	}
 
 	virtual void ensureCanProcessUserRelatedTables(UINT32 licenseId, UINT32 userIntId) const /* can throw PSqlError */ {} // PYR-27872
@@ -240,33 +208,9 @@ protected:
 	PString		defaultParallelismDegree; // PYR-49252
 	PString		maxParallelismDegree; // PYR-49252
 
-	INT32 remainingIdsThreshold;
-	INT32 requiredIdsBuffer;
-	bool useMasterGenerator; // some dbms have read-only instances which don't need generator functionality
-	// end of PYR-27418
-
-	PString		forUpdateClause; // PYR-28457
 	DbmGenerator generator;
-	// PYR-27418
-	// This method must be overridden when support for sharing of IDs between NJ and IOM site is required by certain Dbms
-	virtual const DbmGenerator::Generator* getGenerators( size_t& generatorsSize ) const
-	{
-		// by default - no IDs sharing support is required
-		generatorsSize = 0;
-		return nullptr;
-	}
-	// PYR-40317
-	virtual const char* const * getMonotonicGenerators( size_t& arraySize ) const
-	{
-		// by default nothing is required to be monotonic
-		arraySize = 0;
-		return nullptr;
-	}
 
 	void setCurrentSchema();
-
-	void addObjectNameToGenerator(const char* objectName, bool local); // PYR-27418
-	void addMonotonicGenerator(const char* objectName); // PYR-40317
 
 	void _openDataStorage(const char* fullFileName, const char* sectionName);
 	void setLockTimeout(); // PYR-35295

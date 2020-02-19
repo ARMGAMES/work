@@ -3,9 +3,6 @@
 #include	"commssl.h"
 #include	"dbmstmt.h"
 
-#define REMAINING_IDS_THRESHOLD_DEFAULT	900000
-#define REQUIRED_IDS_BUFFER_DEFAULT		1000000
-
 void DatabaseManagerCommon::setAutoCommit( bool bOn )
 {
 	if(bOn == globalAutoCommitFlag)
@@ -80,7 +77,7 @@ bool	DatabaseManagerCommon::openDataStorage(const char* fullFileName, const char
 	}
 	PLog("DatabaseManagerCommon::openDataStorage end");
 
-	//generator.prepareStatements( *this );
+	generator.prepareStatements();
 	return true;
 }
 
@@ -129,12 +126,8 @@ void	DatabaseManagerCommon::_openDataStorage(const char* fullFileName, const cha
 	}
 
 	readStmtFailureLoggingState(*section);
-
-	// allow any value
-	forUpdateClause = section->getProperty("forUpdateClause", "FOR UPDATE WITH RS");
-	
+		
 	PLog("... connecting to %s as %s", dsName.c_str(), login);
-	PLog("... generator 'for update' clause '%s'", forUpdateClause.c_str());
 	PLog("... locktimeout: %d", lockTimeout );
 
 	PString decodedPwd;
@@ -251,51 +244,6 @@ void	DatabaseManagerCommon::_openDataStorage(const char* fullFileName, const cha
 		err.appendInt(retcode);
 		throw PError(err);
 	}
-	// PYR-27418
-	const PIniFile::Section* deplSection = iniFile.getSection(DEPLOYMENT_SECTION_NAME);
-	if (deplSection)
-	{
-		PLog("reading [%s] size=%u", DEPLOYMENT_SECTION_NAME, deplSection->items.size());
-		remainingIdsThreshold = deplSection->getIntProperty("remainingIdsThreshold", REMAINING_IDS_THRESHOLD_DEFAULT);
-		requiredIdsBuffer = deplSection->getIntProperty("requiredIdsBuffer", REQUIRED_IDS_BUFFER_DEFAULT);
-		useMasterGenerator = deplSection->getIntProperty("useMasterGenerator", 0) != 0;
-	}
-	else
-	{
-		PLog("no [%s] section in ini file", DEPLOYMENT_SECTION_NAME);
-		remainingIdsThreshold = REMAINING_IDS_THRESHOLD_DEFAULT;
-		requiredIdsBuffer = REQUIRED_IDS_BUFFER_DEFAULT;
-		useMasterGenerator = false;
-	}
-	if( remainingIdsThreshold < 2 || remainingIdsThreshold >= requiredIdsBuffer )
-	{
-		PLog("ERROR: invalid values in configuration - 'remainingIdsThreshold' < 2 or 'remainingIdsThreshold' >= 'requiredIdsBuffer'. Correcting.");
-		remainingIdsThreshold = REMAINING_IDS_THRESHOLD_DEFAULT;
-		requiredIdsBuffer = REQUIRED_IDS_BUFFER_DEFAULT;
-	}
-	if( generator.getRangeIncrement() >= requiredIdsBuffer - remainingIdsThreshold )
-	{
-		PLog( "WARNING: rangeIncrement (%d) is less than minimum requested Ids buffer (%d).", generator.getRangeIncrement(), requiredIdsBuffer - remainingIdsThreshold );
-	}
-	PLog("remainingIdsThreshold=%d, requiredIdsBuffer=%d", remainingIdsThreshold, requiredIdsBuffer);
-	PLog("useMasterGenerator=%s", useMasterGenerator ? "true" : "false");
-
-	size_t generatorsSize;
-	const DbmGenerator::Generator* const generators = getGenerators( generatorsSize );
-	PASSERT( !generatorsSize || generators );
-	for( size_t i = 0; i < generatorsSize; ++i )
-	{
-		addObjectNameToGenerator( generators[i].objectName, generators[i].local ); //-V522
-	}
-
-	// PYR-40317
-	const char* const * const monotonicGenerators = getMonotonicGenerators( generatorsSize );
-	PASSERT( !generatorsSize || monotonicGenerators );
-	for( size_t i = 0; i < generatorsSize; ++i )
-	{
-		addMonotonicGenerator( monotonicGenerators[i] ); //-V522
-	}
-
 }
 
 void DatabaseManagerCommon::closeDataStorage()
@@ -529,17 +477,6 @@ void DatabaseManagerCommon::checkRetcode(
 	}
 }
 
-
-void DatabaseManagerCommon::addObjectNameToGenerator(const char* objectName, bool local) // PYR-27418
-{
-	generator.addObjectName( objectName, local );
-}
-
-// PYR-40317
-void DatabaseManagerCommon::addMonotonicGenerator( const char* objectName )
-{
-	generator.addMonotonicObjectName( objectName );
-}
 
 void DatabaseManagerCommon::readStmtFailureLoggingState(const PIniFile::Section& section) // PYR-27855
 {
