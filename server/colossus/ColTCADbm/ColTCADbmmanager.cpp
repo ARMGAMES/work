@@ -35,6 +35,7 @@ bool ColTCADbmManager::openDataStorage(const char* fullFileName, const char* sec
 
 	prepareStatements();
 
+	getNextId64("testTB");
 	PLog("ColTCADbmManager::openDataStorage end");
 	return bResult;
 }
@@ -94,15 +95,20 @@ void ColTCADbmManager::setAutoCommitTrue()
 
 void ColTCADbmManager::prepareStatements()
 {   
+	sampleTestingStmt = new SampleTestingStmt(*this);
+
 }
 
 void ColTCADbmManager::deleteStatements()
 {
+	delete sampleTestingStmt;
+
 	zeroStatements();
 }
 
 void ColTCADbmManager::zeroStatements()
 {
+	sampleTestingStmt = 0;
 }
 
 /* Message processing */

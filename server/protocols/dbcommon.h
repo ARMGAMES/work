@@ -71,7 +71,6 @@ public:
 class CommServerObjectWithOlapInteface;
 class CommMsgBody;
 
-
 #define DEPLOYMENT_SECTION_NAME		"DEPLOYMENT" 
 #define STATICSETTINGS_SECTION_NAME	"STATICSETTINGS"
 #define DB_LOCKTIMEOUT_PARAM_NAME "locktimeout" 
@@ -79,7 +78,6 @@ class CommMsgBody;
 #define DB_RECONNECT_ATTEMPTS_PARAM_NAME "reconnectattempts"
 #define DB_DEFAULT_PARAL_PARAM_NAME "default_paral" 
 #define DB_MAX_PARAL_PARAM_NAME "max_paral"
-
 
 #define RECONNECT_SLEEP		1000
 
@@ -115,24 +113,8 @@ public:
 
 	};
 
-	DatabaseManagerCommon()
-	{
-		henv = 0;
-		hdbc = 0;
-		maxDbReconnectAttempts = 5;//why not?
-		maxDbDeadlockRetries = 5; // PYR-37539 - just some reasonable value
-		globalAutoCommitFlag = true;
-		lockTimeout = 0; // do not set lock timeout
-		stmtFailureLogging = eStmtFailureLogging_Off;
-
-		generator.init(this);
-	}
-	/*lint -save -e1740 */
-	virtual ~DatabaseManagerCommon()
-	{
-		closeDataStorage(); //lint !e1551
-	}
-	/*lint -restore */
+	DatabaseManagerCommon();
+	virtual ~DatabaseManagerCommon();
 	
 	int getMaxDbReconnectAttempts() const { return maxDbReconnectAttempts; }
 	INT32 getMaxDbDeadlockRetries() const { return maxDbDeadlockRetries; } // PYR-37539
@@ -141,19 +123,15 @@ public:
 	bool isStmtFalureLoggingOn(const PString& sqlState) const;
 	eStmtFailureLogging getStmtFailureLogging() const { return stmtFailureLogging; }
 
-	bool	openDataStorage(const char* fullFileName, const char* sectionName);
-	void	closeDataStorage();
-	const char * getDsName() const
-	{
-		return dsName.c_str();
-	}
+	bool openDataStorage(const char* fullFileName, const char* sectionName);
+	void closeDataStorage();
+	const char* getDsName() const	{ return dsName.c_str();}
 
 	void checkStmtRetcode(
 		SQLRETURN		retcode,	//	in
 		SQLHSTMT		hstmt,		//	in
 		CheckModifier	modifier //= DatabaseManager::eCheckNotSuccess 
 	) const
-
 	{
 		checkRetcode(SQL_HANDLE_STMT, retcode, hstmt, modifier);
 	}
@@ -192,23 +170,24 @@ public:
 	void incrementRountripCounter() { roundtripCounter++; }
 	UINT32 getRoundtripCounter() const { return roundtripCounter; }
 
-	// PYR-112629 dbms that catch PDbFederatedDeadInternalConnectError exception should override this function to return 'true'
-
 	virtual bool dbmSupportsRetryOnFederatedDeadConnection() const { return false; } // PYR-112629
 
 protected:
 	SQLHENV		henv;
 	SQLHDBC		hdbc;
-	int			maxDbReconnectAttempts;
-	PString		schemaStr;
-	bool		globalAutoCommitFlag;
-	PString		dsName;
-	INT32		lockTimeout; // PYR-35295
-	INT32		maxDbDeadlockRetries; // PYR-37539
-	PString		defaultParallelismDegree; // PYR-49252
-	PString		maxParallelismDegree; // PYR-49252
 
 	DbmGenerator generator;
+
+	PString		dsName;
+	PString		schemaStr;
+	bool		globalAutoCommitFlag;
+
+	INT32		maxDbReconnectAttempts;
+	INT32		lockTimeout;
+	INT32		maxDbDeadlockRetries;
+	UINT32		roundtripCounter;
+	PString		defaultParallelismDegree; 
+	PString		maxParallelismDegree; 
 
 	void setCurrentSchema();
 
@@ -220,12 +199,7 @@ protected:
 	bool setDefaultParallelismDegreeNoThrow();	// PYR-72993, returns true if CURRENT DEGREE was reset to defaultParallelismDegree, false otherwise
 	bool setMaxParallelismDegreeNoThrow();		// PYR-72993, returns true if CURRENT DEGREE was reset to maxParallelismDegree, false otherwise
 
-
-	void checkRetcode(
-		SQLSMALLINT HandleType,
-		SQLRETURN retcode,	//	in
-		SQLHANDLE handle,	//	in
-		CheckModifier modifier) const;
+	void checkRetcode(SQLSMALLINT HandleType, SQLRETURN retcode, SQLHANDLE handle, CheckModifier modifier) const;
 
 	void setAutoCommit(bool bOn);
 	bool isAutoCommit() const { return globalAutoCommitFlag; }
@@ -234,10 +208,9 @@ protected:
 
 private:
 	eStmtFailureLogging stmtFailureLogging;
-	UINT32 roundtripCounter = 0;
 };
 
-#ifdef POSTGRES // PYR-124995
+#ifdef POSTGRES 
 #define SQL_WARNING_NON_OPTIMAL_PLAN	"54001"
 #else
 #define SQL_WARNING_NON_OPTIMAL_PLAN	"01602"

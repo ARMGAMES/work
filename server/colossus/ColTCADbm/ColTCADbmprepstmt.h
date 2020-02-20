@@ -1,9 +1,4 @@
-// ===========================================================
-// Copyright (C) 2018 PYR Software Ltd. All rights reserved.
-// ===========================================================
-
-#ifndef ColTCADbmprepstmt_h
-#define	ColTCADbmprepstmt_h
+#pragma once
 
 #include	"dbmstmt.h"
 #include	"dbm.h"
@@ -25,6 +20,21 @@ protected: // Disallow invocation of execute methods
 
 typedef NoExecStmtT<DbmStatement> NoExecStmt;
 
+/////////////////////////////////////////////////////////////////////////////////////
+
+class SampleTestingStmt : public DbmStatement
+{
+	PSqlString<OBJECT_NAME_LEN> objectName;
+	PSqlBigInt					objectId;
+
+	void prepareStmt();
+
+public:
+	SampleTestingStmt(DatabaseManagerCommon& man) : DbmStatement(man)
+	{
+		prepareStmt();
+	}
+	void init(const char* name, UINT64 object_id);
+};
 
 
-#endif	//ColTCADbmprepstmt_h

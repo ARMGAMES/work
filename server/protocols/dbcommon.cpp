@@ -3,6 +3,26 @@
 #include	"commssl.h"
 #include	"dbmstmt.h"
 
+
+DatabaseManagerCommon::DatabaseManagerCommon()
+{
+	henv = 0;
+	hdbc = 0;
+	maxDbReconnectAttempts = 5;
+	maxDbDeadlockRetries = 5; 
+	globalAutoCommitFlag = true;
+	lockTimeout = 0; // do not set lock timeout
+	stmtFailureLogging = eStmtFailureLogging_Off;
+	roundtripCounter = 0;
+
+	generator.init(this);
+}
+
+DatabaseManagerCommon::~DatabaseManagerCommon()
+{
+	closeDataStorage();
+}
+
 void DatabaseManagerCommon::setAutoCommit( bool bOn )
 {
 	if(bOn == globalAutoCommitFlag)

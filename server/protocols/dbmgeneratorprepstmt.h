@@ -1,6 +1,5 @@
 #pragma once
 
-#include "dbmconstants.h"
 #include "dbmstmt.h"
 
 class InsertGeneratorObjectStmt : public DbmStatement

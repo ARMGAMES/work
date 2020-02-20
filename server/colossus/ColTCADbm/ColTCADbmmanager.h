@@ -36,6 +36,7 @@ public:
 
 private:
 	// statements
+	SampleTestingStmt* sampleTestingStmt;
 
 	void prepareStatements();
 	void deleteStatements();
