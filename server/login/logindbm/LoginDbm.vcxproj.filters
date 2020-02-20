@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{7fa2b3c2-d110-4e73-8584-896a8c552ceb}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{dbc8e845-b125-48eb-8cb8-50d747cb9572}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Header Files\srvshared">
+      <UniqueIdentifier>{a07d97e5-b35a-4be7-97c4-920e5eb88324}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\srvshared">
+      <UniqueIdentifier>{feb53508-f5b7-4bcb-b4c4-50c1878ec5cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc">
+      <UniqueIdentifier>{18cc45fe-9fb6-4be5-9593-f02989940a73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\protocols">
+      <UniqueIdentifier>{41686949-dea9-4bce-96aa-f545fb5ee194}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\protocols">
+      <UniqueIdentifier>{530823f5-c9ba-40c8-be13-1e9e05362999}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="LoginDbmmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginDbmmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginDbmobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\counters.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\dbcommon.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\dbmgenerator.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\dbmserverobjectcommon.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\dbmstmt.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\initdatetime.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\psqlvalue.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginDbmprepstmt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Connection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginDbmAdminProcessing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\shared.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginCacheTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\i18n.strmap.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\i18n.utils.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\i18n.locales.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\stringroutines.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\protocols\initdata.cpp">
+      <Filter>Source Files\protocols</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LoginDbmmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginDbmobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginDbmprepstmt.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginDbmstart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protocols\dbcommon.h">
+      <Filter>Header Files\protocols</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protocols\dbmgenerator.h">
+      <Filter>Header Files\protocols</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protocols\dbmserverobjectcommon.h">
+      <Filter>Header Files\protocols</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protocols\dbmstmt.h">
+      <Filter>Header Files\protocols</Filter>
+    </ClInclude>
+    <ClInclude Include="Connection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginCacheTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginDbmshared.h">
+      <Filter>Header Files\srvshared</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\protocols\dbmconstants.h">
+      <Filter>Header Files\protocols</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LoginDbm.files">
+      <Filter>Misc</Filter>
+    </None>
+    <None Include="LoginDbm_sample.ini">
+      <Filter>Misc</Filter>
+    </None>
+  </ItemGroup>
+</Project>

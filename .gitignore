@@ -45,3 +45,6 @@ server/colossus/ColTCADbm/Release
 server/colossus/ColTCADbm/x64
 server/colossus/CCDA/Debug
 server/colossus/CCDA/Release
+server/login/logindbm/Debug
+server/login/logindbm/Release
+server/login/logindbm/x64
