@@ -86,6 +86,9 @@
     <ClCompile Include="..\protocols\initdata.cpp">
       <Filter>Source Files\protocols</Filter>
     </ClCompile>
+    <ClCompile Include="..\srvshared\maindbmstruct.cpp">
+      <Filter>Source Files\srvshared</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainDbmmanager.h">
@@ -123,6 +126,9 @@
     </ClInclude>
     <ClInclude Include="..\protocols\dbmconstants.h">
       <Filter>Header Files\protocols</Filter>
+    </ClInclude>
+    <ClInclude Include="..\srvshared\maindbmstruct.h">
+      <Filter>Header Files\srvshared</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

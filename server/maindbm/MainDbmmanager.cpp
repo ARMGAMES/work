@@ -95,20 +95,21 @@ void MainDbmManager::setAutoCommitTrue()
 
 void MainDbmManager::prepareStatements()
 {   
-	sampleTestingStmt = new SampleTestingStmt(*this);
+	insertUserStmt = new InsertUserStmt(*this);
+
 
 }
 
 void MainDbmManager::deleteStatements()
 {
-	delete sampleTestingStmt;
+	delete insertUserStmt;
 
 	zeroStatements();
 }
 
 void MainDbmManager::zeroStatements()
 {
-	sampleTestingStmt = 0;
+	insertUserStmt = 0;
 }
 
 /* Message processing */

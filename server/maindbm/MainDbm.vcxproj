@@ -132,6 +132,7 @@
     <ClCompile Include="..\protocols\initdatetime.cpp" />
     <ClCompile Include="..\protocols\shared.cpp" />
     <ClCompile Include="..\protocols\stringroutines.cpp" />
+    <ClCompile Include="..\srvshared\maindbmstruct.cpp" />
     <ClCompile Include="MainCacheTypes.cpp" />
     <ClCompile Include="Connection.cpp" />
     <ClCompile Include="MainDbmAdminProcessing.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="..\protocols\dbmgenerator.h" />
     <ClInclude Include="..\protocols\dbmserverobjectcommon.h" />
     <ClInclude Include="..\protocols\dbmstmt.h" />
+    <ClInclude Include="..\srvshared\maindbmstruct.h" />
     <ClInclude Include="MainCacheTypes.h" />
     <ClInclude Include="MainDbmshared.h" />
     <ClInclude Include="Connection.h" />
