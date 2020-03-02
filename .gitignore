@@ -48,3 +48,6 @@ server/colossus/CCDA/Release
 server/login/logindbm/Debug
 server/login/logindbm/Release
 server/login/logindbm/x64
+server/maindbm/Debug
+server/maindbm/Release
+server/maindbm/x64

@@ -11,6 +11,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "commextlib", "..\commextlib
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LoginDbm", "..\login\logindbm\LoginDbm.vcxproj", "{245C5F81-9DFD-41C3-A652-B688120C7730}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MainDbm", "..\maindbm\MainDbm.vcxproj", "{84929155-28D2-4184-8AD3-90F53EBA7D33}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -69,6 +71,18 @@ Global
 		{245C5F81-9DFD-41C3-A652-B688120C7730}.Release|x64.Build.0 = Release|x64
 		{245C5F81-9DFD-41C3-A652-B688120C7730}.Release|x86.ActiveCfg = Release|Win32
 		{245C5F81-9DFD-41C3-A652-B688120C7730}.Release|x86.Build.0 = Release|Win32
+		{84929155-28D2-4184-8AD3-90F53EBA7D33}.Debug|x64.ActiveCfg = Debug|x64
+		{84929155-28D2-4184-8AD3-90F53EBA7D33}.Debug|x64.Build.0 = Debug|x64
+		{84929155-28D2-4184-8AD3-90F53EBA7D33}.Debug|x86.ActiveCfg = Debug|Win32
+		{84929155-28D2-4184-8AD3-90F53EBA7D33}.Debug|x86.Build.0 = Debug|Win32
+		{84929155-28D2-4184-8AD3-90F53EBA7D33}.DebugMD|x64.ActiveCfg = Debug|x64
+		{84929155-28D2-4184-8AD3-90F53EBA7D33}.DebugMD|x64.Build.0 = Debug|x64
+		{84929155-28D2-4184-8AD3-90F53EBA7D33}.DebugMD|x86.ActiveCfg = Debug|Win32
+		{84929155-28D2-4184-8AD3-90F53EBA7D33}.DebugMD|x86.Build.0 = Debug|Win32
+		{84929155-28D2-4184-8AD3-90F53EBA7D33}.Release|x64.ActiveCfg = Release|x64
+		{84929155-28D2-4184-8AD3-90F53EBA7D33}.Release|x64.Build.0 = Release|x64
+		{84929155-28D2-4184-8AD3-90F53EBA7D33}.Release|x86.ActiveCfg = Release|Win32
+		{84929155-28D2-4184-8AD3-90F53EBA7D33}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
