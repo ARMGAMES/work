@@ -17,7 +17,7 @@ MainDbmServerObject::MainDbmServerObject(_CommInterface& inter) :
 	srvPool( inter ), cliPool( inter),
 	connAdminFactory(*this, authGuardFactory),
 	connTrustedAdminFactory(*this, guardFactory),
-	connExampleSrvFactory(*this, guardFactory, ExampleSrv),
+	connLobbySrvFactory(*this, guardFactory, Lobby),
 	loginConnection(*this, clientNullGuardFactory, "LOG", 'L'),
 	heLoggerTimerHandle(0), heLogger(NULL),	useLogger(false),
 	cleanupTimerHandle(0), moreTrace(false)
@@ -42,9 +42,9 @@ bool MainDbmServerObject::registerAllFactories() // override
 		// Id generator not ready yet
 		return false;
 	}
-	srvPool.registerFactory(COLTCADBM_SRV_ADMIN_CONN_NAME, connAdminFactory );
-	srvPool.registerFactory(COLTCADBM_SRV_TRUSTEDADMIN_CONN_NAME, connTrustedAdminFactory );
-	srvPool.registerFactory(COLTCADBM_SRV_EXAMPLE_CONN_NAME, connExampleSrvFactory);
+	srvPool.registerFactory(MAINDBM_SRV_ADMIN_CONN_NAME, connAdminFactory );
+	srvPool.registerFactory(MAINDBM_SRV_TRUSTEDADMIN_CONN_NAME, connTrustedAdminFactory );
+	srvPool.registerFactory(MAINDBM_SRV_LOBBY_CONN_NAME, connLobbySrvFactory);
 
 	return true;
 }
@@ -323,9 +323,9 @@ void MainDbmServerObject::processCommonServerMessage(UINT32 msgId, const CommMsg
 						processAdminMessage(msgId, body, conn);
 						break;
 					}
-					case ExampleSrv:
+					case Lobby:
 					{
-						processExampleSrvMessage(msgId, body, conn);
+						processLobbyMessage(msgId, body, conn);
 						break;
 					}
 					default:
@@ -363,12 +363,16 @@ void MainDbmServerObject::processCommonServerMessage(UINT32 msgId, const CommMsg
 	ticksAccumulator.addMessageTicks(counter);
 }
 
-void MainDbmServerObject::processExampleSrvMessage(UINT32 msgId, const CommMsgBody & body, GenericSrvConnection* conn)
+void MainDbmServerObject::processLobbyMessage(UINT32 msgId, const CommMsgBody & body, GenericSrvConnection* conn)
 {
 	CommMsgParser parser(body);
 	switch (msgId)
 	{
-
+		case DBM_Q_INSERT_USER:
+		{
+			processInsertUser(parser, conn);
+			break;
+		}
 		default:
 		{
 			PLog(__FUNCTION__" error ... unhandled message ID=%u", msgId);
@@ -509,7 +513,12 @@ void MainDbmServerObject::processTimerMessage( UINT32 /*handle*/, UINT32 msgId, 
 	PLog("}%u%s", ticks, (ticks > TICKS_PER_SECOND) ? " overspan" : "");
 }
 
+////////////////////////////////////////////////////////////////////////////////////////
 
+// process messages
+void MainDbmServerObject::processInsertUser(CommMsgParser& parser, GenericSrvConnection* conn)
+{
 
+}
 
 

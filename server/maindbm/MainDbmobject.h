@@ -45,7 +45,7 @@ private:
 	// Incoming connections
 	AdminServerConnFactory			connAdminFactory;
 	TrustedAdminServerConnFactory	connTrustedAdminFactory;
-	GenericServerConnFactory		connExampleSrvFactory;
+	GenericServerConnFactory		connLobbySrvFactory;
 
 	// Outgoing connections
 	GenericOutgoingConnection		loginConnection;
@@ -113,7 +113,7 @@ private:
 	// process server messages
 	void processAdminMessage(UINT32 msgId, const CommMsgBody& body, GenericSrvConnection* conn);
 	void processTrustedAdminMessage(UINT32 msgId, const CommMsgBody& body, GenericSrvConnection* conn);
-	void processExampleSrvMessage(UINT32 msgId, const CommMsgBody & body, GenericSrvConnection* conn);
+	void processLobbyMessage(UINT32 msgId, const CommMsgBody & body, GenericSrvConnection* conn);
 
 	// Handlers for Admin messages
 	bool checkAdminRight(const char* right, const GenericPrivilegedSrvConnection* pConn, CommMsgBody& reply);
@@ -125,6 +125,8 @@ private:
 	void stopHeLogger();
 	void reportPerformance();
 	
+	// process messages
+	void processInsertUser(CommMsgParser& parser, GenericSrvConnection* conn);
 };
 
 class MainDbmServerObjectFactory : public CommServerObjectFactory

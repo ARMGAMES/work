@@ -10,7 +10,7 @@ enum ServerConnectionType
 	LowerGuard = 0,
 	TrustedAdmin = 1,
 	Admin = 2,
-	ExampleSrv = 3,
+	Lobby = 3,
 	UpperGuard
 };
 
@@ -25,7 +25,7 @@ static const CONN_TYPE_STRUCT CONN_TYPES[] =
 	{ LowerGuard, "" }
 	, { TrustedAdmin, "TA" }
 	, { Admin, "A" }
-	, { ExampleSrv, "EX" }
+	, { Lobby, "LBY" }
 	, { UpperGuard, "" }
 };
 

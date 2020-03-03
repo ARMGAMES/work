@@ -104,7 +104,7 @@ void AdminSrvConnection::closedOrDisconnected( int errCode, const char* errMsg )
 		}
 
 		CommMsgBody body;
-		composeUserLogout(OBJ_TYPE_COLDBM, 0, adminId, errCode, body);
+		composeUserLogout(OBJ_TYPE_LOBBY, 0, adminId, errCode, body);
 		obj.postToLogin(DBM_Q_USER_LOGOUT, body);
 	}
 }
@@ -129,7 +129,7 @@ void AdminSrvConnection::getUserAuth( const char* guardType, const char* user, C
 	getServConnIp(*this, ipAddr, port);
 
 	CommMsgBody request;
-	composeUserAuthMsg(user, "", "", "", ipAddr, port, OBJ_TYPE_COLDBM, 0, authBody, 0, 0, guardType, request);
+	composeUserAuthMsg(user, "", "", "", ipAddr, port, OBJ_TYPE_LOBBY, 0, authBody, 0, 0, guardType, request);
 
 	obj.postToLogin(DBM_Q_USER_AUTH, request, 
 		new AdminAuthAsyncCall(obj, &LoginDbmServerObject::receiveAdminAuth, this->id()));

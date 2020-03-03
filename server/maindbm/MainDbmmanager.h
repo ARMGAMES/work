@@ -33,6 +33,7 @@ public:
 	void composeHeLoggerParameters( HeLoggerParameters& parameters ) const;
 
 	// Messages
+	INT16 insertUser(User& user, PString& sqlErr);
 
 private:
 	// statements
