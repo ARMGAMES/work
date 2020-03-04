@@ -5,6 +5,7 @@
 #include "dbcommon.h"
 #include "pyrtime.h"
 #include "MainDbmprepstmt.h"
+#include "userdbmprepstmt.h"
 
 class  MainDbmServerObject;
 struct TCAColTaskData;

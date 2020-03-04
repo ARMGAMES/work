@@ -147,6 +147,9 @@
     <ClCompile Include="MainDbmobject.cpp" />
     <ClCompile Include="..\protocols\psqlvalue.cpp" />
     <ClCompile Include="MainDbmprepstmt.cpp" />
+    <ClCompile Include="userdbmmanager.cpp" />
+    <ClCompile Include="userdbmprepstmt.cpp" />
+    <ClCompile Include="userdbmprocessing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\protocols\dbcommon.h" />
@@ -162,6 +165,7 @@
     <ClInclude Include="MainDbmobject.h" />
     <ClInclude Include="MainDbmprepstmt.h" />
     <ClInclude Include="MainDbmstart.h" />
+    <ClInclude Include="userdbmprepstmt.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MainDbm.files" />

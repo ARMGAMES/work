@@ -513,12 +513,7 @@ void MainDbmServerObject::processTimerMessage( UINT32 /*handle*/, UINT32 msgId, 
 	PLog("}%u%s", ticks, (ticks > TICKS_PER_SECOND) ? " overspan" : "");
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////////////
 
-// process messages
-void MainDbmServerObject::processInsertUser(CommMsgParser& parser, GenericSrvConnection* conn)
-{
-
-}
-
-
+/* process messages */
