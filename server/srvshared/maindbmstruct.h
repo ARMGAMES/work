@@ -1,6 +1,7 @@
 #pragma once
 
 #include "pyrtime.h"
+#include "ppcontainer.h"
 
 struct User
 {
@@ -23,11 +24,13 @@ struct User
 	UINT64		privileges;
 	UINT64		flags;
 	PString		comments;
-	PString		encPwd;
+	PString		encrPwd;
 	UINT32		licenseId;
 	UINT32		siteId;
 	PString		defaultCurrency;
 
+	// local variable
+	time_t		lastAccessed;
 	User();
 
 	void compose(CommMsgBody& body) const;

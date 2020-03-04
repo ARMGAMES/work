@@ -5,7 +5,7 @@
 #include "ppstring.h"
 
 
-struct PStringCmp : public binary_function< const char*, const char*, bool >
+struct PStringCmp 
 {
 public:
 	bool operator() ( const char* a, const char* b ) const

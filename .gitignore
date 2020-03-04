@@ -4,6 +4,7 @@
 *.sdf
 *.log
 pyr.log.*
+commesage.log.*
 Analysis/Racing/obj/
 Analysis/Racing/bin/
 Analysis/Analysis/bin/

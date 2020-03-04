@@ -31,7 +31,7 @@ protected:
 	PSqlBigInt							privileges;
 	PSqlBigInt							flags;
 	PSqlString<USERS_COMMNETS_LEN>		comments;
-	PSqlString<USERS_ENCRPWD_LEN>		encPwd;
+	PSqlString<USERS_ENCRPWD_LEN>		encrPwd;
 	PSqlInt								licenseId;
 	PSqlInt								siteId;
 	PSqlString<USERS_CURRENCY_LEN>		defaultCurrency;
@@ -39,8 +39,8 @@ protected:
 	void bindAllParams();
 	void bindAllColumns();
 	void appendAllColumns(PString& query);
-	void setUsers(const User& user);
-	void getUsers(User& user);
+	void setUser(const User& user);
+	void getUser(User& user);
 };
 
 class InsertUserStmt : public UserStmtBase
@@ -50,4 +50,13 @@ class InsertUserStmt : public UserStmtBase
 public:
 	explicit InsertUserStmt(DatabaseManagerCommon& man);
 	void exec(const User& user);
+};
+
+class GetUserByUserIdStmt : public UserStmtBase
+{
+	void prepareStmt();
+
+public:
+	explicit GetUserByUserIdStmt(DatabaseManagerCommon& man);
+	bool execGet(const char* userId_, User& user);
 };

@@ -147,6 +147,7 @@
     <ClCompile Include="MainDbmobject.cpp" />
     <ClCompile Include="..\protocols\psqlvalue.cpp" />
     <ClCompile Include="MainDbmprepstmt.cpp" />
+    <ClCompile Include="MainDbmprocessing.cpp" />
     <ClCompile Include="userdbmmanager.cpp" />
     <ClCompile Include="userdbmprepstmt.cpp" />
     <ClCompile Include="userdbmprocessing.cpp" />

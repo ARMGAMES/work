@@ -363,24 +363,6 @@ void MainDbmServerObject::processCommonServerMessage(UINT32 msgId, const CommMsg
 	ticksAccumulator.addMessageTicks(counter);
 }
 
-void MainDbmServerObject::processLobbyMessage(UINT32 msgId, const CommMsgBody & body, GenericSrvConnection* conn)
-{
-	CommMsgParser parser(body);
-	switch (msgId)
-	{
-		case DBM_Q_INSERT_USER:
-		{
-			processInsertUser(parser, conn);
-			break;
-		}
-		default:
-		{
-			PLog(__FUNCTION__" error ... unhandled message ID=%u", msgId);
-			break;
-		}
-	}
-}
-
 //
 // HeLogger and performance reporting
 //

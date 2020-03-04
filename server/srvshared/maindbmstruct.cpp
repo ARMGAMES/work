@@ -8,6 +8,8 @@ User::User()
 	flags = 0;
 	licenseId = 0;
 	siteId = 0;
+
+	lastAccessed = 0;
 }
 
 void User::compose(CommMsgBody& body) const
@@ -32,7 +34,7 @@ void User::compose(CommMsgBody& body) const
 		.composeUINT64(privileges)
 		.composeUINT64(flags)
 		.composeString(comments)
-		.composeString(encPwd)
+		.composeString(encrPwd)
 		.composeUINT32(licenseId)
 		.composeUINT32(siteId)
 		.composeString(defaultCurrency);
@@ -60,7 +62,7 @@ void User::parse(CommMsgParser& parser)
 		.parseUINT64(privileges)
 		.parseUINT64(flags)
 		.parseStringP(comments)
-		.parseStringP(encPwd)
+		.parseStringP(encrPwd)
 		.parseUINT32(licenseId)
 		.parseUINT32(siteId)
 		.parseStringP(defaultCurrency);

@@ -24,7 +24,7 @@ void UserStmtBase::bindAllParams()
 	bindNextParam(privileges);
 	bindNextParam(flags);
 	bindNextParam(comments);
-	bindNextParam(encPwd);
+	bindNextParam(encrPwd);
 	bindNextParam(licenseId);
 	bindNextParam(siteId);
 	bindNextParam(defaultCurrency);
@@ -51,7 +51,7 @@ void UserStmtBase::bindAllColumns()
 	bindNextCol(privileges);
 	bindNextCol(flags);
 	bindNextCol(comments);
-	bindNextCol(encPwd);
+	bindNextCol(encrPwd);
 	bindNextCol(licenseId);
 	bindNextCol(siteId);
 	bindNextCol(defaultCurrency);
@@ -63,11 +63,11 @@ void UserStmtBase::appendAllColumns(PString& query)
 		.append("USERINTID,USERID,EMAIL,REGISTERED,FIRSTNAME,")		// 5
 		.append("MIDDLENAME,LASTNAME,BIRTHDAY,ADDR_1,ADDR_2,")		// 10
 		.append("CITY,STATE,COUNTRY,ZIPCODE,PHONE,")				// 15
-		.append("SEX,PRIVILEGES,FLAGS,COMMENTS,ENCPWD,")			// 20
+		.append("SEX,PRIVILEGES,FLAGS,COMMENTS,ENCRPWD,")			// 20
 		.append("LICENSEID,SITEID,DEFAULTCURRENCY");				// 23
 }
 
-void UserStmtBase::setUsers(const User& user)
+void UserStmtBase::setUser(const User& user)
 {
 	userIntId = user.userIntId;
 	userId.initCut(user.userId);
@@ -88,13 +88,13 @@ void UserStmtBase::setUsers(const User& user)
 	privileges = user.privileges;
 	flags = user.flags;
 	comments.initCut(user.comments);
-	encPwd.initCut(user.encPwd);
+	encrPwd.initCut(user.encrPwd);
 	licenseId = user.licenseId;
 	siteId = user.siteId;
 	defaultCurrency.initCut(user.defaultCurrency);
 }
 
-void UserStmtBase::getUsers(User& user)
+void UserStmtBase::getUser(User& user)
 {
 	user.userIntId = userIntId.value;
 	user.userId = userId.c_str();
@@ -115,7 +115,7 @@ void UserStmtBase::getUsers(User& user)
 	user.privileges = privileges.value;
 	user.flags = flags.value;
 	user.comments = comments.c_str();
-	user.encPwd = encPwd.c_str();
+	user.encrPwd = encrPwd.c_str();
 	user.licenseId = licenseId.value;
 	user.siteId = siteId.value;
 	user.defaultCurrency = defaultCurrency.c_str();
@@ -130,7 +130,6 @@ InsertUserStmt::InsertUserStmt(DatabaseManagerCommon& man)
 void InsertUserStmt::prepareStmt()
 {
 	PString query;
-
 	query
 		.assign("INSERT INTO " DB_TABLE_USERS " (");
 
@@ -152,6 +151,45 @@ void InsertUserStmt::prepareStmt()
 
 void InsertUserStmt::exec(const User& user)
 {
-	setUsers(user);
+	setUser(user);
 	execute();
+}
+
+GetUserByUserIdStmt::GetUserByUserIdStmt(DatabaseManagerCommon& man)
+	: UserStmtBase(man)
+{
+	prepareStmt();
+}
+
+void GetUserByUserIdStmt::prepareStmt()
+{
+	PString query;
+	query.assign("SELECT ");
+
+	appendAllColumns(query);
+
+	query
+		.append(" FROM " DB_TABLE_USERS " WHERE USERID=?");
+
+	prepare(query);
+
+	bindFirstParam(userId);
+	bindAllColumns();
+}
+
+bool GetUserByUserIdStmt::execGet(const char* userId_, User& user)
+{
+	userId.initCut(userId_);
+
+	bool found = false;
+	execute();
+	if (fetch())
+	{
+		getUser(user);
+		found = true;
+	}
+
+	closeCursor();
+	return found;
+
 }

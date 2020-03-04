@@ -98,6 +98,9 @@
     <ClCompile Include="userdbmprepstmt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MainDbmprocessing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MainDbmmanager.h">

@@ -31,3 +31,6 @@
 
 #define DBM_Q_INSERT_USER						1004
 #define DBM_A_INSERT_USER						(DBM_DELTA + DBM_Q_INSERT_USER) // 2004  //42[S]
+
+#define DBM_Q_GET_USERS							1005
+#define DBM_A_GET_USERS							(DBM_DELTA + DBM_Q_GET_USERS) // 2004  //42[S]

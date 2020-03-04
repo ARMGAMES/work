@@ -127,6 +127,7 @@ private:
 	
 	// process messages
 	void processInsertUser(CommMsgParser& parser, GenericSrvConnection* conn);
+	void processGetUsers(CommMsgParser& parser, GenericSrvConnection* conn);
 };
 
 class MainDbmServerObjectFactory : public CommServerObjectFactory
