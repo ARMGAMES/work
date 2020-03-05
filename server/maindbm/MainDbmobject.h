@@ -19,10 +19,11 @@
 
 // timer wait time
 #define TIMER_LOGGER_MSEC					5000
-#define TIMER_CLEANUP_MSEC					10000
+#define TIMER_CLEANUP_MSEC					15000
 
 // server config files
 #define SERVER_CONFIG_FILE "MainDbm.ini"
+
 
 using AdminAuthAsyncCall = NoReplyAsyncCall<MainDbmServerObject, UINT32 /* connId */>;
 

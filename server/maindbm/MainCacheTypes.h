@@ -9,6 +9,7 @@ private:
 	typedef PStringMap<User> UsersMap;
 	UsersMap container;
 	map<UINT32, PString> userIdMap;
+	UINT32 maxSize;
 
 	// prohibited
 	CachedUsers(const CachedUsers& other);
@@ -17,9 +18,10 @@ private:
 public:
 	CachedUsers();
 
-	void insertUser(User& user);
-	const User* getCachedUser(const char* userId);
+	void setMaxSize(UINT32 num) { maxSize = num; }
+	User* insertUser(User& user);
+	User* getCachedUser(const char* userId);
 
-	void cull(UINT32 secondsLimit, UINT32 maxUserNumber);
+	void cull(UINT32 secondsLimit);
 };
 

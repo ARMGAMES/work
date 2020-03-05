@@ -169,17 +169,17 @@ void GetUserByUserIdStmt::prepareStmt()
 	appendAllColumns(query);
 
 	query
-		.append(" FROM " DB_TABLE_USERS " WHERE USERID=?");
+		.append(" FROM " DB_TABLE_USERS " WHERE USERID = ?");
 
 	prepare(query);
 
-	bindFirstParam(userId);
+	bindFirstParam(inputUserId);
 	bindAllColumns();
 }
 
 bool GetUserByUserIdStmt::execGet(const char* userId_, User& user)
 {
-	userId.initCut(userId_);
+	inputUserId.initCut(userId_);
 
 	bool found = false;
 	execute();

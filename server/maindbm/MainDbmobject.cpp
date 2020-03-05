@@ -154,6 +154,8 @@ void MainDbmServerObject::dynamicInit()
 	}
 
 	Parent::dynamicInit( ini );
+
+	dbManager.dynamicInit(ini);
 }
 
 void MainDbmServerObject::reconnect(GenericOutgoingConnection& conn, const char* const serverName, const char* const serverObject, const char* const serverConnectionType)
@@ -480,6 +482,8 @@ void MainDbmServerObject::processTimerMessage( UINT32 /*handle*/, UINT32 msgId, 
 		{
 			CommMsgBody timerBody;
 			heLoggerTimerHandle = postTimerMessage(SERVER_CLEANUP_TIMER, timerBody, TIMER_CLEANUP_MSEC);
+			
+			dbManager.sweepCaches();
 			break;
 		}
 		default:

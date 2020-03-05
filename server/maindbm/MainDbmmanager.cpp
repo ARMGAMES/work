@@ -10,6 +10,9 @@ MainDbmManager::MainDbmManager()
 {
 	errorsInMessages = 0;
 	dbReconnectInterval = 0;
+	cachedUsersMaxSize = CACHEDUSERS_MAXSIZE;
+	cachedUsersCutoffSeconds = CACHEDUSERS_CUTOFFSECONDS;
+
 	zeroStatements();
 }
 
@@ -35,7 +38,6 @@ bool MainDbmManager::openDataStorage(const char* fullFileName, const char* secti
 
 	prepareStatements();
 
-	getNextId64("testTB");
 	PLog("MainDbmManager::openDataStorage end");
 	return bResult;
 }
@@ -58,6 +60,23 @@ void MainDbmManager::composeHeLoggerParameters( HeLoggerParameters& parameters )
 void MainDbmManager::init(MainDbmServerObject* obj)
 {
 	dbmObj = obj;
+}
+
+void MainDbmManager::dynamicInit(const PIniFile& iniFile)
+{
+	PLog(__FUNCTION__);
+
+	const PIniFile::Section* pSection = iniFile.getSection("DBSETTINGS");
+	if (pSection)
+	{
+		cachedUsersMaxSize = pSection->getIntProperty("CachedUsersMaxSize", CACHEDUSERS_MAXSIZE);
+		cachedUsersCutoffSeconds = pSection->getIntProperty("CachedUsersCutoffSeconds", CACHEDUSERS_CUTOFFSECONDS);
+	}
+	
+	PLog("-cachedUsersMaxSize=%u", cachedUsersMaxSize);
+	PLog("-cachedUsersCutoffSeconds=%u", cachedUsersCutoffSeconds);
+	cachedUsers.setMaxSize(cachedUsersMaxSize);
+
 }
 
 void MainDbmManager::rollbackOnError()
@@ -96,13 +115,14 @@ void MainDbmManager::setAutoCommitTrue()
 void MainDbmManager::prepareStatements()
 {   
 	insertUserStmt = new InsertUserStmt(*this);
-
+	getUserByUserIdStmt = new GetUserByUserIdStmt(*this);
 
 }
 
 void MainDbmManager::deleteStatements()
 {
 	delete insertUserStmt;
+	delete getUserByUserIdStmt;
 
 	zeroStatements();
 }
@@ -110,11 +130,18 @@ void MainDbmManager::deleteStatements()
 void MainDbmManager::zeroStatements()
 {
 	insertUserStmt = 0;
+	getUserByUserIdStmt = 0;
+
+}
+
+void MainDbmManager::sweepCaches()
+{
+	cachedUsers.cull(cachedUsersCutoffSeconds);
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 
-/* Message processing */
+
 
 
 

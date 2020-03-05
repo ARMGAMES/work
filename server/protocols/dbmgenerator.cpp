@@ -84,7 +84,8 @@ UINT64 DbmGenerator::getNextId(const char* objectName)
 	UINT64 objectId = 0;
 	if (getObjectId(objectName, objectId))
 	{
-		setObjectId(objectName, objectId + idIncrement);
+		objectId += idIncrement;
+		setObjectId(objectName, objectId);
 		return objectId;
 	}
 

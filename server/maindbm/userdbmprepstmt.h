@@ -12,6 +12,10 @@ protected:
 	explicit UserStmtBase(DatabaseManagerCommon& man) : DbmStatement(man)
 	{}
 
+	// inputs 
+	PSqlString<USERS_USERID_LEN>		inputUserId;
+
+	// outputs
 	PSqlInt								userIntId;
 	PSqlString<USERS_USERID_LEN>		userId;
 	PSqlString<USERS_EMAIL_LEN>			email;

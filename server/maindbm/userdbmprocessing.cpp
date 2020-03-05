@@ -51,19 +51,22 @@ void MainDbmServerObject::processGetUsers(CommMsgParser& parser, GenericSrvConne
 		parser.parseStringP(userIds[i]);
 	}
 
-	vector< User> userVec;
+	CommMsgBody usersBody;
 
 	CommMsgBody reply;
 	reply.composeUINT32(reqId);
 
 	PString sqlErr;
-	INT16 errCode = 0; // dbManager.insertUser(user, sqlErr);
+	INT16 errCode = dbManager.getUsers(userIds, usersBody, sqlErr);
 
 	reply.composeINT16(errCode);
 	if (errCode)
 	{
 		reply.composeString(sqlErr);
 	}
-
+	else
+	{
+		reply.merge(usersBody);
+	}
 	conn->post(DBM_A_INSERT_USER, reply);
 }
