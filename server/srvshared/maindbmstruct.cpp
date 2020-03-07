@@ -1,6 +1,7 @@
 
 #include "maindbmstruct.h"
 
+/////////////////////////////////////////////////////////////////////////////
 User::User()
 {
 	userIntId = 0;
@@ -66,4 +67,119 @@ void User::parse(CommMsgParser& parser)
 		.parseUINT32(licenseId)
 		.parseUINT32(siteId)
 		.parseStringP(defaultCurrency);
+}
+
+Loggedin::Loggedin()
+{
+	loginId = 0;
+	userIntId = 0;
+	clientDevice = 0;
+	sessionFlags = 0;
+	loginAuthMethod = 0;
+	siteId = 0;
+	ipPort = 0;
+}
+
+void Loggedin::compose(CommMsgBody& body) const
+{
+	body
+		.composeUINT64(loginId)
+		.composeString(userId)
+		.composeUINT32(userIntId)
+		.composeSrvTime(loginTime)
+		.composeUINT32(clientDevice)
+		.composeUINT32(sessionFlags)
+		.composeUINT32(loginAuthMethod)
+		.composeUINT32(siteId)
+		.composeString(installId)
+		.composeString(ipAddress)
+		.composeUINT32(ipPort)
+		.composeString(ipCountry)
+		.composeString(ipState)
+		.composeString(macAddress)
+		.composeString(routerMacAddr)
+		;
+
+}
+
+/////////////////////////////////////////////////////////////////////////////
+
+void Loggedin::parse(CommMsgParser& parser)
+{
+	parser
+		.parseUINT64(loginId)
+		.parseStringP(userId)
+		.parseUINT32(userIntId)
+		.parseSrvTime(loginTime)
+		.parseUINT32(clientDevice)
+		.parseUINT32(sessionFlags)
+		.parseUINT32(loginAuthMethod)
+		.parseUINT32(siteId)
+		.parseStringP(installId)
+		.parseStringP(ipAddress)
+		.parseUINT32(ipPort)
+		.parseStringP(ipCountry)
+		.parseStringP(ipState)
+		.parseStringP(macAddress)
+		.parseStringP(routerMacAddr)
+		;
+}
+
+Loggedout::Loggedout()
+{
+	loginId = 0;
+	userIntId = 0;
+	logoutType = 0;
+	clientDevice = 0;
+	sessionFlags = 0;
+	loginAuthMethod = 0;
+	siteId = 0;
+	ipPort = 0;
+}
+
+void Loggedout::compose(CommMsgBody& body) const
+{
+	body
+		.composeUINT64(loginId)
+		.composeString(userId)
+		.composeUINT32(userIntId)
+		.composeSrvTime(loginTime)
+		.composeSrvTime(logoutTime)
+		.composeUINT32(logoutType)
+		.composeUINT32(clientDevice)
+		.composeUINT32(sessionFlags)
+		.composeUINT32(loginAuthMethod)
+		.composeUINT32(siteId)
+		.composeString(installId)
+		.composeString(ipAddress)
+		.composeUINT32(ipPort)
+		.composeString(ipCountry)
+		.composeString(ipState)
+		.composeString(macAddress)
+		.composeString(routerMacAddr)
+		;
+
+}
+
+void Loggedout::parse(CommMsgParser& parser)
+{
+	parser
+		.parseUINT64(loginId)
+		.parseStringP(userId)
+		.parseUINT32(userIntId)
+		.parseSrvTime(loginTime)
+		.parseSrvTime(logoutTime)
+		.parseUINT32(logoutType)
+		.parseUINT32(clientDevice)
+		.parseUINT32(sessionFlags)
+		.parseUINT32(loginAuthMethod)
+		.parseUINT32(siteId)
+		.parseStringP(installId)
+		.parseStringP(ipAddress)
+		.parseUINT32(ipPort)
+		.parseStringP(ipCountry)
+		.parseStringP(ipState)
+		.parseStringP(macAddress)
+		.parseStringP(routerMacAddr)
+		;
 }

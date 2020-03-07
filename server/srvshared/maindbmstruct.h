@@ -37,3 +37,53 @@ struct User
 	void parse(CommMsgParser& parser);
 
 };
+
+struct Loggedin
+{
+	UINT64  loginId;
+	PString userId;
+	UINT32  userIntId;
+	SrvTime loginTime;
+	UINT32  clientDevice;
+	UINT32  sessionFlags;
+	UINT32  loginAuthMethod;
+	UINT32  siteId;
+	PString installId;
+	PString ipAddress;
+	UINT32  ipPort;
+	PString ipCountry;
+	PString ipState;
+	PString macAddress;
+	PString routerMacAddr;
+
+	Loggedin();
+
+	void compose(CommMsgBody& body) const;
+	void parse(CommMsgParser& parser);
+};
+
+struct Loggedout
+{
+	UINT64  loginId;
+	PString userId;
+	UINT32  userIntId;
+	SrvTime loginTime;
+	SrvTime logoutTime;
+	UINT32  logoutType;
+	UINT32  clientDevice;
+	UINT32  sessionFlags;
+	UINT32  loginAuthMethod;
+	UINT32  siteId;
+	PString installId;
+	PString ipAddress;
+	UINT32  ipPort;
+	PString ipCountry;
+	PString ipState;
+	PString macAddress;
+	PString routerMacAddr;
+
+	Loggedout();
+
+	void compose(CommMsgBody& body) const;
+	void parse(CommMsgParser& parser);
+};

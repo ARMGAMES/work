@@ -6,14 +6,17 @@
 #define GENERATOR_ID_INCREMENT	1
 
 
-// DB Tables
+/* DB Tables*/
 #define DB_TABLE_GENERATOR64	"GENERATOR64"
 #define DB_TABLE_IDRANGES		"IDRANGES"
 #define DB_TABLE_USERS			"USERS"
+#define DB_TABLE_LOGGEDIN		"LOGGEDIN"
+#define DB_TABLE_LOGGEDOUT		"LOGGEDOUT"
 
-// DB Columns
+/* DB Columns*/
 #define	OBJECT_NAME_LEN			31 
 
+// USERS
 #define USERS_USERID_LEN		21
 #define USERS_EMAIL_LEN			101
 #define USERS_FIRSTNAME_LEN		101
@@ -30,3 +33,9 @@
 #define USERS_COMMNETS_LEN		1001
 #define USERS_ENCRPWD_LEN		101
 #define USERS_CURRENCY_LEN		4
+
+// LOGGEDIN, LOGGEDOUT
+#define INSTALL_ID_LEN			21
+#define MAC_ADDR_LEN			21
+#define ROUTERMAC_ADDR_LEN		21
+#define IP_ADDR_LEN				41 //big enough for IP6 support
