@@ -191,5 +191,4 @@ bool GetUserByUserIdStmt::execGet(const char* userId_, User& user)
 
 	closeCursor();
 	return found;
-
 }

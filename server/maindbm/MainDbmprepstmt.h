@@ -4,7 +4,6 @@
 #include "dbm.h"
 #include "maindbmstruct.h"
 
-class ColPairMap;
 
 template<typename T>
 class NoExecStmtT : public T

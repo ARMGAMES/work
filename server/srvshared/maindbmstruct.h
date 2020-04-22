@@ -38,7 +38,7 @@ struct User
 
 };
 
-struct Loggedin
+struct LoginRecord
 {
 	UINT64  loginId;
 	PString userId;
@@ -56,13 +56,13 @@ struct Loggedin
 	PString macAddress;
 	PString routerMacAddr;
 
-	Loggedin();
+	LoginRecord();
 
 	void compose(CommMsgBody& body) const;
 	void parse(CommMsgParser& parser);
 };
 
-struct Loggedout
+struct LogoutRecord
 {
 	UINT64  loginId;
 	PString userId;
@@ -82,7 +82,7 @@ struct Loggedout
 	PString macAddress;
 	PString routerMacAddr;
 
-	Loggedout();
+	LogoutRecord();
 
 	void compose(CommMsgBody& body) const;
 	void parse(CommMsgParser& parser);

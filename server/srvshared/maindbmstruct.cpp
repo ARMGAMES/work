@@ -69,7 +69,7 @@ void User::parse(CommMsgParser& parser)
 		.parseStringP(defaultCurrency);
 }
 
-Loggedin::Loggedin()
+LoginRecord::LoginRecord()
 {
 	loginId = 0;
 	userIntId = 0;
@@ -80,7 +80,7 @@ Loggedin::Loggedin()
 	ipPort = 0;
 }
 
-void Loggedin::compose(CommMsgBody& body) const
+void LoginRecord::compose(CommMsgBody& body) const
 {
 	body
 		.composeUINT64(loginId)
@@ -104,7 +104,7 @@ void Loggedin::compose(CommMsgBody& body) const
 
 /////////////////////////////////////////////////////////////////////////////
 
-void Loggedin::parse(CommMsgParser& parser)
+void LoginRecord::parse(CommMsgParser& parser)
 {
 	parser
 		.parseUINT64(loginId)
@@ -125,7 +125,7 @@ void Loggedin::parse(CommMsgParser& parser)
 		;
 }
 
-Loggedout::Loggedout()
+LogoutRecord::LogoutRecord()
 {
 	loginId = 0;
 	userIntId = 0;
@@ -137,7 +137,7 @@ Loggedout::Loggedout()
 	ipPort = 0;
 }
 
-void Loggedout::compose(CommMsgBody& body) const
+void LogoutRecord::compose(CommMsgBody& body) const
 {
 	body
 		.composeUINT64(loginId)
@@ -161,7 +161,7 @@ void Loggedout::compose(CommMsgBody& body) const
 
 }
 
-void Loggedout::parse(CommMsgParser& parser)
+void LogoutRecord::parse(CommMsgParser& parser)
 {
 	parser
 		.parseUINT64(loginId)

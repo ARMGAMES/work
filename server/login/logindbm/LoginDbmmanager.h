@@ -36,7 +36,10 @@ public:
 
 private:
 	// statements
-	SampleTestingStmt* sampleTestingStmt;
+	InsertLoginStmt*		insertLoginStmt;
+	GetLoginByLoginIdStmt*	getLoginByLoginIdStmt;
+	InsertLogoutStmt*		insertLogoutStmt;
+	GetLogoutByLoginIdStmt*	getLogoutByLoginIdStmt;
 
 	void prepareStatements();
 	void deleteStatements();

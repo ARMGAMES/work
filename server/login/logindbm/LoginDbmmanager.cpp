@@ -95,20 +95,28 @@ void LoginDbmManager::setAutoCommitTrue()
 
 void LoginDbmManager::prepareStatements()
 {   
-	sampleTestingStmt = new SampleTestingStmt(*this);
-
+	insertLoginStmt = new InsertLoginStmt(*this);
+	getLoginByLoginIdStmt = new GetLoginByLoginIdStmt(*this);
+	insertLogoutStmt = new InsertLogoutStmt(*this);
+	getLogoutByLoginIdStmt = new GetLogoutByLoginIdStmt(*this);
 }
 
 void LoginDbmManager::deleteStatements()
 {
-	delete sampleTestingStmt;
+	delete insertLoginStmt;
+	delete getLoginByLoginIdStmt;
+	delete insertLogoutStmt;
+	delete getLogoutByLoginIdStmt;
 
 	zeroStatements();
 }
 
 void LoginDbmManager::zeroStatements()
 {
-	sampleTestingStmt = 0;
+	insertLoginStmt = 0;
+	getLoginByLoginIdStmt = 0;
+	insertLogoutStmt = 0;
+	getLogoutByLoginIdStmt = 0;
 }
 
 /* Message processing */

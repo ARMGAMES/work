@@ -4,7 +4,7 @@
 #include "dbm.h"
 #include "pyrtime.h"
 #include "maindbmstruct.h"
-class ColPairMap;
+
 
 template<typename T>
 class NoExecStmtT : public T
@@ -21,29 +21,14 @@ protected: // Disallow invocation of execute methods
 typedef NoExecStmtT<DbmStatement> NoExecStmt;
 
 /////////////////////////////////////////////////////////////////////////////////////
-
-class SampleTestingStmt : public DbmStatement
-{
-	PSqlString<OBJECT_NAME_LEN> objectName;
-	PSqlBigInt					objectId;
-
-	void prepareStmt();
-
-public:
-	SampleTestingStmt(DatabaseManagerCommon& man) : DbmStatement(man)
-	{
-		prepareStmt();
-	}
-	void init(const char* name, UINT64 object_id);
-};
-
-
-/////////////////////////////////////////////////////////////////////////////////////
 class LoggedinStmtBase : public DbmStatement
 {
 protected:
 	explicit LoggedinStmtBase(DatabaseManagerCommon& man) : DbmStatement(man)
 	{}
+
+	// inputs
+	PSqlBigInt							inputLoginId;
 
 	// outputs
 	PSqlBigInt							loginId;
@@ -65,8 +50,26 @@ protected:
 	void bindAllParams();
 	void bindAllColumns();
 	void appendAllColumns(PString& query);
-	void setUser(const Loggedin& loginRecord);
-	void getUser(Loggedin& loginRecord);
+	void setLogin(const LoginRecord& loginRecord);
+	void getLogin(LoginRecord& loginRecord);
+};
+
+class InsertLoginStmt : public LoggedinStmtBase
+{
+	void prepareStmt();
+
+public:
+	explicit InsertLoginStmt(DatabaseManagerCommon& man);
+	void exec(const LoginRecord& loginRecord);
+};
+
+class GetLoginByLoginIdStmt : public LoggedinStmtBase
+{
+	void prepareStmt();
+
+public:
+	explicit GetLoginByLoginIdStmt(DatabaseManagerCommon& man);
+	bool execGet(UINT64 loginId, LoginRecord& loginRecord);
 };
 
 
@@ -76,6 +79,9 @@ class LoggedoutStmtBase : public DbmStatement
 protected:
 	explicit LoggedoutStmtBase(DatabaseManagerCommon& man) : DbmStatement(man)
 	{}
+
+	// inputs
+	PSqlBigInt							inputLoginId;
 
 	// outputs
 	PSqlBigInt							loginId;
@@ -95,4 +101,28 @@ protected:
 	PSqlString<USERS_STATE_LEN>			ipState;
 	PSqlString<MAC_ADDR_LEN>			macAddress;
 	PSqlString<ROUTERMAC_ADDR_LEN>		routerMacAddr;
+
+	void bindAllParams();
+	void bindAllColumns();
+	void appendAllColumns(PString& query);
+	void setLogout(const LogoutRecord& logoutRecord);
+	void getLogout(LogoutRecord& logoutRecord);
+};
+
+class InsertLogoutStmt : public LoggedoutStmtBase
+{
+	void prepareStmt();
+
+public:
+	explicit InsertLogoutStmt(DatabaseManagerCommon& man);
+	void exec(const LogoutRecord& logoutRecord);
+};
+
+class GetLogoutByLoginIdStmt : public LoggedoutStmtBase
+{
+	void prepareStmt();
+
+public:
+	explicit GetLogoutByLoginIdStmt(DatabaseManagerCommon& man);
+	bool execGet(UINT64 loginId, LogoutRecord& logoutRecord);
 };
