@@ -82,4 +82,8 @@ void countSort(vector<int>& arr, int exp);
 // The main function to that sorts arr[] of size n using Radix Sort 
 void radixSort(vector<int>& arr);
 
-
+// count inversion
+/* merges two sorted arrays and returns inversion count in the arrays.*/
+int merge(vector<int>& arr, vector<int>& temp, int left, int mid, int right);
+/* An auxiliary recursive function that sorts the input array and returns the number of inversions in the array. */
+int _mergeSort(vector<int>& arr, vector<int>& temp, int left, int right);
