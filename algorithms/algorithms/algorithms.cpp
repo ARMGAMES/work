@@ -11,9 +11,11 @@
 
 int main()
 {
+	testSorting();
+
 	testArray();
 	testTree();
-	//testSorting();
+	
 	testSearching();
 	testGraph();
 	testMordernC();
