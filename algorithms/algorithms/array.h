@@ -7,6 +7,14 @@ int min(int a, int b, int c);
 
 ////////////////////////////////////////////////////////////////////
 // Array
+
+//A Juggling Algorithm - rotate array
+/*Fuction to get gcd of a and b*/
+int gcd(int a, int b);
+
+/*Function to left rotate arr[] of siz n by d*/
+void leftRotate(int arr[], int d, int n);
+
 // sliding window technique
 // Returns maximum sum in a subarray of size k. 
 int findSum(int arr[], int n, int k, int sum);
@@ -14,11 +22,8 @@ int findSum(int arr[], int n, int k, int sum);
 //THREE sum
 vector<vector<int> > threeSum(vector<int> &num, int sum);
 
-//A Juggling Algorithm - rotate array
-/*Fuction to get gcd of a and b*/
-int gcd(int a, int b);
-/*Function to left rotate arr[] of siz n by d*/
-void leftRotate(int arr[], int d, int n);
+
+
 
 // Median of Two Sorted Arrays    
 int findKthSmallest(int a[], int m, int b[], int n, int k);

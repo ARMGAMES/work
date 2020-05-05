@@ -647,9 +647,11 @@ void testArray()
 
 	optimalUtilization(20, t1, t2);
 
+	testJungleAlgo();
+
 	testSlidingWindow();
 	test3Sum();
-	testJungleAlgo();
+	
 	testLongestParethese();
 	testMedianOfTwoSorted();
 	testPhoneNumberCom();
