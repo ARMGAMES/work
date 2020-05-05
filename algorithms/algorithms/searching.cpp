@@ -53,6 +53,7 @@ void computeLPSArray(const char* pat, int M, int* lps)
 	}
 }
 
+// O(n) in the worst case
 void KMPSearch(const char* pat, const char* txt)
 {
 	int M = (int)strlen(pat);
@@ -91,7 +92,7 @@ void KMPSearch(const char* pat, const char* txt)
 
 void testKMPAlgorithm()
 {
-	std::cout << "testKMPAlgorithm\n";
+	std::cout << "test KMP searching\n";
 	const char* pat = "ABABCABAB";
 	const char* txt = "ABABDABACDABABCABAB";
 	
@@ -304,8 +305,15 @@ void testIsValidNumber()
 ////////////////////////////////////////////////////////////////////////////////////
 void testSearching()
 {
+	std::cout << "Test testSearching\n";
+
 	testKMPAlgorithm();
+
 	testBadCharacterMatching();
+
 	testRegularExpressionMatching();
+
 	testIsValidNumber();
+
+	std::cout << "Test testSearching completed\n";
 }
