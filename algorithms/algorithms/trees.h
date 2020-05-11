@@ -2,6 +2,9 @@
 
 using namespace std;
 
+
+#include "pch.h"
+
 ///////////////////////////////////////////////////////////////////////////
 // Binary Tree
 class BT
@@ -28,7 +31,13 @@ public:
 
 	bool findPath(link root, vector<int>& path, int k);
 
+	void inOrderNoRecursion(node* root);
+
 	void insert(link root, int key);
+
+	// build BT from inorder, preorder
+	link buildTree(const vector<int>& inorder, queue<int>& preorder, int inStrt, int inEnd);
+	int search(vector<int> arr, int strt, int end, int value);
 
 	/* Returns LCA if node n1, n2 are present in the given binary tree, otherwise return -1 
 	   By Storing root to n1 and root to n2 paths 
@@ -44,11 +53,7 @@ public:
 	// works if n1 and n2 not present in BT
 	link findLCAUtil(link root, int n1, int n2, bool &v1, bool &v2);
 	link findLCA3(link root, int n1, int n2);
-
-	// build BT from inorder, preorder
-	link buildTree(vector<int> inorder, vector<int> preorder, int inStrt, int inEnd);
-	int search(vector<int> arr, int strt, int end, int value);
-
+	
 	// Serialize and Deserialize Binary Tree
 	void serialize(link root, ostringstream& out);
 	link  deserialize(istringstream& in);

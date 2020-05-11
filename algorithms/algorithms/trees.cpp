@@ -44,6 +44,28 @@ bool BT::findPath(link root, vector<int>& path, int k)
 	return false;
 }
 
+void BT::inOrderNoRecursion(node* root)
+{
+	stack<node*> s;
+	node* cur = root;
+
+	while (cur != NULL || !s.empty())
+	{
+		while (cur != NULL)
+		{
+			s.push(cur);
+			cur = cur->left;
+		}
+
+		cur = s.top();
+		s.pop();
+
+		cout << cur->key << " ";
+
+		cur = cur->right;
+	}
+}
+
 void BT::insert(link root, int key)
 {
 	list<link> q;
@@ -161,15 +183,15 @@ BT::link BT::findLCA3(link root, int n1, int n2)
 	return NULL;
 }
 
-BT::link BT::buildTree(vector<int> inorder, vector<int> preorder, int inStrt, int inEnd)
+BT::link BT::buildTree(const vector<int>& inorder, queue<int>& preorder, int inStrt, int inEnd)
 {
-	static int preIndex = 0;
-
 	if (inStrt > inEnd)
 		return NULL;
 
 	/* Pick current node from Preorder traversal using preIndex and increment preIndex */
-	node* currNode = new node(preorder[preIndex++]);
+	int value = preorder.front();
+	preorder.pop();
+	node* currNode = new node(value);
 
 	/* If this node has no children then return */
 	if (inStrt == inEnd)
@@ -234,9 +256,20 @@ void testBT()
 	bt1.head->right->left = new BT::node(6);
 	bt1.head->right->right = new BT::node(7);
 
+	bt1.inOrderNoRecursion(bt1.head);
+
 	_ASSERT(bt1.findLCA1(bt1.head, 4, 5) == 2);
 	_ASSERT(bt1.findLCA3(bt1.head, 4, 5)->key == 2);
 	_ASSERT(bt1.findLCA3(bt1.head, 4, 6)->key == 1);
+
+	vector<int> inOrder = {4, 2, 5, 1, 6, 3};
+	queue<int> preOrder = {1, 2, 4, 5, 3, 6};
+
+	BT bt11;
+	bt11.buildTree(inOrder, preOrder, 0, preOrder.size() - 1);
+
+	BT bt12;
+	bt12.buildTree(inOrder, preOrder, 0, preOrder.size() - 1);
 
 	BT bt2;
 	bt2.head = new BT::node(1);
