@@ -849,8 +849,8 @@ void testTST()
 
 void testTree()
 {
-	testBST();
 	testBT();
+	testBST();
 	testAVL();
 	testTrie();
 	testTST();

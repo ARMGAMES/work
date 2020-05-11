@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "array.h"
+#include "sharedstructs.h"
 
 using namespace std;
 
@@ -152,6 +153,102 @@ void testJungleAlgo()
 
 	// Function calling 
 	leftRotate(arr, 2, n);
+}
+
+/////////////////////////////////////////////////////////////////////////
+
+int findPivot(const vector<int>& arr, int low, int high)
+{
+	// base cases 
+	if (high < low) return -1;
+	if (high == low) return low;
+
+	int mid = (low + high) / 2; /*low + (high - low)/2;*/
+	if (mid < high && arr[mid] > arr[mid + 1])
+		return mid;
+
+	if (mid > low && arr[mid] < arr[mid - 1])
+		return (mid - 1);
+
+	if (arr[low] >= arr[mid])
+		return findPivot(arr, low, mid - 1);
+
+	return findPivot(arr, mid + 1, high);
+
+}
+
+int findMin(const vector<int>& arr, int low, int high)
+{
+	while (low < high)
+	{
+		int mid = low + (high - low) / 2;
+		if (arr[mid] == arr[high])
+			high--;
+		else if (arr[mid] > arr[high])
+			low = mid + 1;
+		else
+			high = mid;
+	}
+	return arr[high];
+}
+
+int pivotedBinarySearch(const vector<int>& arr, int key)
+{
+	int n = arr.size();
+
+	int pivot = findPivot(arr, 0, n - 1);
+
+	// If we didn't find a pivot,  
+	// then array is not rotated at all 
+	if (pivot == -1)
+		return binarySearch(arr, 0, n - 1, key);
+
+	// If we found a pivot, then first compare with pivot 
+	// and then search in two subarrays around pivot 
+	if (arr[pivot] == key)
+		return pivot;
+
+	if (arr[0] <= key)
+		return binarySearch(arr, 0, pivot - 1, key);
+
+	return binarySearch(arr, pivot + 1, n - 1, key);
+}
+
+bool pairInSortedRotated(const vector<int>& arr, int x)
+{
+	int n = arr.size();
+
+	int i = findPivot(arr, 0, n - 1);
+	int l = (i + 1) % n;  // l is now index of smallest element 
+	int r = i;        // r is now index of largest element 
+
+	 // Keep moving either l or r till they meet 
+	while (l != r)
+	{
+		// If we find a pair with sum x, we return true 
+		if (arr[l] + arr[r] == x)
+			return true;
+
+		// If current pair sum is less, move to the higher sum 
+		if (arr[l] + arr[r] < x)
+			l = (l + 1) % n;
+		else  // Move to the lower sum side 
+			r = (n + r - 1) % n;
+	}
+	return false;
+}
+
+void testSortRotation()
+{
+	vector<int> arr = { 4, 5, 6, 1, 2, 3 };
+	int index = pivotedBinarySearch(arr, 3);
+
+	vector<int> arr11 = { 2, 2, 2, 2, 1, 2 };
+	int index11 = findPivot(arr11, 0, arr11.size() - 1);
+
+	vector<int> arr1 = { 11, 15, 6, 8, 9, 10 };
+	int sum = 16;
+	bool found = pairInSortedRotated(arr1, sum);
 }
 
 int findKthSmallest(int a[], int m, int b[], int n, int k) {
@@ -321,24 +418,24 @@ void displayMatrix(vector<vector<int>> mat)
 	printf("\n");
 }
 
-void printMaxSubSquare(int matrix[R][C])
+void printMaxSubSquare(int matrix[ROW][COLUMN])
 {
 	int i, j;
-	int S[R][C];
+	int S[ROW][COLUMN];
 	int max_of_s, max_i, max_j;
 
 	/* Set first column of S[][]*/
-	for (i = 0; i < R; i++)
+	for (i = 0; i < ROW; i++)
 		S[i][0] = matrix[i][0];
 
 	/* Set first row of S[][]*/
-	for (j = 0; j < C; j++)
+	for (j = 0; j < COLUMN; j++)
 		S[0][j] = matrix[0][j];
 
 	/* Construct other entries of S[][]*/
-	for (i = 1; i < R; i++)
+	for (i = 1; i < ROW; i++)
 	{
-		for (j = 1; j < C; j++)
+		for (j = 1; j < COLUMN; j++)
 		{
 			if (matrix[i][j] == 1)
 				S[i][j] = min(S[i][j - 1], S[i - 1][j],
@@ -350,9 +447,9 @@ void printMaxSubSquare(int matrix[R][C])
 
 	/* Find the maximum entry, and indexes of maximum entry in S[][] */
 	max_of_s = S[0][0]; max_i = 0; max_j = 0;
-	for (i = 0; i < R; i++)
+	for (i = 0; i < ROW; i++)
 	{
-		for (j = 0; j < C; j++)
+		for (j = 0; j < COLUMN; j++)
 		{
 			if (max_of_s < S[i][j])
 			{
@@ -374,7 +471,7 @@ void printMaxSubSquare(int matrix[R][C])
 	}
 }
 
-int printMaxSubSquare(int M[R][C], int m, int n, int *maxv) {
+int printMaxSubSquare(int M[ROW][COLUMN], int m, int n, int *maxv) {
 	int res;
 	if (m < 0 || n < 0) return 0;
 	if (M[m][n] == 1) {
@@ -392,7 +489,7 @@ int printMaxSubSquare(int M[R][C], int m, int n, int *maxv) {
 void testMaxSqureMatrix()
 {
 	cout << "testMaxSqureMatrix\n";
-	int m[R][C] = { {0, 1, 1, 0, 1},
+	int m[ROW][COLUMN] = { {0, 1, 1, 0, 1},
 				    {1, 1, 0, 1, 0},
 				    {0, 1, 1, 1, 0},
 					{1, 1, 1, 1, 0},
@@ -402,7 +499,7 @@ void testMaxSqureMatrix()
 	printMaxSubSquare(m);
 
 	int maxv = 0;
-	printMaxSubSquare(m, R - 1, C - 1, &maxv);
+	printMaxSubSquare(m, DFSROW - 1, COLUMN - 1, &maxv);
 }
 
 
@@ -414,7 +511,7 @@ int isSafe(int M[][COL], int row, int col, bool visited[][COL])
 {
 	// row number is in range, column number is in range and value is 1  
 	// and not yet visited 
-	return (row >= 0) && (row < ROW) &&
+	return (row >= 0) && (row < DFSROW) &&
 		(col >= 0) && (col < COL) &&
 		(M[row][col] && !visited[row][col]);
 }
@@ -441,13 +538,13 @@ int countIslands(int M[][COL])
 {
 	// Make a bool array to mark visited cells. 
 	// Initially all cells are unvisited 
-	bool visited[ROW][COL];
+	bool visited[DFSROW][COL];
 	memset(visited, 0, sizeof(visited));
 
 	// Initialize count as 0 and travese through the all cells of 
 	// given matrix 
 	int count = 0;
-	for (int i = 0; i < ROW; ++i)
+	for (int i = 0; i < DFSROW; ++i)
 		for (int j = 0; j < COL; ++j)
 			if (M[i][j] && !visited[i][j]) // If a cell with value 1 is not 
 			{                         // visited yet, then new island found 
@@ -648,6 +745,7 @@ void testArray()
 	optimalUtilization(20, t1, t2);
 
 	testJungleAlgo();
+	testSortRotation();
 
 	testSlidingWindow();
 	test3Sum();

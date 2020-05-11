@@ -466,6 +466,7 @@ int _mergeSort(vector<int>& arr, vector<int>& temp, int left, int right)
 	return inv_count;
 }
 
+
 /////////////////////////////////////////////////////////
 void testSorting()
 {

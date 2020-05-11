@@ -15,15 +15,22 @@ int gcd(int a, int b);
 /*Function to left rotate arr[] of siz n by d*/
 void leftRotate(int arr[], int d, int n);
 
+// search key in sorted and rotated array
+int findPivot(const vector<int>& arr, int l, int h);
+int pivotedBinarySearch(const vector<int>& arr, int key);
+
+// Function to find minimum element  
+int findMin(const vector<int>& arr, int low, int high);
+
+// search pair in sorted and rotated array
+bool pairInSortedRotated(const vector<int>& arr, int x);
+
 // sliding window technique
 // Returns maximum sum in a subarray of size k. 
 int findSum(int arr[], int n, int k, int sum);
 
 //THREE sum
 vector<vector<int> > threeSum(vector<int> &num, int sum);
-
-
-
 
 // Median of Two Sorted Arrays    
 int findKthSmallest(int a[], int m, int b[], int n, int k);
@@ -106,14 +113,14 @@ public:
 // Function to print the matrix 
 void displayMatrix(vector<vector<int>> mat);
 
-#define R 6 
-#define C 5 
-void printMaxSubSquare(int matrix[R][C]);
+#define ROW 6 
+#define COLUMN 5 
+void printMaxSubSquare(int matrix[ROW][COLUMN]);
 void testMaxSqureMatrix();
 
 // Find number of island
 // DFS
-#define ROW 5
+#define DFSROW 5
 #define COL 5
 int isSafe(int M[][COL], int row, int col, bool visited[][COL]);
 void DFS(int M[][COL], int row, int col, bool visited[][COL]);

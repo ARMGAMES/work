@@ -1,4 +1,7 @@
 #pragma once
+#include "pch.h"
+
+using namespace std;
 
 const int maxN = 100;
 const int bitsword = 32;
@@ -75,3 +78,5 @@ struct node
 };
 typedef node* link;
 
+/* Standard Binary Search function*/
+int binarySearch(const vector<int>& arr, int low, int high, int key);
